@@ -101,6 +101,11 @@ const getFirstGuideUrl = (category: string, urlPrefix: string) => {
     </div>
 
     <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <!-- 镜像站提示 -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-amber-200 dark:border-amber-400/20 bg-amber-50 dark:bg-amber-400/10 text-[13px] text-amber-700 dark:text-amber-300">
+        <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        <span>本站为 <strong>AIInfraGuide 镜像站</strong>，内容同步自 <a href="https://github.com/caomaolufei/AIInfraGuide" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:opacity-80">caomaolufei/AIInfraGuide</a>，并持续补充新内容</span>
+      </div>
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm text-sm text-gray-600 dark:text-gray-400">
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>

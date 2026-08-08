@@ -2,7 +2,14 @@
 
 > 从零开始深入理解 AI Infra 的核心全栈技术
 
-**在线浏览：[https://caomaolufei.github.io/AIInfraGuide/](https://caomaolufei.github.io/AIInfraGuide/)**
+> [!NOTE]
+> **本站为镜像/再创作站点**(由 [@XiaYiHann](https://github.com/XiaYiHann) 维护)。
+> 内容基于原作者 [caomaolufei](https://github.com/caomaolufei) 的 [AIInfraGuide](https://github.com/caomaolufei/AIInfraGuide) 同步，并在其基础上持续补充新的学习内容。原内容版权归原作者所有。
+>
+> - 本站(镜像)：**https://XiaYiHann.github.io/AIInfraGuide/**
+> - 上游原站：https://caomaolufei.github.io/AIInfraGuide/
+
+**在线浏览：[https://XiaYiHann.github.io/AIInfraGuide/](https://XiaYiHann.github.io/AIInfraGuide/)**
 
 AI Infra 正在成为大模型时代最关键的工程能力之一。本项目系统梳理从 GPU 硬件到分布式训练、从 CUDA 编程到推理优化的完整技术栈，帮助工程师构建扎实的 AI 基础设施知识体系。同时提供了面试宝典模块（共收录 180+ 场面试真题，覆盖 60+ 家公司）。
 

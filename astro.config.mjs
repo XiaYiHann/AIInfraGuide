@@ -8,7 +8,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
-  site: 'https://caomaolufei.github.io',
+  site: 'https://XiaYiHann.github.io',
   base: '/AIInfraGuide',
   integrations: [tailwind(), sitemap()],
   experimental: {
