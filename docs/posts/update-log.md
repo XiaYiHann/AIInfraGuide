@@ -9,6 +9,16 @@ tags: ["公告", "更新日志"]
 
 ---
 
+## 2026-08-08
+
+### 新增内容
+
+**模块二 · CUDA 编程与算子优化** 第 7 章（AI 编译器）首篇子文章上线：
+
+- **文章：** [7.1 Triton 快速上手：Block-level 编程与 Fused Softmax 实战](https://xiayihann.github.io/AIInfraGuide/cuda/模块二-cuda编程与算子优化/71-triton快速上手) | 从 thread-level 切到 block-level 视角，用约 25 行代码实现 Fused Softmax，与 5.2 手写 CUDA 版本逐版对照，讲清编译器替你做了什么、Triton 牺牲什么换取什么
+
+---
+
 ## 2026-07-09
 
 ### 新增内容
