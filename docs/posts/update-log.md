@@ -9,6 +9,27 @@ tags: ["公告", "更新日志"]
 
 ---
 
+## 2026-08-09
+
+### 新增内容
+
+**模块二 · CUDA 编程与算子优化** Attention 与 AI 编译器两章补齐：
+
+- **文章：** [6.3 FlashAttention-3 详解](https://xiayihann.github.io/AIInfraGuide/cuda/模块二-cuda编程与算子优化/63-flashattention-3详解) | 拆解 FA3 的三大核心设计——Warp Specialization 分工、把 Softmax 藏进 GEMM 流水线、FP8 低精度与数值稳定，讲清 H100 利用率从 35% 到 75% 的路径与工程可用性
+
+- **文章：** [7.2 torch.compile 原理与 Graph Break](https://xiayihann.github.io/AIInfraGuide/cuda/模块二-cuda编程与算子优化/72-torchcompile原理与graphbreak) | TorchDynamo 图捕获与 TorchInductor 代码生成，Graph Break 的成因、诊断（TORCH_LOGS / torch._dynamo.explain）与避免方法，三种编译模式的取舍与性能预期
+
+**模块四 · 推理优化** 第 4 章（量化）系列六篇全部上线：
+
+- **文章：** [4.1 量化基础](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第4章-量化/41-量化基础) | 为什么量化、定点表示与对称/非对称、量化粒度（per-tensor/per-channel/per-group）、PTQ vs QAT
+- **文章：** [4.2 W8A8 量化：SmoothQuant](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第4章-量化/42-w8a8-smoothquant) | Activation Outlier 难题与数学等价变换，把量化难度从激活迁移到权重
+- **文章：** [4.3 Weight-only INT4：GPTQ 与 AWQ](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第4章-量化/43-weight-only-int4-gptq与awq) | Hessian 驱动的 GPTQ 与激活感知的 AWQ，Marlin Kernel 与 INT4 不一定比 INT8 快的反直觉点
+- **文章：** [4.4 KV Cache 量化：KIVI](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第4章-量化/44-kv-cache量化-kivi) | per-channel 量化 + 滑动窗口残差的 2-bit KV 量化：4 倍 KV 压缩、峰值显存省 2.6x、batch 最大 4x，以及 vLLM 原生 FP8 KV Cache 的 2x 捷径
+- **文章：** [4.5 FP8 与 NVFP4](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第4章-量化/45-fp8与nvfp4) | E4M3/E5M2 格式、Hopper FP8 Tensor Core 与 FP8 训练，Blackwell 的 NVFP4/MXFP4 低比特浮点
+- **文章：** [4.6 量化选型与 vLLM 实战](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第4章-量化/46-量化选型与vllm实战) | 症状→诊断→方案决策树、70B 显存账本、vLLM 启用量化命令、可复用评测流程与故障排查清单
+
+---
+
 ## 2026-08-08
 
 ### 新增内容
