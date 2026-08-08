@@ -13,6 +13,22 @@ tags: ["公告", "更新日志"]
 
 ### 新增内容
 
+**模块四 · 推理优化** 第 5~11 章全部补齐（共 30 篇子文章），推理模块 11 章全部完成：
+
+- **第 5 章 · Speculative Decoding**：[5.1 核心原理与 Rejection Sampling](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/51-核心原理与rejection-sampling)、[5.2 Draft 模型与 N-gram 方案](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/52-draft模型与n-gram方案)、[5.3 Medusa 与 EAGLE](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/53-self-draft方案-medusa与eagle)、[5.4 收益边界与限制](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/54-收益边界与限制)、[5.5 vLLM 投机解码实战](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/55-vllm投机解码实战)
+- **第 6 章 · 分布式推理与大模型部署**：[6.1~6.6](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第6章-分布式推理/61-推理并行策略总览)：推理并行总览、张量并行、流水线并行、数据并行与专家并行（MoE）、Ray 多节点、vLLM 分布式实战
+- **第 7 章 · PD 解耦架构**：[7.1~7.6](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第7章-pd解耦架构/71-混合batching互扰分析)：互扰分析、DistServe/Splitwise/TaiChi、KV 传输与 NIXL Connector、Goodput、配比推导、vLLM 解耦实战
+- **第 8 章 · 生产级服务特性**：[8.1~8.5](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第8章-生产级服务特性/81-结构化输出)：结构化输出、Tool Calling、Multi-LoRA、多模态 VLM、采样与解码算法
+- **第 9 章 · 性能分析与 Benchmark**：[9.1~9.5](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第9章-性能分析与benchmark/91-推理指标体系)：指标体系、压测工具（vllm bench/GenAI-Perf）、性能分析工具、MLPerf 基准、回归门禁
+- **第 10 章 · 生产部署与运维**：[10.1~10.4](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第10章-生产部署与运维/101-容器化与kubernetes部署)：K8s 部署、可观测性、扩缩容与负载均衡、容量规划
+- **第 11 章 · 选型与端到端实战**：[11.1 决策树](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第11章-推理优化选型与端到端实战/111-优化选型决策树)、[11.2 优化组合](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第11章-推理优化选型与端到端实战/112-优化组合与叠加顺序)、[11.3 端到端实战](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第11章-推理优化选型与端到端实战/113-端到端部署实战)、[11.4 模块总结](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第11章-推理优化选型与端到端实战/114-模块总结与持续学习)——推理模块收官
+
+---
+
+## 2026-08-09
+
+### 新增内容
+
 **模块二 · CUDA 编程与算子优化** Attention 与 AI 编译器两章补齐：
 
 - **文章：** [6.3 FlashAttention-3 详解](https://xiayihann.github.io/AIInfraGuide/cuda/模块二-cuda编程与算子优化/63-flashattention-3详解) | 拆解 FA3 的三大核心设计——Warp Specialization 分工、把 Softmax 藏进 GEMM 流水线、FP8 低精度与数值稳定，讲清 H100 利用率从 35% 到 75% 的路径与工程可用性
@@ -287,7 +303,7 @@ tags: ["公告", "更新日志"]
   - **[模块一 · 前置知识](/AIInfraGuide/prerequisites)**（6 章）：[编程语言基础](/AIInfraGuide/prerequisites/模块一-前置知识/第1章-编程语言基础)、[数学基础](/AIInfraGuide/prerequisites/模块一-前置知识/第2章-数学基础)、[Transformer 架构详解](/AIInfraGuide/prerequisites/模块一-前置知识/第3章-Transformer架构详解)、[PyTorch 框架](/AIInfraGuide/prerequisites/模块一-前置知识/第4章-PyTorch框架)、[GPU 硬件概论](/AIInfraGuide/prerequisites/模块一-前置知识/第5章-GPU硬件概论)、[集合通信基础](/AIInfraGuide/prerequisites/模块一-前置知识/第6章-集合通信基础)
   - **[模块二 · CUDA 编程与算子优化](/AIInfraGuide/cuda)**（8 章）：[CUDA 入门](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第1章-CUDA编程入门)、[性能优化基础](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第2章-CUDA性能优化基础)、Reduce 实战、GEMM 实战、Softmax 实战、[Attention 算子](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第6章-Attention算子)、[AI 编译器](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第7章-AI编译器)、[性能分析工具链](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第8章-性能分析工具链)
   - **[模块三 · 分布式训练](/AIInfraGuide/distributed)**（7 章）：[分布式训练总论](/AIInfraGuide/distributed/模块三-分布式训练/第1章-分布式训练总论)、[数据并行](/AIInfraGuide/distributed/模块三-分布式训练/第2章-数据并行)、[ZeRO 系列](/AIInfraGuide/distributed/模块三-分布式训练/第3章-ZeRO系列)、[张量并行与序列并行](/AIInfraGuide/distributed/模块三-分布式训练/第4章-张量并行与序列并行)、[流水线并行](/AIInfraGuide/distributed/模块三-分布式训练/第5章-流水线并行)、[3D 并行与混合训练策略](/AIInfraGuide/distributed/模块三-分布式训练/第6章-其他显存优化技术)、[训练框架实战](/AIInfraGuide/distributed/模块三-分布式训练/第7章-训练框架实战)
-  - **[模块四 · 推理优化](/AIInfraGuide/inference)**（8 章）：推理基础、[推理引擎核心技术](/AIInfraGuide/inference/模块四-推理优化/第2章-推理引擎核心技术)、推理框架、[量化](/AIInfraGuide/inference/模块四-推理优化/第4章-量化)、[Speculative Decoding](/AIInfraGuide/inference/模块四-推理优化/第5章-Speculative-Decoding)、[PD 解耦架构](/AIInfraGuide/inference/模块四-推理优化/第6章-PD解耦架构)、[性能分析与 Benchmark](/AIInfraGuide/inference/模块四-推理优化/第7章-性能分析与Benchmark)、[选型与端到端实战](/AIInfraGuide/inference/模块四-推理优化/第8章-推理优化选型与端到端实战)
+  - **[模块四 · 推理优化](/AIInfraGuide/inference)**（11 章）：[推理基础](/AIInfraGuide/inference/模块四-推理优化/第1章-llm推理基础)、[推理引擎核心技术](/AIInfraGuide/inference/模块四-推理优化/第2章-推理引擎核心技术)、[深入 vLLM](/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm)、[量化](/AIInfraGuide/inference/模块四-推理优化/第4章-量化)、[Speculative Decoding](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding)、[分布式推理](/AIInfraGuide/inference/模块四-推理优化/第6章-分布式推理)、[PD 解耦架构](/AIInfraGuide/inference/模块四-推理优化/第7章-pd解耦架构)、[生产级服务特性](/AIInfraGuide/inference/模块四-推理优化/第8章-生产级服务特性)、[性能分析与 Benchmark](/AIInfraGuide/inference/模块四-推理优化/第9章-性能分析与benchmark)、[生产部署与运维](/AIInfraGuide/inference/模块四-推理优化/第10章-生产部署与运维)、[选型与端到端实战](/AIInfraGuide/inference/模块四-推理优化/第11章-推理优化选型与端到端实战)
 
 ### 新增内容
 
