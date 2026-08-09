@@ -101,6 +101,10 @@ tags: ["Gemma", "多模态", "MoE", "KV Cache", "量化", "投机解码"]
 
 **投机解码(Speculative Decoding)需要一个小模型先"打草稿",但额外部署一个草稿模型又费存储,怎么办?** 报告的方案是 MTP(多 token 预测)Drafter 头:**一个小型 Transformer 块直接挂在主模型最后一层激活上**(4 层:3 局部 + 1 全局注意力),cross-attend 主模型的 KV Cache,用独立的小嵌入表逐个预测未来 token。好处是**不需要单独的草稿模型、不需要 MTP 预填充、草稿长度任意**。对 E2B/E4B,草稿头最后的词表投影从 $d \times 262{,}000$ 压到 $d \times 4{,}096$(对 token 聚类做 top-k),输出维度缩到约 1/64,"在保持相近接受率的前提下"省掉该投影矩阵约 98% 的计算量。
 
+<img src="/AIInfraGuide/images/gemma-4-fig1-mtp-drafter.png" alt="Gemma 4 MTP 投机解码草稿头架构" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Gemma 4 技术报告 Figure 1(arXiv:2607.02770)*
+
 ### 3.5 KV Cache 账本
 
 **这些优化省下的到底是多少?** 报告 Table 3 给了 32k 上下文下的显存账本(来源:报告 Table 3):
@@ -135,6 +139,10 @@ H_target = floor(H * f / m) * m   # 向下取整到 m 的整数倍(保长宽比)
 W_target = floor(W * f / m) * m
 I_resized = BicubicResize(I, H_target, W_target)
 ```
+
+<img src="/AIInfraGuide/images/gemma-4-fig2-vision-resize.png" alt="Gemma 4 可变分辨率图像缩放与视觉 token 化" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Gemma 4 技术报告 Figure 2(arXiv:2607.02770)*
 
 💡 **提示**:这个算法的目的是"**保长宽比 + 精确卡预算**"——不做粗暴的居中裁剪,高图、宽图都不会被压变形,同时保证视觉 token 数不超预算,推理显存可预测。
 

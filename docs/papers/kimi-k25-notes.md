@@ -78,6 +78,10 @@ Agent(能自己调用工具、操作电脑的 AI)要往前走,卡在两个地方
 
 **问题是:为什么不能直接让一个模型串行干完所有事?** 报告 §3 给出了三个理由:单代理的推理深度和工具调用预算(step budget)会耗尽;上下文越攒越长,前面的信息逐渐丢失;总时长随任务复杂度线性增长。而 Agent Swarm 的思路是**把串行变成并行,并且让模型自己学"什么时候该并行"**。
 
+<img src="/AIInfraGuide/images/kimi-k25-fig3-agent-swarm.png" alt="Agent Swarm 编排器与并行子代理" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K2.5 技术报告 Figure 3(arXiv:2602.02276)*
+
 ### 3.1 机制:动态分解、冻结执行、只收结论
 
 沿用开头的比喻:总指挥(orchestrator,编排器)是**唯一可训练的** Agent,施工队(sub-agent,子代理)是**冻结的**(frozen)——子代理从训练中途的固定检查点(intermediate policy checkpoints)实例化,执行时不再更新。这套"一热多冷"的设计在工程上意味着:子代理跑的时候就是纯推理,不需要为它们维护训练状态。
@@ -139,6 +143,10 @@ $$\text{CriticalSteps}=\sum_{t=1}^{T}\left(\underbrace{S_{\mathrm{main}}^{(t)}}_
 
 结论:**视觉比例本身对最终多模态性能影响不大,但注入时机影响显著**——视觉能力不需要"突击补课",从早期就均匀地"每天学一点",文本和视觉互相促进,比后期集中灌输更稳。这像学外语:每天 20 分钟坚持三年,比高三突击一年效果更好,而且不挤占主科。
 
+<img src="/AIInfraGuide/images/kimi-k25-fig9-training-ablation.png" alt="不同图文注入比例的训练消融曲线" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K2.5 技术报告 Figure 9(arXiv:2602.02276)*
+
 ### 4.2 Zero-vision SFT:纯文本激活视觉
 
 **问题是:预训练完的 VLM 会"看",但不会"看着图干活",怎么办?** 传统做法是人工标注/提示词工程构造视觉 CoT 数据,但这类数据多样性差,往往只覆盖"看图、裁剪、旋转"这类原始操作。K2.5 的招叫 **zero-vision SFT(零视觉监督微调)**:后训练阶段**只用纯文本 SFT 数据**,把所有图像操作"代理"成 IPython 里的程序化操作——比如用二值化(binarization)+ 数像素来估计物体大小、做物体定位、计数、OCR。模型在训练时"从没见过真图像",却在推理时把这种能力泛化到真实视觉任务上。
@@ -160,6 +168,10 @@ $$\text{CriticalSteps}=\sum_{t=1}^{T}\left(\underbrace{S_{\mathrm{main}}^{(t)}}_
 **视觉 RL 不仅不拖后腿,反而反哺文本推理。** 报告的推测:视觉任务强化了"结构化信息抽取"的校准能力,降低了类似"数一数、读一读"这类视觉化推理查询的不确定性。基于这个发现,后训练 RL 干脆**不按输入模态分域,而按能力分域**(知识、推理、编码、Agent 等),每个域的专家同时从纯文本和多模态查询里学习,让跨模态迁移最大化。视觉 RL 的轨迹还会被抽出来做拒绝采样微调(RFT),形成自我改进的数据管线。
 
 RL 侧还有两个工程细节:规则化结果奖励(可验证任务)+ **预算控制奖励**(省 token);对不可验证的通用任务用**生成式奖励模型(GRM)**;以及一个叫 **Toggle** 的 token 效率算法——交替运行"预算受限阶段"和"标准扩展阶段",预算从历史成功样本的 token 数分位数里估计(公式 $budget(x)=\mathrm{Percentile}(\{|y_j| \mid r(x,y_i)=1\}, \rho)$),论文报告它让 K2-Thinking 在 GPQA、MMLU-Pro 上以极小的性能损失换到一致的 token 削减(详见 §6)。
+
+<img src="/AIInfraGuide/images/kimi-k25-fig2-vision-rl-curves.png" alt="视觉强化学习在多个视觉基准上的训练曲线" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K2.5 技术报告 Figure 2(arXiv:2602.02276)*
 
 ### 4.4 训练基础设施:把视觉编码器解耦出来
 
@@ -235,9 +247,17 @@ Agent Swarm 的三个专项基准(论文 Table 6;来源口径:论文报告):
 
 时间账(论文图 8):WideSearch 上,目标 Item-F1 从 30% 提到 70%,单代理执行时间从约 1.8× 涨到 7.0×,而 Swarm **始终维持在 0.6×~1.6×**——任务越难,并行越划算,端到端加速 3×~4.5×。步数预算(BrowseComp:总指挥最多 15 步、子代理各 100 步;WideSearch:各 100 步)保证对比公平。官方博客补充:发布版支持最多 **100 个子代理、1500 次工具调用**的并行工作流(论文报告的是评测配置,两者口径不同,别混用)。
 
+<img src="/AIInfraGuide/images/kimi-k25-fig8-wide-search-speed.png" alt="Agent Swarm 与单代理的 WideSearch 执行时间对比" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K2.5 技术报告 Figure 8(arXiv:2602.02276)*
+
 ## 6. 系统视角:Agent 推理需求的账本
 
 **问题是:这对做推理基础设施的人意味着什么?** K2.5 的两个特性直接把"推理负载画像"改写了:
+
+<img src="/AIInfraGuide/images/kimi-k25-fig10-agentic-rl-system.png" alt="Agentic RL 系统组件与服务关系" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K2.5 技术报告 Figure 10(arXiv:2602.02276)*
 
 - **输入暴涨**:一个 Agent 回合要反复吞截图、文档、视频帧;OSWorld 评测里上下文包含最近 3 张历史截图 + 完整思考历史;长视频评测喂 2000+ 帧。256K 上下文意味着 **prefill(输入处理)阶段的计算量可以轻易超过 decode**,且 KV Cache 显存随输入线性涨——这正好命中站内 [7.x PD 解耦](</AIInfraGuide/inference/模块四-推理优化/第7章-pd解耦架构/72-解耦架构设计>) 的场景:prefill 重、decode 轻,两者解耦才能各自吃饱。
 - **并发形态突变**:单代理是"一个请求一路到底",Swarm 是"**一个总指挥 + 一群子代理的树状突发并发**"——同一时刻可能有几十个子代理并行推理,而且子代理是短生命周期、长上下文、低延迟敏感(总指挥在等最慢的那个)。这对调度器和容量规划是新的压力测试:并发放大倍数可能到 10~100×,峰值容量按"单用户"规划会直接被打穿。站内 [10.4 容量规划](</AIInfraGuide/inference/模块四-推理优化/第10章-生产部署与运维/104-容量规划>) 的思维要升级成"一个 swarm 会话 = N 个并发工作负载"。

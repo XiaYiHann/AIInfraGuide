@@ -75,6 +75,9 @@ GLM-4.5 已经把 Agentic(智能体)、Reasoning(推理)、Coding(编码)三种�
 - **长序列的注意力计算减少约 1.5–2 倍**;报告原话是"能以一半 GPU 成本处理 128K 上下文"——注意限定:这是**长序列、推理侧**的收益,不是端到端加速;
 - **DSA 是"接枝"出来的,不是从零训的**:从 dense(稠密)基座模型做 **Continued Pre-Training(继续预训练)**。GLM-5 的 DSA 适配只用了 **20B tokens**(1000 步 warmup + 稀疏适配阶段),而 DeepSeek-V3.2 花了 **943.7B tokens**——差了约 47 倍,这是报告特别强调的成本优势。
 
+<img src="/AIInfraGuide/images/glm-5-fig6-sft-loss.png" alt="MLA 与 DSA 的训练损失曲线对比" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:GLM-5 技术报告 Figure 6(arXiv:2602.15763)*
+
 💡 **提示**:DSA 不是唯一的省算力方案。报告用 GLM-9B 做了消融,对比了滑动窗口注意力(SWA)、Gated DeltaNet(GDN)等方案,结论是:**固定模式的 SWA 在 RULER@128K 上暴跌 30.35 分;搜索式 SWA 模式好一些但仍有损;DSA 因为是 token 级动态稀疏、不丢任何长程依赖,可以无损应用到所有层**。这是 GLM-5 选 DSA 不选其他方案的依据。
 
 还有一个工程细节值得记:**DSA 的 top-k 算子必须是确定性的**。报告发现,SGLang 里基于 CUDA 的非确定性 top-k 实现会让 RL 训练几步之内熵骤降、性能崩盘;换成朴素但确定性的 `torch.topk`,RL 就稳了。原因和 MoE 的 routing replay 一样:训练和推理如果选了不同的 top-k 集合,策略梯度就是歪的。为此报告在 RL 阶段**默认冻结 indexer 参数**。
@@ -107,6 +110,9 @@ MTP(Multi-Token Prediction,多 token 预测)在训练时让模型同时预测后
 报告特别指出:**后面的 200K 阶段即使只看 128K 以内的任务,也进一步提升了性能**——长上下文训练不是"只对长文本有用"。长上下文数据里混了合成数据:受 NextLong / EntropyLong 启发,把高度相似的文本用交错打包(interleaved packing)拼成长序列,缓解"lost-in-the-middle"(中间内容被遗忘)现象;200K 阶段还加了 MRCR 类多轮对话数据。
 
 ## 3. 训练:28.5T 语料与"异步干活"学出来的 Agent
+
+<img src="/AIInfraGuide/images/glm-5-fig5-training-pipeline.png" alt="GLM-5 总体训练管线" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:GLM-5 技术报告 Figure 5(arXiv:2602.15763)*
 
 ### 3.1 预训练数据:代码语料 +28%,Issue-PR 对约 1000 万
 
@@ -190,7 +196,12 @@ SFT 阶段还做了 **INT4 量化感知训练(QAT)**,且量化核在训练和推
 
 ### 4.1 八大 ARC 基准:平均 +20%,逼近闭源
 
-报告主表(表 7)对比 GLM-5 / GLM-4.7 / DeepSeek-V3.2 / Kimi K2.5 / Claude Opus 4.5 / Gemini 3 Pro / GPT-5.2 (xhigh)。**八大基准平均比 GLM-4.7 提升约 20%,与 Claude Opus 4.5 和 GPT-5.2 (xhigh) 相当,优于 Gemini 3 Pro**——这是报告自己的口径。挑关键数字(均为论文报告):
+报告主表(表 7)对比 GLM-5 / GLM-4.7 / DeepSeek-V3.2 / Kimi K2.5 / Claude Opus 4.5 / Gemini 3 Pro / GPT-5.2 (xhigh)。**八大基准平均比 GLM-4.7 提升约 20%,与 Claude Opus 4.5 和 GPT-5.2 (xhigh) 相当,优于 Gemini 3 Pro**——这是报告自己的口径。
+
+<img src="/AIInfraGuide/images/glm-5-fig1-benchmarks.png" alt="GLM-5 与其他模型的基准对比" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:GLM-5 技术报告 Figure 1(arXiv:2602.15763)*
+
+挑关键数字(均为论文报告):
 
 | 📊 基准 | GLM-5 | GLM-4.7 | Claude Opus 4.5 | GPT-5.2 (xhigh) | 来源口径 |
 |---|---|---|---|---|---|
@@ -218,6 +229,9 @@ SFT 阶段还做了 **INT4 量化感知训练(QAT)**,且量化核在训练和推
 
 - **Artificial Analysis Intelligence Index v4.0:GLM-5 得 50 分,是第一个达到 50 的开源权重模型**(GLM-4.7 为 42,+8 分主要由 agentic 能力和知识/幻觉维度贡献);
 - **LMArena Text Arena 与 Code Arena:开源 #1**,整体与 Claude Opus 4.5、Gemini 3 Pro 相当。
+
+<img src="/AIInfraGuide/images/glm-5-fig4-long-horizon.jpeg" alt="Vending-Bench 2 长程任务资金余额曲线" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:GLM-5 技术报告 Figure 4(arXiv:2602.15763)*
 
 ### 4.2 CC-Bench-V2:端到端工程任务的照妖镜
 
@@ -265,6 +279,9 @@ SFT 阶段还做了 **INT4 量化感知训练(QAT)**,且量化核在训练和推
 还有 **DP-aware routing**(第 4 节):同一 agent 实例的所有请求按一致哈希钉到同一 DP rank,多轮之间 KV 缓存不跨 rank 迁移,prefill 成本只随增量 token 增长。对多轮 Agent 负载,这是"KV 复用"的调度实现,和站内 [10.4 容量规划](/AIInfraGuide/inference/模块四-推理优化/第10章-生产部署与运维/104-容量规划) 的 KV 账本直接相关。
 
 **搜索 Agent 的上下文管理**是另一个推理侧工程点:模型在超长上下文(>100K)下准确率明显下降。报告用 **keep-recent-k**(只保留最近 k 轮工具观测,更早的折叠掉;k=5)把 BrowseComp 从 55.3% 提到 62.0%;再叠加 discard-all 分层策略(总长超 32K 就清空工具历史重启),最终 75.9。**牺牲了什么?** 折叠/清空会丢信息,但换来的是更多可执行的搜索步数——预算有限时,省上下文 = 更多轮次 = 更高分数。
+
+<img src="/AIInfraGuide/images/glm-5-fig8-context-management.png" alt="BrowseComp 不同上下文管理策略的准确率" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:GLM-5 技术报告 Figure 8(arXiv:2602.15763)*
 
 ### 5.2 国产芯片全栈适配
 

@@ -39,6 +39,9 @@ tags: ["DeepSeek-V4", "稀疏注意力", "KV Cache", "MoE", "Muon", "长上下�
 
 把 1M token 全部塞进普通稠密注意力:光 KV cache 就大到单机装不下,每个新 token 还要扫一遍全部 KV 做计算。这不是"优化一下"能解决的,是结构性的。
 
+<img src="/AIInfraGuide/images/deepseek-v4-fig1-efficiency-benchmark.png" alt="V4 系列效率与基准对比" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:DeepSeek-V4 技术报告 Figure 1(arXiv:2606.19348)*
+
 > 打个比方:注意力就像**图书馆查资料**。$O(n^2)$ 的意思是——你每写一句话,都要把馆里每一本书重新翻一遍找相关内容;KV cache 是你做的读书笔记,笔记量随馆藏线性增长。馆藏从 1 个书架涨到 250 个书架,你每次写作都要翻 250 个书架,笔记也堆满房间。常规做法是"换更大的房间"(加显存、加卡),DeepSeek 的选择是**把书先压缩成摘要卡片,再决定翻哪几张**。
 
 **为什么这个问题现在非解不可?** 报告的动机很直接:推理模型(reasoning model)的测试时扩展(test-time scaling,推理时花更多 token 思考换取更高准确率)让单次会话的序列长度暴涨;同时 agent 类任务(多轮工具调用、读整个代码仓库、跨文档分析)天然需要超长上下文。报告原文的原话是:vanilla attention 的平方级复杂度是"prohibitive bottleneck"(令人却步的瓶颈)。谁先把长上下文做便宜,谁就解锁了测试时扩展和 long-horizon 任务(长时间跨度、多轮交互的任务)的下一个台阶。
@@ -47,8 +50,14 @@ tags: ["DeepSeek-V4", "稀疏注意力", "KV Cache", "MoE", "Muon", "长上下�
 
 **核心思想一句话:把 KV 序列"压缩"后再做注意力,压缩得轻的层做稀疏选择,压缩得狠的层做全量扫描——两类层交错排列。** 报告设计了两种注意力并交替使用(Pro 前两层用纯 HCA,之后 CSA/HCA 交错;Flash 前两层用纯滑动窗口注意力,之后交错):
 
+<img src="/AIInfraGuide/images/deepseek-v4-fig2-architecture.png" alt="DeepSeek-V4 总体架构" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:DeepSeek-V4 技术报告 Figure 2(arXiv:2606.19348)*
+
 - **CSA(Compressed Sparse Attention,压缩稀疏注意力)**:先把每 $m=4$ 个 token 的 KV 压缩成 1 条,再在压缩后的条目上做 DSA(DeepSeek Sparse Attention,稀疏注意力:每个 query 只选分数最高的 top-$k$ 条)。Pro 的 top-$k$=1024,Flash 的 top-$k$=512。
 - **HCA(Heavily Compressed Attention,重度压缩注意力)**:把每 $m'=128$ 个 token 的 KV 压成 1 条,然后对全部压缩条目做**稠密**注意力——因为压缩后序列极短,稠密扫一遍也便宜。
+
+<img src="/AIInfraGuide/images/deepseek-v4-fig3-csa.png" alt="CSA 的压缩与稀疏选择流程" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:DeepSeek-V4 技术报告 Figure 3(arXiv:2606.19348)*
 
 **压缩是怎么做的?** 压缩不是简单平均,而是"加权合并"。对 HCA,每个压缩条目是:
 
@@ -204,6 +213,9 @@ V4 的 KV cache 不是一个均匀的大数组,而是多种条目混在一起:CS
 - **State Cache(状态缓存)**:SWA 近端 KV + 未压缩尾部,按序列固定分配小块——因为 SWA 本来就只依赖最近 $n_{\text{win}}$ 个 token,可以当"状态"而不是"历史"管理;
 - **Classical KV Cache**:CSA/HCA 压缩条目。每个 cache block 覆盖 $\mathrm{lcm}(m, m') = 128$ 个原始 token,包含 $k_1 = \mathrm{lcm}/m = 32$ 条 CSA 压缩 + $k_2 = \mathrm{lcm}/m' = 1$ 条 HCA 压缩——取最小公倍数是为了让两类压缩在块边界对齐(算例:128 token 一块,32:1 的条目配比)。
 
+<img src="/AIInfraGuide/images/deepseek-v4-fig6-kv-cache-layout.png" alt="DeepSeek-V4 异构 KV cache 布局" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:DeepSeek-V4 技术报告 Figure 6(arXiv:2606.19348)*
+
 **为什么不能直接用 PagedAttention?** 报告 3.5.1 明确说,混合注意力**违反了 PagedAttention 的底层假设**(站内 [2.1-PagedAttention](/AIInfraGuide/inference/模块四-推理优化/第2章-推理引擎核心技术/21-pagedattention) 讲过它的分页模型):一是 SWA 有自己的淘汰策略(老条目要丢),二是高性能注意力 kernel 有对齐约束,没法统一塞进"定长页"。所以自研了上面的布局 + 与稀疏注意力 kernel 协同设计(块大小取 $\mathrm{lcm}$ 的倍数以对齐 cache line)。
 
 ### 6.2 磁盘 KV cache:省掉重复 prefill
@@ -278,6 +290,9 @@ Pro-Max(Max 推理档)在报告里的表现,挑有代表性的行:
 - **白领任务的短板**:偶尔忽略格式约束、长文压缩为摘要能力弱、PPT 视觉设计一般(内部 30 题人评,整体非失败率 63% vs Opus-4.6-Max);
 - **工程师内部调查(N=85)**:52% 愿意让 V4-Pro 当默认编码模型、39% 倾向愿意、<9% 不愿意;反馈集中在琐碎错误、模糊 prompt 误读、偶尔过度思考;
 - 未来方向(报告点名):embedding 稀疏化(引用了 Engram 论文)、低延迟系统、长周期 agent 任务、多模态、更好的数据策展。
+
+<img src="/AIInfraGuide/images/deepseek-v4-fig9-mrcr-long-context.png" alt="DeepSeek-V4 在 MRCR 长上下文任务上的表现" style="max-width: 75%; display: block; margin: 0 auto;" />
+*图源:DeepSeek-V4 技术报告 Figure 9(arXiv:2606.19348)*
 
 ⚠️ **注意**:有解读文章(kenhuangus)把 **Engram 条件记忆模块**列为 V4 的架构组件——报告原文只在"未来方向"里提了一句"explore more sparse embedding modules such as engram",**V4 本体并没有这个模块**。引用时以报告为准。
 

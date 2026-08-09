@@ -61,6 +61,10 @@ tags: ["Kimi K3", "MoE", "混合注意力", "长上下文", "强化学习", "AI 
 
 三个组件都是首次出现的概念,逐个拆。
 
+<img src="/AIInfraGuide/images/kimi-k3-fig2-architecture.png" alt="Kimi K3 三维架构总览" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K3 技术报告 Figure 2(arXiv:2607.24653)*
+
 ### 2.1 KDA:把"文件柜"换成"便签本"
 
 **问题是:1M token 上下文为什么贵?** 传统注意力(softmax attention)处理每个 token 时,要回头看前面所有 token——实现方式是给每个 token 存一份 key-value 记录(KV Cache,键值缓存:注意力计算所需的中间量,存下来避免重复计算),新 token 要和缓存里每一份记录做比较。打个比方:这像一个**文件柜,每来一个词就塞一张卡片,新词要翻遍整柜卡片才能决定"我跟谁有关"**。上下文到 1M 时,柜子大得离谱,每次翻找都越来越贵。
@@ -82,6 +86,10 @@ $$S_t = \underbrace{(I - \beta_t k_t k_t^\top \text{Diag}(\alpha_t))}_{\text{遗
 💡 **提示**:这是一个"delta rule"式的递推:先按通道衰减旧状态,再叠加新写入。$\alpha_t$ 和 $\beta_t$ 都由当前 token 的输入**动态生成**(报告 Eq. 2 的低秩投影 + sigmoid),不是固定超参——模型自己学会"这句该记住、那句该忘掉"。
 
 **数值上还有个工程坑**:分块并行计算时,键向量要被"累计衰减的倒数"重缩放,而 $\alpha < 1$ 的连乘倒数可以涨到无穷大,在 BF16 低精度下直接溢出。Kimi Linear(前作)用负 Softplus 映射,对数衰减下界是 $-\infty$;**K3 改用带下界的缩放 sigmoid**:$g_t^h = g_{\min} \cdot \text{Sigmoid}(e^{A_h} z_t^h) \in (g_{\min}, 0)$,固定 $g_{\min} = -5$。这样每个保留因子 $\alpha > e^{-5} \approx 6.7 \times 10^{-3}$,16-token 分块内的累计对数衰减落在 $(-80, 0)$,倒数不超过 $e^{80}$,在 BF16 动态范围内——**所有分块(包括对角块)都能用稠密 Tensor Core 矩阵乘,消灭了原来的"逐位置对"慢路径**。这就是"带下界衰减"换来算力效率的具体故事。
+
+<img src="/AIInfraGuide/images/kimi-k3-fig3-kda-lower-bound.png" alt="KDA 带下界衰减与分块计算" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K3 技术报告 Figure 3(arXiv:2607.24653)*
 
 **训练/推理怎么并行?** KDA 是递推,天然串行;GPU 讨厌串行。报告的做法是**分块并行(chunkwise)**:序列切成块,块内展开成几个稠密矩阵乘(张量核心的强项),块与块之间只传递固定大小的状态。剩下的串行尾巴由专门 kernel 处理——这是第 6 节基础设施的主角。
 
@@ -138,6 +146,10 @@ $$\hat{b}_j^{(t+1)} \leftarrow -\,\text{quantile}_{\,1 - k/n}\left(s_{:,j} - \al
 
 架构、数据、训练三方面的改动改变了最优训练区间,所以团队重新做了缩放定律研究,重新调 batch size、学习率、**每参数 token 比(TPP,Tokens-Per-Parameter)** 和模型形状。在留出集(分布外验证数据)上拟合的曲线显示:**这些改进合计带来约 2.5× 的整体缩放效率提升**(报告图 7:同样 FLOPs 下验证损失显著更低)。
 
+<img src="/AIInfraGuide/images/kimi-k3-fig7-scaling-law.png" alt="Kimi K2 与 K3 缩放定律" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K3 技术报告 Figure 7(arXiv:2607.24653)*
+
 顺带一个方法论亮点:报告专门对比了 **cosine 衰减和 WSD(Warmup Stable Decay)两种学习率调度**,结论是 cosine 更优——但前提是**每种调度独立做缩放定律搜索**。因为两种调度的最优峰值学习率和 batch size 差很多,共用一套超参比较会不公平地偏向其中一方。这个"公平比较"的自觉值得记下来。
 
 ### 3.3 训练阶段与显式配方
@@ -162,6 +174,10 @@ $$\hat{b}_j^{(t+1)} \leftarrow -\,\text{quantile}_{\,1 - k/n}\left(s_{:,j} - \al
 ### 4.2 RL:3 个领域 × 3 档推理强度 = 9 个专家
 
 **问题是:一个模型又要写代码、又要做助手、又要深度思考,还要能被指挥"别想太多",一个策略够用吗?** 报告的选择是**分开练**:3 个领域(通用任务 / 通用 Agent / 编程 Agent)× 3 档推理强度(low / high / max)= **9 个专家模型**,每个只练自己的切片,最后蒸馏回一个。报告图 8 显示:RL FLOPs 增长时,工具调用步数和各能力分数一起稳定上升。
+
+<img src="/AIInfraGuide/images/kimi-k3-fig8-rl-scaling.png" alt="RL FLOPs 与能力分数变化" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K3 技术报告 Figure 8(arXiv:2607.24653)*
 
 配套机制:
 
@@ -232,6 +248,10 @@ $$L_{\text{LK}} = -\log \sum_{x \in V} \min(p(x), q(x))$$
 - **Kimi Code Bench 2.0(内部基准)**:落后 Fable 5 4.0 分,但成本只有它的 **38%**;K3 的 high 档就用约 **1/3 成本**打平了 Opus 4.8 的 max 档分数;
 - **GDPval-AA v2**:距 GPT-5.6 Sol 50 Elo 以内、成本低 13%,比 Fable 5 便宜 **2.6×**;
 - **AA-Briefcase**:第二高分,约 Fable 5 半价。
+
+<img src="/AIInfraGuide/images/kimi-k3-fig13-cost-efficiency.png" alt="分数与每任务成本对比" style="max-width: 75%; display: block; margin: 0 auto;" />
+
+*图源:Kimi K3 技术报告 Figure 13(arXiv:2607.24653)*
 
 Tom's Hardware 给的官方 API 定价可交叉核对:缓存命中输入 $0.30/M token、未命中 $3/M、输出 $15/M。
 

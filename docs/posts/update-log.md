@@ -17,6 +17,9 @@ tags: ["公告", "更新日志"]
 
 ### Paper 精读新增
 
+**精读文章配图**(22 张论文原图,均标注图源):DeepSeek-V4 5 张(架构/CSA/效率基准/KV 布局/长上下文)、Kimi K3 5 张(架构/KDA/缩放定律/RL/成本效率)、GLM-5 5 张(训练管线/DSA/基准/长程任务/上下文管理)、Gemma 4 2 张(MTP/视觉分辨率,论文仅此两图)、Kimi K2.5 5 张(Agent Swarm/训练消融/视觉 RL/并行加速/系统组件)。
+
+
 **2026 年模型技术报告精读系列**(五篇,用 tech-report-writing 产出,高中生版):
 
 - **文章：** [DeepSeek-V4 解读](https://xiayihann.github.io/AIInfraGuide/papers/deepseek-v4-notes) | 百万 token 上下文背后的架构与训练账本：CSA+HCA 混合注意力、mHC、Muon 优化器、V4-Pro 1.6T / V4-Flash 284B
