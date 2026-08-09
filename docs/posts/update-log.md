@@ -11,6 +11,20 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-09
 
+---
+
+## 2026-08-09
+
+### Paper 精读新增
+
+**2026 年模型技术报告精读系列**(五篇,用 tech-report-writing 产出,高中生版):
+
+- **文章：** [DeepSeek-V4 解读](https://xiayihann.github.io/AIInfraGuide/papers/deepseek-v4-notes) | 百万 token 上下文背后的架构与训练账本：CSA+HCA 混合注意力、mHC、Muon 优化器、V4-Pro 1.6T / V4-Flash 284B
+- **文章：** [Kimi K3 解读](https://xiayihann.github.io/AIInfraGuide/papers/kimi-k3-notes) | 2.8T 参数开源前沿模型是怎么造出来的：MoE 配置、47 页训练配方、评测双口径
+- **文章：** [GLM-5 解读](https://xiayihann.github.io/AIInfraGuide/papers/glm-5-notes) | 从"一句话编程"到能自主干活 8 小时的 Agent 模型：744B MoE、DSA 稀疏注意力、全异步 Agentic RL
+- **文章：** [Gemma 4 解读](https://xiayihann.github.io/AIInfraGuide/papers/gemma-4-notes) | Google 开源多模态家族的架构与取舍：密集/MoE 双线、长上下文四件套、无编码器路线
+- **文章：** [Kimi K2.5 解读](https://xiayihann.github.io/AIInfraGuide/papers/kimi-k25-notes) | 会"指挥一群小助手"的多模态 Agent：Agent Swarm 自导向并行、DEP 训练解耦
+
 ### 站点更新
 
 **新增 Paper 精读栏目** 📖：论文与技术博客的中文通俗精读（用 tech-report-writing 工作流产出，保留原文全部关键事实，补上直觉与上下文）：
