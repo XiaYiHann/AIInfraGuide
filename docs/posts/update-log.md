@@ -15,6 +15,14 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-09
 
+### 第 3 章新增
+
+- **文章：** [3.2 nano-vllm 源码导读：用 1200 行读懂 vLLM 核心机制](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm/32-nano-vllm源码导读) | 逐文件读通 nano-vllm（约 1200 行）的双队列调度、block 记账 KV cache、xxhash 前缀缓存、CUDA graph 与极简张量并行，建立 vLLM 最小心智地图（含 2 张 mermaid 图，README 自报基准 1434 tok/s）
+
+---
+
+## 2026-08-09
+
 ### Paper 精读新增
 
 **精读文章配图**(22 张论文原图,均标注图源):DeepSeek-V4 5 张(架构/CSA/效率基准/KV 布局/长上下文)、Kimi K3 5 张(架构/KDA/缩放定律/RL/成本效率)、GLM-5 5 张(训练管线/DSA/基准/长程任务/上下文管理)、Gemma 4 2 张(MTP/视觉分辨率,论文仅此两图)、Kimi K2.5 5 张(Agent Swarm/训练消融/视觉 RL/并行加速/系统组件)。

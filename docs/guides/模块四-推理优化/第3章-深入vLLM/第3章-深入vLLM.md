@@ -15,6 +15,8 @@ vLLM 是本模块的实例主线。前两章讲的核心技术，本章落到 vL
 
 **整体架构**拆解 vLLM 的分层设计：`LLMEngine` / `AsyncLLM` 入口、`EngineCore` 执行循环、`Scheduler` 调度器、`KVCacheManager` 显存管理、`Worker` / `ModelRunner` 模型执行，理清一个请求从进入到返回的完整数据流。
 
+**nano-vllm 源码导读**先用约 1200 行代码的最小实现建立心智地图：双队列调度、block 记账的 KV cache、xxhash 前缀缓存、CUDA graph 与极简张量并行——这是从"会用 vLLM"到"看懂 vLLM"的捷径。
+
 **V1 引擎**是 vLLM 近年最重要的重构：多进程隔离让 Tokenize/Detokenize 等 CPU 任务与核心循环重叠、统一 Token 预算调度器抹平 Prefill/Decode 边界、零开销 Prefix Cache 默认开启、Persistent Batch 只传增量 diff，整体吞吐相比 V0 提升约 1.7 倍。
 
 **调度器源码导读**深入 Waiting/Running 队列、Token Budget 分配、抢占（Preemption）与重计算（Recompute）机制，看懂 vLLM 每一步 step 到底做了什么。
@@ -26,8 +28,9 @@ vLLM 是本模块的实例主线。前两章讲的核心技术，本章落到 vL
 ## 本章小节
 
 - **3.1 vLLM 快速入门**：安装、离线批量推理、OpenAI 兼容服务部署
-- **3.2 vLLM 整体架构**：LLMEngine/AsyncLLM、EngineCore、Scheduler、KVCacheManager、Worker/ModelRunner
-- **3.3 V1 引擎深度解析**：多进程架构、统一调度、零开销 Prefix Cache、相比 V0 的改进
-- **3.4 调度器源码导读**：Token Budget、Waiting/Running 队列、抢占与重计算
-- **3.5 关键配置调优**：显存、批大小、Block 等核心参数的调参思路
-- **3.6 框架横向对比**：vLLM / SGLang / TensorRT-LLM 选型决策
+- **3.2 nano-vllm 源码导读**：用约 1200 行最小实现读懂调度、KV cache、前缀缓存、CUDA graph 与张量并行
+- **3.3 vLLM 整体架构**：LLMEngine/AsyncLLM、EngineCore、Scheduler、KVCacheManager、Worker/ModelRunner
+- **3.4 V1 引擎深度解析**：多进程架构、统一调度、零开销 Prefix Cache、相比 V0 的改进
+- **3.5 调度器源码导读**：Token Budget、Waiting/Running 队列、抢占与重计算
+- **3.6 关键配置调优**：显存、批大小、Block 等核心参数的调参思路
+- **3.7 框架横向对比**：vLLM / SGLang / TensorRT-LLM 选型决策
