@@ -15,6 +15,22 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-09
 
+### 第 12 章新增：TensorRT 推理引擎
+
+新增完整章节(章首页 + 六篇,全部由 sol-high(gpt-5.6-sol)agent 写作与审计,事实逐条对照官方仓库核实):
+
+- **章首页：** [第 12 章 TensorRT 推理引擎](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/第12章-tensorrt推理引擎)
+- **文章：** [12.1 TensorRT 是什么：为什么需要推理编译器](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/121-tensorrt是什么) | 两段式设计、11.x 大版本精简、与 cuDNN/CUDA 的分工
+- **文章：** [12.2 核心对象与构建流程](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/122-trt核心对象与构建流程) | Logger/Builder/Network/Engine 六对象 + trtexec,构建期 vs 运行期
+- **文章：** [12.3 导入路径与最小实战](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/123-导入路径与最小实战) | ONNX / Torch-TensorRT / HF Hub / Network API 四条路 + 最小可运行链路
+- **文章：** [12.4 精度与量化](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/124-精度与量化) | FP16/BF16/INT8/FP8 阶梯、显式量化、INT8 无校准陷阱
+- **文章：** [12.5 优化原理与自定义算子](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/125-优化原理与自定义算子) | 构建路由、tactic 搜索、workspace 规划与 IPluginV3 新范式
+- **文章：** [12.6 生态与选型](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/126-生态与选型) | 与 TensorRT-LLM/Triton/ONNX Runtime 的分工与选型决策树
+
+---
+
+## 2026-08-09
+
 ### 第 3 章新增
 
 - **文章：** [3.2 nano-vllm 源码导读：用 1200 行读懂 vLLM 核心机制](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm/32-nano-vllm源码导读) | 逐文件读通 nano-vllm（约 1200 行）的双队列调度、block 记账 KV cache、xxhash 前缀缓存、CUDA graph 与极简张量并行，建立 vLLM 最小心智地图（含 2 张 mermaid 图，README 自报基准 1434 tok/s）
