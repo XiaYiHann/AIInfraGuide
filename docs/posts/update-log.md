@@ -15,17 +15,17 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-09
 
-### 第 12 章新增：TensorRT 推理引擎
+### 第 12 章新增：TensorRT-LLM 推理引擎
 
-新增完整章节(章首页 + 六篇,全部由 sol-high(gpt-5.6-sol)agent 写作与审计,事实逐条对照官方仓库核实):
+新增完整章节(章首页 + 六篇,由 deepseek-v4-flash agent 写作与审计,事实逐条对照官方仓库 docs/ 核实;原 TensorRT 核心版已整体替换):
 
-- **章首页：** [第 12 章 TensorRT 推理引擎](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/第12章-tensorrt推理引擎)
-- **文章：** [12.1 TensorRT 是什么：为什么需要推理编译器](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/121-tensorrt是什么) | 两段式设计、11.x 大版本精简、与 cuDNN/CUDA 的分工
-- **文章：** [12.2 核心对象与构建流程](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/122-trt核心对象与构建流程) | Logger/Builder/Network/Engine 六对象 + trtexec,构建期 vs 运行期
-- **文章：** [12.3 导入路径与最小实战](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/123-导入路径与最小实战) | ONNX / Torch-TensorRT / HF Hub / Network API 四条路 + 最小可运行链路
-- **文章：** [12.4 精度与量化](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/124-精度与量化) | FP16/BF16/INT8/FP8 阶梯、显式量化、INT8 无校准陷阱
-- **文章：** [12.5 优化原理与自定义算子](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/125-优化原理与自定义算子) | 构建路由、tactic 搜索、workspace 规划与 IPluginV3 新范式
-- **文章：** [12.6 生态与选型](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/126-生态与选型) | 与 TensorRT-LLM/Triton/ONNX Runtime 的分工与选型决策树
+- **章首页：** [第 12 章 TensorRT-LLM 推理引擎](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/第12章-tensorrt推理引擎)
+- **文章：** [12.1 TensorRT-LLM 是什么](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/121-tensorrt-llm是什么) | PyTorch 原生架构与 PyExecutor、与 TensorRT/vLLM 的分野、版本节奏
+- **文章：** [12.2 从权重到引擎](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/122-从权重到引擎模型加载量化与构建) | 模型加载三条路线、ModelOpt 离线量化、1.2 起构建新含义
+- **文章：** [12.3 运行时与 LLM API](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/123-运行时与llm-api) | PyExecutor 五步循环、trtllm-serve 六端点、In-flight Batching
+- **文章：** [12.4 KV Cache 与长上下文](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/124-kv-cache与长上下文) | 分页缓存与 radix tree、缓存量化、长序列三件套、PD 解耦
+- **文章：** [12.5 并行、量化与高级特性](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/125-并行量化与高级特性) | TP/PP/DP/EP/CP/Wide-EP、FP8/FP4 矩阵、投机解码、稀疏注意力
+- **文章：** [12.6 生态选型与部署](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第12章-tensorrt推理引擎/126-生态选型与部署) | 与 vLLM 对比、官方部署指南、Triton/Dynamo、Slurm 多节点、模块四总结
 
 ---
 
