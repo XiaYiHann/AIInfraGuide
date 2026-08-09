@@ -54,4 +54,22 @@ const interview = defineCollection({
   }),
 });
 
-export const collections = { guides, posts, interview };
+/** Paper 精读:用 tech-report-writing 产出的论文/博客解读 */
+const papers = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './docs/papers' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    /** 原文链接 */
+    originalUrl: z.string(),
+    /** 来源类型:论文 / 博客 / 官方文档 */
+    sourceType: z.enum(['paper', 'blog', 'docs']),
+    /** 原文作者 */
+    originalAuthor: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { guides, posts, interview, papers };

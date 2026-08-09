@@ -1,0 +1,56 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  paper: CollectionEntry<'papers'>;
+}
+
+const { paper } = Astro.props;
+const { data } = paper;
+
+const sourceTypeMeta = {
+  paper: { label: '📄 论文', class: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300' },
+  blog: { label: '📝 博客', class: 'bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-300' },
+  docs: { label: '📘 文档', class: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-300' },
+} as const;
+
+const meta = sourceTypeMeta[data.sourceType];
+const getPath = (path: string) => {
+  const base = import.meta.env.BASE_URL;
+  return base === '/' ? path : `${base.replace(/\/$/, '')}${path}`;
+};
+---
+
+<a
+  href={getPath(`/papers/${paper.id}`)}
+  class="group relative block p-6 rounded-2xl cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-indigo-300 dark:hover:border-indigo-500/40 hover:shadow-xl hover:-translate-y-1 flex flex-col"
+>
+  <div class="flex items-center justify-between mb-3">
+    <span class={`inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded-md ${meta.class}`}>
+      {meta.label}
+    </span>
+    <time class="text-xs text-gray-400 dark:text-gray-500">
+      {data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}
+    </time>
+  </div>
+
+  <h3 class="text-lg font-bold text-gray-900 dark:text-white leading-snug mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
+    {data.title}
+  </h3>
+
+  <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-3 flex-1">
+    {data.description}
+  </p>
+
+  <div class="flex items-center justify-between mt-auto pt-3 border-t border-gray-100 dark:border-white/[0.06]">
+    <span class="text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]">
+      {data.originalAuthor ? `作者: ${data.originalAuthor}` : ''}
+    </span>
+    <span class="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      阅读精读
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+      </svg>
+    </span>
+  </div>
+</a>

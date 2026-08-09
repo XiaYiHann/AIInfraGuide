@@ -294,3 +294,60 @@ html.dark .astro-code span {
   height: auto;
   max-height: 360px;
 }
+
+/* ═══════════════════════════════════════
+   阅读体验增强
+   ═══════════════════════════════════════ */
+
+/* 表格防溢出:宽表格在容器内横向滚动(GitHub 风格) */
+.prose table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* KaTeX 公式防溢出(移动端长公式) */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.35em 0;
+}
+
+/* 移动端折叠目录的箭头旋转 */
+details[open] > summary svg {
+  transform: rotate(180deg);
+}
+
+/* ═══════════════════════════════════════
+   打印样式:隐藏导航/侧栏/悬浮控件,正文全宽
+   ═══════════════════════════════════════ */
+@media print {
+  header,
+  footer,
+  aside,
+  #reading-progress,
+  #back-to-top,
+  nav {
+    display: none !important;
+  }
+  .max-w-\[1400px\] {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+  .prose {
+    max-width: none !important;
+  }
+  .prose pre.astro-code {
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  .prose table {
+    display: table;
+    width: 100%;
+  }
+  body {
+    background: #fff !important;
+  }
+}

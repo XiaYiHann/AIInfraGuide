@@ -20,9 +20,13 @@ export default {
           '-apple-system',
           'BlinkMacSystemFont',
           'SF Pro Display',
+          '"PingFang SC"',
+          '"Noto Sans CJK SC"',
+          '"Source Han Sans SC"',
+          '"Microsoft YaHei"',
           ...defaultTheme.fontFamily.sans,
         ],
-        mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
+        mono: ['JetBrains Mono', '"SF Mono"', 'Menlo', 'Consolas', ...defaultTheme.fontFamily.mono],
       },
       typography: (theme) => ({
         DEFAULT: {

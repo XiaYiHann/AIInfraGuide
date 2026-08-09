@@ -1,0 +1,27 @@
+---
+// 阅读进度条:顶部 2px 细条,随页面滚动填充
+---
+
+<div id="reading-progress" class="fixed top-0 left-0 right-0 z-[60] h-[2px] pointer-events-none" aria-hidden="true">
+  <div id="reading-progress-bar" class="h-full w-0 bg-gradient-to-r from-[#007aff] to-[#5856D6] dark:from-[#0a84ff] dark:to-[#5ac8fa] transition-[width] duration-75 ease-out" />
+</div>
+
+<script>
+  function initReadingProgress() {
+    const bar = document.getElementById('reading-progress-bar');
+    if (!bar) return;
+    const update = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = docHeight > 0 ? `${Math.min(100, (scrollTop / docHeight) * 100)}%` : '0%';
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initReadingProgress);
+  } else {
+    initReadingProgress();
+  }
+</script>
