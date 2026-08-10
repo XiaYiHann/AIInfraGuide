@@ -72,6 +72,8 @@ AI Infra 不是从零开始学的领域——它建立在编程能力、数学�
 
 **PyTorch 框架（第 4 章样板课程）**
 
+> [进入第 4 章课程首页：PyTorch 框架系统课程 →](/AIInfraGuide/prerequisites/模块一-前置知识/第4章-pytorch框架/)
+
 第 4 章不再停在单篇 API 速览，而是从 Tensor 语义递进到可复现训练系统：
 
 | 节 | 学习单元 | 可验收产物 |

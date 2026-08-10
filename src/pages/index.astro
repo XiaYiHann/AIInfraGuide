@@ -29,7 +29,7 @@ const aboutPages = [
   },
   {
     title: '本站教程更新计划',
-    description: '四大模块、29 个章节的系统化更新路线，介绍本站教程的规划、更新节奏与获取方式。',
+    description: '四大模块、37 个章节的系统化更新路线，介绍本站教程的规划、更新节奏与获取方式。',
     href: getPathEarly('/about/roadmap'),
     pubDate: new Date('2026-04-11'),
     tags: ['公告', '更新计划'],
@@ -61,7 +61,7 @@ const categoryCounts = Object.entries(GUIDE_CATEGORIES).map(([slug, meta]) => ({
 
 const categoryDescriptions: Record<string, string> = {
   'learning-path': '系统化的 AI Infra 学习路径与知识图谱',
-  'prerequisites': 'GPU 架构、计算机体系结构等核心前置知识',
+  'prerequisites': '编程、数学、Transformer、PyTorch 系统课程、GPU 与通信基础',
   'cuda-optimization': 'CUDA 编程模型、算子开发与性能优化',
   'distributed-training': '数据并行、模型并行与大规模分布式训练',
   'inference-optimization': '模型压缩、量化加速与推理引擎优化',
@@ -133,7 +133,7 @@ const getFirstGuideUrl = (category: string, urlPrefix: string) => {
         从底层的 CUDA 编程到模型的分布式训练和推理优化，构建完整的 AI Infra 知识体系
       </p>
 
-      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3 justify-center">
         {categoryCounts.find((c) => c.firstGuide) && (
           <a
             href={getPath('/guides/ai-infra学习路线/')}
@@ -145,6 +145,16 @@ const getFirstGuideUrl = (category: string, urlPrefix: string) => {
             </svg>
           </a>
         )}
+        <a
+          href={getPath('/prerequisites/模块一-前置知识/第4章-pytorch框架/')}
+          class="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-cyan-50 dark:bg-cyan-400/10 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-400/20 rounded-xl font-semibold hover:border-cyan-300 dark:hover:border-cyan-400/40 hover:bg-cyan-100 dark:hover:bg-cyan-400/15 transition-all duration-300 cursor-pointer"
+        >
+          PyTorch 系统课程
+          <span class="px-1.5 py-0.5 rounded bg-cyan-100 dark:bg-cyan-400/15 text-[11px] font-bold">4.0–4.12</span>
+          <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
         <a
           href="https://github.com/caomaolufei/AIInfraGuide"
           target="_blank"
