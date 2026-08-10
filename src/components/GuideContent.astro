@@ -38,19 +38,19 @@ const getPath = (path: string) => {
 <ReadingProgress />
 <BackToTop />
 
-<div class="max-w-[1400px] mx-auto px-6 py-12 flex gap-10">
+<div class="guide-layout max-w-[1400px] mx-auto px-6 py-12 flex gap-10">
   <!-- Left Sidebar -->
   <aside class="hidden lg:block">
     <GuideSidebar categories={sidebarCategories} urlPrefix={urlPrefix} />
   </aside>
 
   <!-- Main Content -->
-  <article class="flex-1 min-w-0">
+  <article class="guide-article flex-1 min-w-0">
     <!-- 移动端折叠目录 -->
     <MobileToc headings={headings} />
 
     <!-- Article Header -->
-    <header class="mb-10 pb-8 border-b border-gray-200 dark:border-white/[0.06]">
+    <header class="guide-article__header mb-10 pb-8 border-b border-gray-200 dark:border-white/[0.06]">
       <div class="flex items-center gap-3 mb-5">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400 text-xs font-medium rounded-md">
           {categoryMeta.label}
@@ -97,7 +97,7 @@ const getPath = (path: string) => {
 
     <!-- Article Body -->
     <div
-      class="prose prose-gray dark:prose-invert max-w-[75ch] mx-auto
+      class="guide-prose prose prose-gray dark:prose-invert max-w-[75ch] mx-auto
         prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
         prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-3 prose-h2:pb-3 prose-h2:border-b prose-h2:border-gray-100 dark:prose-h2:border-white/[0.06]
         prose-h3:text-xl prose-h3:mt-6
@@ -116,7 +116,7 @@ const getPath = (path: string) => {
     </div>
 
     <!-- Prev/Next Navigation -->
-    <nav class="mt-16 pt-8 border-t border-gray-200 dark:border-white/[0.06] grid grid-cols-2 gap-4">
+    <nav class="guide-pagination mt-16 pt-8 border-t border-gray-200 dark:border-white/[0.06] grid grid-cols-2 gap-4">
       {prevGuide ? (
         <a
           href={getPath(`${urlPrefix}/${prevGuide.id}`)}

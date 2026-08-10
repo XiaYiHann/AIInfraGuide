@@ -24,18 +24,18 @@ const gradient = gradientMap[slug] || gradientMap['learning-path'];
 
 <a
   href={href}
-  class="group relative block p-6 rounded-2xl cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-gray-300 dark:hover:border-white/[0.12] hover:shadow-xl hover:-translate-y-1"
+  class="category-card group relative block p-6 rounded-2xl cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-gray-300 dark:hover:border-white/[0.12] hover:shadow-xl hover:-translate-y-1"
   style={`--card-from: ${gradient.from}; --card-to: ${gradient.to}; --card-glow: ${gradient.glow};`}
 >
   <!-- Gradient glow on hover -->
-  <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={`background: radial-gradient(ellipse at 50% 0%, ${gradient.glow}, transparent 70%);`}></div>
+  <div class="category-card__glow absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={`background: radial-gradient(ellipse at 50% 0%, ${gradient.glow}, transparent 70%);`}></div>
 
   <!-- Top accent line -->
-  <div class="absolute top-0 left-6 right-6 h-[2px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={`background: linear-gradient(90deg, ${gradient.from}, ${gradient.to});`}></div>
+  <div class="category-card__accent absolute top-0 left-6 right-6 h-[2px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={`background: linear-gradient(90deg, ${gradient.from}, ${gradient.to});`}></div>
 
   <div class="relative z-10">
     <!-- Icon with gradient background -->
-    <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110" style={`background: linear-gradient(135deg, ${gradient.from}20, ${gradient.to}20);`}>
+    <div class="category-card__icon w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110" style={`background: linear-gradient(135deg, ${gradient.from}20, ${gradient.to}20);`}>
       <svg class="w-5 h-5" style={`color: ${gradient.from};`} fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
         {slug === 'learning-path' && (
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
@@ -59,8 +59,8 @@ const gradient = gradientMap[slug] || gradientMap['learning-path'];
     </div>
 
     <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1.5 transition-colors duration-200 group-hover:text-transparent group-hover:bg-clip-text" style={`--tw-gradient-from: ${gradient.from}; --tw-gradient-to: ${gradient.to};`}>
-      <span class="group-hover:hidden">{title}</span>
-      <span class="hidden group-hover:inline bg-gradient-to-r bg-clip-text text-transparent" style={`background-image: linear-gradient(to right, ${gradient.from}, ${gradient.to});`}>{title}</span>
+      <span class="category-card__title-default group-hover:hidden">{title}</span>
+      <span class="category-card__title-gradient hidden group-hover:inline bg-gradient-to-r bg-clip-text text-transparent" style={`background-image: linear-gradient(to right, ${gradient.from}, ${gradient.to});`}>{title}</span>
     </h3>
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2 leading-relaxed">
       {description}

@@ -8,6 +8,7 @@ import '../styles/global.css';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Search from '../components/Search.astro';
 import CopyButton from '../components/CopyButton.astro';
+import SiteThemePreview from '../components/SiteThemePreview.astro';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -39,9 +40,9 @@ const getFirstGuideUrl = (category: string, urlPrefix: string) => {
 const navModules = [
   { label: '前置知识', prefix: '/prerequisites', url: getPath('/prerequisites') },
   { label: 'CUDA编程', prefix: '/cuda', url: getPath('/cuda') },
-  { label: '推理优化 🔥', prefix: '/inference', url: getPath('/inference') },
+  { label: '推理优化', classicEmoji: '🔥', badge: '热', prefix: '/inference', url: getPath('/inference') },
   { label: '分布式训练', prefix: '/distributed', url: getPath('/distributed') },
-  { label: 'Paper 精读 📖', prefix: '/papers', url: getPath('/papers') },
+  { label: 'Paper 精读', classicEmoji: '📖', prefix: '/papers', url: getPath('/papers') },
 ];
 
 // 导航栏高亮：根据当前路径判断激活项
@@ -97,6 +98,18 @@ const mobileNavLinkClass = (prefix: string) =>
     <meta name="theme-color" content="#007aff" />
 
     <script is:inline>
+      const requestedSiteTheme = new URLSearchParams(window.location.search).get('theme');
+      if (requestedSiteTheme === 'editorial' || requestedSiteTheme === 'classic') {
+        localStorage.setItem('site-theme', requestedSiteTheme);
+      }
+      document.documentElement.dataset.siteTheme = localStorage.getItem('site-theme') === 'editorial'
+        ? 'editorial'
+        : 'classic';
+      document.querySelector('meta[name="theme-color"]')?.setAttribute(
+        'content',
+        document.documentElement.dataset.siteTheme === 'editorial' ? '#2f6f67' : '#007aff'
+      );
+
       if (
         localStorage.getItem('color-theme') === 'dark' ||
         (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -119,8 +132,8 @@ const mobileNavLinkClass = (prefix: string) =>
       <div class="w-full">
         <nav class="relative flex items-center justify-between h-16 max-w-7xl mx-auto px-6 transition-all duration-300">
           <!-- Logo -->
-          <a href={getPath('/')} class="text-xl font-bold cursor-pointer">
-            <span class="bg-gradient-to-r from-[#007aff] to-[#5ac8fa] bg-clip-text text-transparent">
+          <a href={getPath('/')} class="site-logo text-xl font-bold cursor-pointer" aria-label="AIInfraGuide 首页">
+            <span class="site-logo__mark bg-gradient-to-r from-[#007aff] to-[#5ac8fa] bg-clip-text text-transparent">
               AIInfraGuide
             </span>
           </a>
@@ -134,6 +147,8 @@ const mobileNavLinkClass = (prefix: string) =>
                   <a href={mod.url} class={navLinkClass(mod.prefix)}>
                     <span class="relative px-3 py-1.5 rounded-lg group-hover:bg-gray-100/70 dark:group-hover:bg-white/[0.06] transition-colors duration-200">
                       {mod.label}
+                      {mod.classicEmoji && <span class="classic-nav-emoji ml-1">{mod.classicEmoji}</span>}
+                      {mod.badge && <span class="nav-module-badge ml-1 text-[10px] text-[#2f6f67]">{mod.badge}</span>}
                     </span>
                     <span class={navLinkIndicator(mod.prefix)} />
                   </a>
@@ -167,6 +182,7 @@ const mobileNavLinkClass = (prefix: string) =>
 
           <!-- Right actions -->
           <div class="flex items-center gap-0.5">
+            <SiteThemePreview />
             <!-- GitHub -->
             <a
               href="https://github.com/caomaolufei/AIInfraGuide"
@@ -234,7 +250,11 @@ const mobileNavLinkClass = (prefix: string) =>
             <p class="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-4 mb-2">知识库</p>
             <nav class="flex flex-col gap-0.5">
               {navModules.map((mod) => (
-                <a href={mod.url} class={mobileNavLinkClass(mod.prefix)}>{mod.label}</a>
+                <a href={mod.url} class={mobileNavLinkClass(mod.prefix)}>
+                  {mod.label}
+                  {mod.classicEmoji && <span class="classic-nav-emoji">{mod.classicEmoji}</span>}
+                  {mod.badge && <span class="nav-module-badge text-[10px] text-[#2f6f67]">{mod.badge}</span>}
+                </a>
               ))}
             </nav>
           </div>
@@ -258,7 +278,7 @@ const mobileNavLinkClass = (prefix: string) =>
     </header>
 
     <!-- Reading Progress Bar -->
-    <div id="reading-progress" class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-[#007aff] via-[#5856D6] to-[#AF52DE] z-[60] transition-all duration-150 pointer-events-none" style="width: 0%"></div>
+    <div id="reading-progress" class="reading-progress fixed top-0 left-0 h-[2px] bg-gradient-to-r from-[#007aff] via-[#5856D6] to-[#AF52DE] z-[60] transition-all duration-150 pointer-events-none" style="width: 0%"></div>
 
     <main id="main-content" class="flex-1 pt-16">
       <slot />

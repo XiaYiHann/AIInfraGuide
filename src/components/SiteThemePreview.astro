@@ -1,0 +1,42 @@
+---
+---
+
+<button
+  id="site-theme-preview"
+  class="site-theme-preview hidden md:inline-flex items-center gap-2 h-8 px-3 border border-gray-200 dark:border-white/[0.10] rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+  type="button"
+  aria-label="切换站点视觉主题"
+  aria-pressed="false"
+  title="在 Editorial 与 Classic 主题之间切换"
+>
+  <span class="site-theme-preview__swatch" aria-hidden="true"></span>
+  <span id="site-theme-preview-label">Editorial</span>
+</button>
+
+<script>
+  const previewButton = document.getElementById('site-theme-preview');
+  const previewLabel = document.getElementById('site-theme-preview-label');
+
+  function currentSiteTheme() {
+    return document.documentElement.dataset.siteTheme === 'editorial' ? 'editorial' : 'classic';
+  }
+
+  function syncPreviewButton() {
+    const editorialActive = currentSiteTheme() === 'editorial';
+    previewButton?.setAttribute('aria-pressed', String(editorialActive));
+    if (previewLabel) previewLabel.textContent = editorialActive ? 'Classic' : 'Editorial';
+    document.querySelector('meta[name="theme-color"]')?.setAttribute(
+      'content',
+      editorialActive ? '#2f6f67' : '#007aff'
+    );
+  }
+
+  previewButton?.addEventListener('click', () => {
+    const nextTheme = currentSiteTheme() === 'editorial' ? 'classic' : 'editorial';
+    document.documentElement.dataset.siteTheme = nextTheme;
+    localStorage.setItem('site-theme', nextTheme);
+    syncPreviewButton();
+  });
+
+  syncPreviewButton();
+</script>
