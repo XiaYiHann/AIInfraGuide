@@ -15,7 +15,7 @@ AI Infra（人工智能基础设施）是大模型时代壁垒最高、最核心
 
 ## 📑 目录
 
-- [全景概览：三层架构](#️-全景概览三层架构)
+- [全景概览：四个学习模块](#️-全景概览四个学习模块)
 - [第零层：前置知识](#-第零层前置知识)
 - [第一层：CUDA编程与算子优化](#-第一层cuda编程与算子优化)
 - [第二层：分布式训练](#️-第二层分布式训练)
@@ -25,18 +25,20 @@ AI Infra（人工智能基础设施）是大模型时代壁垒最高、最核心
 
 ---
 
-## 🗺️ 全景概览：三层架构
+## 🗺️ 全景概览：四个学习模块
 
-AI Infra 的本质是 **"用系统工程释放硬件算力"** 。我们可以将其自底向上分为三个核心层级，加上一个前置知识层：
+AI Infra 的本质是 **"用系统工程释放硬件算力"**。本站把学习内容组织为四个有依赖关系的模块，而不是彼此孤立的文章列表：
 
-| 层级 | 名称 | 核心关注点 |
-|------|------|-----------|
-| 第零层 | 前置知识 | 编程语言、数学基础、Transformer 架构、PyTorch、通信拓扑 |
-| 第一层 | CUDA编程与算子优化 | GPU架构、存储层次、Kernel编写、FlashAttention、AI编译器 |
-| 第二层 | 分布式训练 | 数据并行、3D并行、ZeRO、混合精度 |
-| 第三层 | 推理与部署 | KV Cache、PagedAttention、量化、Speculative Decoding |
+| 模块 | 名称 | 核心关注点 | 进入下一模块前的最小产物 |
+|------|------|-----------|--------------------------|
+| 模块一 | 前置知识 | 编程语言、数学、Transformer、PyTorch、GPU 与通信 | 可恢复、可分析的 MiniGPT 训练系统 |
+| 模块二 | CUDA 编程与算子优化 | GPU 架构、Kernel、经典算子、编译器、性能分析 | 有正确性和性能证据的算子实现 |
+| 模块三 | 分布式训练 | collective、DDP/FSDP、ZeRO、TP/PP/EP/CP | 可解释通信与显存代价的训练方案 |
+| 模块四 | 推理优化 | KV Cache、PagedAttention、量化、调度、部署 | 带 SLO 与 benchmark 口径的服务系统 |
 
-所有的优化都是在 **"计算、通信、显存"** 这个不可能三角中做取舍：ZeRO 是用通信换显存；重计算（Activation Checkpointing）是用计算换显存；量化是用精度换显存和带宽。学习时始终问自己：**这个技术牺牲了什么，换取了什么？**
+学习者不必机械按文件顺序通读；应从目标能力反向选择章节，并满足章首页列出的最小前置。所有优化都在 **"计算、通信、显存"** 之间取舍：ZeRO 用通信换显存，Activation Checkpointing 用计算换显存，量化用精度换显存和带宽。学习时始终追问：**牺牲了什么、换来了什么、证据在哪里？**
+
+课程的栏目/章节/子文章/综合项目判定标准、依赖图与迁移顺序记录在仓库维护文档 `docs/CURRICULUM_DESIGN.md`；该文件不是站点公开课程页面。
 
 ---
 
@@ -68,12 +70,27 @@ AI Infra 不是从零开始学的领域——它建立在编程能力、数学�
 - **LayerNorm**：Pre-Norm vs Post-Norm 的区别，为什么大模型普遍用 Pre-Norm
 - **完整前向过程**：能从 token embedding 开始，逐步跟踪数据在一个 Transformer Block 中的流转（Attention → Add & Norm → FFN → Add & Norm），说清每一步的输入输出维度
 
-**PyTorch 框架**
+**PyTorch 框架（第 4 章样板课程）**
 
-- **核心概念**：Tensor 操作、自动微分（autograd）、Module / Parameter 的组织方式
-- **训练循环**：DataLoader → forward → loss → backward → optimizer.step 的标准流程
-- **模型保存与加载**：state_dict、checkpoint 的使用
-- **基本调试**：用 `torch.cuda.memory_summary()` 查看显存使用、用 `torch.profiler` 做简单性能分析
+第 4 章不再停在单篇 API 速览，而是从 Tensor 语义递进到可复现训练系统：
+
+| 节 | 学习单元 | 可验收产物 |
+|---|---|---|
+| [4.0](/AIInfraGuide/prerequisites/模块一-前置知识/pyroch/pytorch框架入门/) | 快速入门与全景预览 | 跑通 Tensor → Module → 训练循环 |
+| [4.1](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/41-tensor存储与视图语义/) | Tensor 存储与视图语义 | 判断共享 storage、stride 与 contiguous |
+| [4.2](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/42-autograd自动微分/) | Autograd | 自定义反向通过 `gradcheck` |
+| [4.3](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/43-module与状态管理/) | Module 与状态 | 验证 `state_dict` 精确往返 |
+| [4.4](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/44-dataloader数据流水线/) | DataLoader 数据流水线 | 对照 worker/pin/prefetch 配置 |
+| [4.5](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/45-训练循环工程/) | 训练循环工程 | 保存并恢复完整 checkpoint |
+| [4.6](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/46-cuda异步执行/) | CUDA 异步执行 | 用 Stream/Event 验证完成边界 |
+| [4.7](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/47-显存管理/) | 显存管理 | 输出五类显存账本和 allocator 证据 |
+| [4.8](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/48-benchmark与profiler/) | Benchmark 与 Profiler | 保存重复测量分布与 trace |
+| [4.9](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/49-自定义算子与dispatcher/) | 自定义算子与 Dispatcher | 注册并验证 CPU/Fake/Autograd 契约 |
+| [4.10](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/410-执行与编译链路/) | 执行与编译链路 | 解释 Dynamo/guard/Graph Break |
+| [4.11](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/411-分布式pytorch导论/) | 分布式 PyTorch 导论 | 跑通两进程 CPU/Gloo DDP smoke |
+| [4.12](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/412-minigpt综合项目/) | MiniGPT 综合项目 | 串联数据、AMP、Checkpoint、Profiler、账本与 DDP |
+
+深入 CUDA/编译器和 DDP/FSDP/ZeRO 分别进入模块二、模块三；第 4 章只建立入口心智模型，不复制后续专项课程。
 
 **通信拓扑**
 
@@ -189,7 +206,7 @@ AI Infra 不是从零开始学的领域——它建立在编程能力、数学�
 
 - **Reduce 三连**：从最朴素的全局内存原子加开始，写一个 Reduce Sum kernel；然后用共享内存 + 树形归约消除原子操作；最后用 Warp Shuffle 干掉共享内存，三个版本跑 Nsight Compute 对比 throughput，能说清每一步优化到底省在哪里
 - **Bank Conflict 直觉**：手动构造一个 32x32 矩阵转置 kernel，先写一个有 32-way bank conflict 的版本，再加一列 padding 消除冲突，用 Nsight Compute 的 Shared Memory 面板验证 conflict 数从几十降到 0
-- **GEMM 分块**：实现一个基于 Shared Memory Tiling 的 GEMM kernel，在 1024x1024 矩阵上与 cuBLAS 对比，达到其 50% 以上的性能即为合格——这个过程中你会真正理解"为什么访存模式决定一切"
+- **GEMM 分块**：实现一个基于 Shared Memory Tiling 的 GEMM kernel，在固定 shape、dtype、硬件和计时边界下与 cuBLAS 对比，报告正确性、时间分布和相对比例；课程不预设跨硬件通用的合格百分比
 - **FlashAttention 白板推导**：不看论文，能在白板上画出 FlashAttention 的 tiling 过程——外层循环遍历 KV 的 block，内层循环遍历 Q 的 block，每个 tile 在 SRAM 中完成 QK^T → scale → mask → softmax → PV，用 online softmax 避免两次遍历，关键是说清楚为什么 HBM 读写从 O(N^2) 降到了 O(N)
 - **Triton 上手**：用 Triton 实现一个 fused Softmax kernel（参考官方教程），与 PyTorch 原生实现对比正确性和性能，体会 Triton 的 block-level 编程模型与 CUDA 的 thread-level 编程模型有何不同
 - **Profiling 实战**：用 Nsight Systems 抓一次训练 iteration 的 trace，能指出 GPU idle gap 是来自 CPU 数据预处理、通信等待、还是 kernel launch overhead；用 Nsight Compute 打开一个 kernel 报告，能读懂 SOL（Speed of Light）面板判断该 kernel 是 memory bound 还是 compute bound
@@ -216,7 +233,7 @@ AI Infra 不是从零开始学的领域——它建立在编程能力、数学�
 - **SGD**：最朴素的优化器，每个参数只需存一份梯度，无额外状态。好比沿着当前最陡的方向迈一步，简单直接但容易在山谷里来回震荡
 - **Momentum SGD**：在 SGD 基础上引入动量（一阶动量），每个参数多存一个动量缓冲区。好比给下山的球加了惯性，不容易被小坑绊住
 - **Adam / AdamW**：大模型训练的事实标准。每个参数维护**两个状态**——一阶动量（梯度的指数移动平均）和二阶动量（梯度平方的指数移动平均），相当于同时记住"往哪走"和"路有多颠"。AdamW 修正了 Adam 的权重衰减实现，是目前最主流的选择
-- **优化器状态的显存开销**：这是理解 ZeRO 的关键。以 AdamW + 混合精度训练为例，每个参数需要额外存储：FP32 参数副本（4B）+ FP32 一阶动量（4B）+ FP32 二阶动量（4B）= 12 字节/参数。一个 7B 模型的优化器状态就要占 ~84GB，远超 FP16 参数本身的 ~14GB——这就是为什么 ZeRO 首先拿优化器状态开刀
+- **优化器相关训练状态的显存开销**：这是理解 ZeRO 的关键。常见混合精度账本会额外保留 FP32 主权重（4B/参数）和 Adam 的一阶、二阶动量（各 4B/参数），合计 12B/参数。按十进制单位，7B 参数对应主权重约 28GB、两份动量约 56GB，三者合计约 84GB；若把“optimizer state”严格限定为两份动量，则应写 56GB。具体实现与 dtype 会改变账本，必须先声明口径。
 - **大 Batch 优化器（LAMB / LARS）**：分布式训练中，数据并行会线性放大有效 Batch Size。当 Batch Size 从几百增长到几万时，普通 Adam 的学习率难以调节，训练容易发散。LAMB（Layer-wise Adaptive Moments）通过对每层参数独立计算信赖域缩放，让大 Batch 训练保持稳定收敛
 
 **数据并行**
@@ -264,7 +281,7 @@ AI Infra 不是从零开始学的领域——它建立在编程能力、数学�
 
 这一层的检验核心是**算得清账、跑得通代码**：
 
-- **显存账本**：拿到一个 7B 参数的模型（如 LLaMA-2-7B），不查资料能口算出 FP16 下参数占 ~14GB、Adam 优化器状态占 ~56GB（FP32 参数副本 + 一阶/二阶动量各 14GB），进而判断单卡 80GB 能否放下完整训练状态、是否必须上 ZeRO
+- **显存账本**：拿到一个 7B 参数的模型，能先声明十进制/二进制单位与实现假设，再口算 FP16/BF16 参数约 14GB、FP32 主权重约 28GB、Adam 两份 FP32 动量约 56GB；仅这四项已约 98GB，尚未计入梯度、激活和临时 buffer，据此判断单卡能否容纳及是否需要分片
 - **ZeRO 拆解**：有人问你"ZeRO-2 和 ZeRO-3 到底差在哪"，你能一句话讲清：ZeRO-2 只在 backward 时按需 AllReduce 梯度，参数每卡各存一份；ZeRO-3 连参数也切了，forward/backward 都要 AllGather 拿参数、用完即弃，通信量约翻倍但每卡显存降到 1/N
 - **DDP 改造**：拿到一个单卡 PyTorch 训练脚本，30 分钟内改成 DDP 多卡版本并跑通——包括 `init_process_group`、`DistributedSampler`、模型 wrap、梯度同步，不需要查太多文档就能搞定
 - **3D 并行拓扑**：给一个 64 卡集群（8 节点 x 8 卡），能设计出 TP=8（机内）、PP=4（跨机）、DP=2 的并行方案，画出拓扑图标注哪些通信走 NVLink、哪些走 IB，并解释为什么 TP 不能跨机（带宽不够）
@@ -336,7 +353,7 @@ AI Infra 不是从零开始学的领域——它建立在编程能力、数学�
 推理引擎是工程落地的核心，检验标准偏重"会用、会选、会排查"：
 
 - **端到端部署**：拿到一个 7B 模型，分别用 vLLM 和 SGLang 部署成 OpenAI 兼容 API，用相同的压测脚本（固定并发、输入输出长度）跑出 TTFT、TPOT、throughput 三个指标的对比表
-- **Continuous Batching 原理**：能向非技术同事解释清楚——传统 Static Batching 必须等一批请求全部生成完才能接新请求，短请求被长请求拖累；Continuous Batching 允许已完成的请求随时退出、新请求随时插入，GPU 利用率可以从 30% 拉到 80%+
+- **Continuous Batching 原理**：能向非技术同事解释清楚——传统 Static Batching 必须等一批请求全部生成完才能接新请求，短请求会被长请求拖累；Continuous Batching 允许已完成请求退出、新请求插入。是否提升 GPU 利用率以及提升多少，必须在固定请求分布、并发、输入输出长度和硬件后实测
 - **KV Cache 管理全链路**：从 KV Cache 的分配、使用、碎片化，到 PagedAttention 的虚拟页/物理页映射，再到 Prefix Cache 如何通过 hash 匹配复用已有的 KV 块，能画出完整的数据流
 - **选型决策**：老板问"我们该用哪个推理框架"，你能给出结构化的回答——追求吞吐和社区生态选 vLLM；多轮对话 / Agent / 结构化输出选 SGLang（RadixAttention + cFSM）；追求极限延迟且愿意投入适配工作选 TensorRT-LLM
 
@@ -404,7 +421,7 @@ Speculative Decoding 的精髓在于"用空间换时间、用并行换串行"，
 
 - **正确性保证**：面试官问"Speculative Decoding 会不会改变模型的输出分布"，你能回答：不会，因为 rejection sampling 机制保证了接受的 token 严格服从 target model 的分布——Draft model 猜对了直接用，猜错了按照 target 与 draft 的概率差做修正采样，数学上等价于直接从 target model 采样
 - **收益实测**：用 vLLM 的 speculative decoding 功能，分别在代码生成（高接受率场景）和开放对话（低接受率场景）上跑 benchmark，能解释为什么前者加速明显（代码 token 可预测性强，Draft 猜中率高）而后者收益有限甚至为负
-- **不赚的边界**：能列出至少 3 种 speculative decoding 效果不佳的情况——高温度采样时 Draft 命中率骤降、batch size 已经很大时额外的 Draft forward pass 抢占计算资源、Draft model 与 Target model 能力差距过大导致 acceptance rate < 50%
+- **不赚的边界**：能列出至少 3 种 speculative decoding 效果不佳的情况——高温度采样时 Draft 命中率下降、batch 已很大时额外的 Draft forward 抢占计算资源、Draft 与 Target 能力差距过大导致 acceptance rate 低；具体阈值必须由目标工作负载实测
 - **工程耦合风险**：能指出 speculative decoding 与其他优化技术的冲突点——比如与量化叠加时 Draft model 的精度下降可能进一步降低接受率；与 Continuous Batching 叠加时不同请求的 speculative 长度不同，调度复杂度上升
 
 ### 3.5 系统架构：Prefill/Decode 解耦
@@ -431,10 +448,10 @@ Speculative Decoding 的精髓在于"用空间换时间、用并行换串行"，
 
 Prefill/Decode 解耦是系统架构层面的优化，检验重点在于理解"为什么要拆"以及"拆了之后新的问题是什么"：
 
-- **互扰定量分析**：在一个混合 batching 的推理服务上，构造一个场景——几个超长 prompt 的 prefill 请求和大量短 decode 请求同时到达，用指标证明 decode 的 P95 TPOT 被 prefill 拖慢了 3-5 倍，这就是解耦的动机
+- **互扰定量分析**：在一个混合 batching 的推理服务上，构造“少量长 prompt prefill + 大量短 decode”的固定场景，记录基线与混合负载下的 P50/P95 TPOT、TTFT 和吞吐分布；只要求能量化差异并解释来源，不预设必须变慢多少
 - **Goodput 概念**：老板问"我们系统 QPS 很高啊为什么用户还在抱怨慢"，你能解释 goodput 的含义——满足 SLO（比如 TTFT < 500ms 且 TPOT < 50ms）的有效请求占比才是真正的服务质量指标，raw QPS 不等于用户体验
 - **资源配比推导**：给定一个工作负载特征（平均 prompt 长度 2000 token、平均输出 500 token），能估算 prefill 和 decode 的计算量比例，进而推导出 Prefill GPU 池和 Decode GPU 池的合理配比（比如 1:3 或 1:4）
-- **风险清单**：能列出解耦架构引入的新问题——KV Cache 从 Prefill 节点迁移到 Decode 节点的网络带宽压力（一个 7B 模型 2048 长度的 KV 约 4GB，IB 200Gb/s 也需要 ~160ms）、调度器的队列管理复杂度、Prefill/Decode 负载不均时某一池空转浪费资源
+- **风险清单**：能列出解耦架构引入的新问题——KV Cache 迁移的网络带宽压力、调度器队列复杂度、Prefill/Decode 负载不均导致的资源空转；并能根据层数、KV head 数、head dimension、序列长度、batch、dtype 写出 KV 字节公式，再结合链路有效带宽估算传输下界，而不是套用固定 GB 或毫秒数字
 
 ### 3.6 性能分析与 Benchmark
 
@@ -504,7 +521,7 @@ Decode 阶段每步只生成一个 token，矩阵退化成向量运算，是典�
 |--------|---------|---------|
 | KV Cache 搬运成为带宽瓶颈 | Nsight Compute 查看 Attention kernel 的 memory throughput 是否接近 HBM 带宽上限 | 使用 FlashAttention / FlashInfer 减少无效显存访问；优化 KV Cache 布局 |
 | 逐 token 串行生成的本质限制 | 单请求 TPOT 已逼近理论下限，但用户仍嫌慢 | Speculative Decoding（Medusa / EAGLE-2），用"猜测+验证"打破串行瓶颈 |
-| 并发不足，GPU 算力没喂饱 | GPU 利用率低于 60%，每个 batch 只有少量请求 | 开启 Continuous Batching + 提高并发请求数，把 batch 做大以提升计算密度 |
+| 并发不足，GPU 算力没喂饱 | 相对目标硬件基线利用率偏低，每个 batch 只有少量请求 | 开启 Continuous Batching，并在 SLO 约束内逐步提高并发，观察吞吐与尾延迟的共同变化 |
 
 **[C] 显存不够——OOM 或并发上不去**
 
@@ -521,7 +538,7 @@ Decode 阶段每步只生成一个 token，矩阵退化成向量运算，是典�
 
 | 子症状 | 诊断方法 | 推荐方案 |
 |--------|---------|---------|
-| Prefill 和 Decode 请求互相干扰 | 在混合负载下对比纯 Decode 和混合场景的 TPOT P95，差距超过 2 倍即确认互扰 | Prefill/Decode 解耦部署（DistServe / Splitwise），让两类请求各用独立 GPU 池 |
+| Prefill 和 Decode 请求互相干扰 | 在固定请求分布下对比纯 Decode 与混合负载的 TPOT P95，结合 trace 确认等待来自 Prefill | 评估 Prefill/Decode 解耦（DistServe / Splitwise），同时核算 KV 迁移与池化成本 |
 | SLO 要求极严格，需要全局最优调度 | 单纯解耦后仍有部分请求超时，或不同请求有差异化 SLO 需求 | TaiChi 类统一调度框架，根据 SLO 优先级动态分配 Prefill/Decode 资源 |
 
 **实际使用建议**

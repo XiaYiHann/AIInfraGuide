@@ -57,7 +57,7 @@ AIInfraGuide 正是为了解决这些问题而创建的——一个**开源、�
 | **性能分析** | Nsight Systems/Compute、Roofline 模型、Profiling 实战 |
 | **面试宝典** | 目前共收录 180+ 场面试真题，覆盖 60+ 家公司，按梯队分类组织，助你高效备战拿下心仪 Offer |
 
-每篇文章都遵循「先白话后术语」的写作原则——先用通俗的语言解释"是什么、为什么需要"，再给出严谨的技术细节，确保读者既看得懂也学得对。
+课程采用「学习路线 → 栏目 → 章节 → 子文章 → 综合项目」五级结构。每篇文章遵循「先白话后术语、先正确性后性能」：先建立直觉，再解释机制与取舍，最后用可运行代码、错误路径和“能 + 动词”的验收项证明掌握。课程设计标准与迁移顺序见 [`docs/CURRICULUM_DESIGN.md`](docs/CURRICULUM_DESIGN.md)。
 
 <br>
 
@@ -78,7 +78,7 @@ AIInfraGuide 正是为了解决这些问题而创建的——一个**开源、�
 | 第 1 章 编程语言基础 | Python 进阶、C/C++ 核心、Linux 与开发环境 |
 | 第 2 章 数学基础 | 线性代数、概率论与统计、微积分 |
 | 第 3 章 Transformer 架构详解 | Self-Attention、前馈网络、位置编码、归一化层、模型架构变种 |
-| 第 4 章 PyTorch 框架 | Tensor 与自动微分、Module 与训练流程、调试与性能分析 |
+| 第 4 章 PyTorch 框架 | 4.0～4.12 系统课程：Tensor/Autograd/Module、数据与训练、CUDA/显存/Profiler、自定义算子/编译/分布式、MiniGPT 综合项目 |
 | 第 5 章 GPU 硬件概论 | GPU 架构总览、存储层次、主流 GPU 规格对比、互联拓扑 |
 | 第 6 章 集合通信基础 | 通信原语、通信算法、NCCL |
 
@@ -96,7 +96,12 @@ AIInfraGuide 正是为了解决这些问题而创建的——一个**开源、�
 | 3.7 | [Transformer Decoder Block完整解析](https://caomaolufei.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/37-transformer-decoder-block完整解析) | 大语言模型的核心计算单元是 Transformer Decoder Block |
 | 3.8 | [从Transformer到LLM自回归生成深入理解](https://caomaolufei.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/38-从transformer到llm自回归生成深入理解/) | 从宏观视角理解 Transformer 到 LLM 自回归生成的计算流程 |
 | 3.9 | [Tokenization与词嵌入](https://caomaolufei.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/39-tokenization与词嵌入/) | 一段文字变成模型输入之前，需要先经过两道关键变换：Tokenization（分词） 和 Embedding（词嵌入） |
-| 第4章 | [🔥 PyTorch框架入门](https://caomaolufei.github.io/AIInfraGuide/prerequisites/模块一-前置知识/pyroch/pytorch框架入门/) | PyTorch 是当前大模型训练和推理的事实标准框架 |
+| 第4章 | [🔥 PyTorch 框架系统课程](https://XiaYiHann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/第4章-pytorch框架/) | 从 4.0 全景预览递进到 4.12 MiniGPT 综合项目，配套可运行示例与最小测试 |
+| 4.0 | [PyTorch 框架快速入门](https://XiaYiHann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/pyroch/pytorch框架入门/) | 保留原公开 URL，承担全景预览 |
+| 4.1～4.5 | [Tensor 存储与视图语义](https://XiaYiHann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/41-tensor存储与视图语义/) | 依次学习 Autograd、Module 状态、DataLoader 与可恢复训练循环 |
+| 4.6～4.8 | [CUDA 异步执行](https://XiaYiHann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/46-cuda异步执行/) | 建立异步、显存账本、Benchmark 与 Profiler 证据链 |
+| 4.9～4.11 | [自定义算子与 Dispatcher](https://XiaYiHann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/49-自定义算子与dispatcher/) | 串联扩展、执行/编译链路与分布式入口 |
+| 4.12 | [MiniGPT 综合项目](https://XiaYiHann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/412-minigpt综合项目/) | 串联数据、训练、AMP、Checkpoint、Profiler、显存账本与两进程 DDP |
 | 第5章 | [🔥 GPU基础知识：从硬件架构到AI计算](https://caomaolufei.github.io/AIInfraGuide/prerequisites/模块一-前置知识/gpu/gpu-basics/) | CPU vs GPU、SM 架构、显存层级、Tensor Core |
 | 5.1 | [NVIDIA GPU 架构演进：从 Volta 到 Blackwell](https://caomaolufei.github.io/AIInfraGuide/prerequisites/模块一-前置知识/gpu/nvidia-gpu-evolution/) | V100 → A100 → H100 → B200 架构演进 |
 | 第6章 | [🔥 集群通信网络与NCCL：分布式训练的通信骨架](https://caomaolufei.github.io/AIInfraGuide/prerequisites/模块一-前置知识/communication/collective-communication-primer/) | 从通信原语到 Ring AllReduce 算法，再到 NCCL 实战，快速建立分布式训练集群通信的完整认知体系 |

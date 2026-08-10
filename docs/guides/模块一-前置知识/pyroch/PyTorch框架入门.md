@@ -1,16 +1,27 @@
 ---
-title: "🔥 PyTorch框架快速入门篇"
-description: "PyTorch 是当前大模型训练和推理的事实标准框架"
+title: "4.0 PyTorch 框架快速入门"
+description: "用一个训练闭环预览 Tensor、Autograd、Module、DataLoader、GPU 与 Profiler，为 4.1 至 4.12 的机制课程建立全景地图"
 pubDate: 2026-04-25
+updatedDate: 2026-08-10
 category: "prerequisites"
 order: 400
 chapter: 4
-tags: ["PyTorch", "Tensor", "autograd", "计算图", "GPU"]
+tags: ["PyTorch", "Tensor", "Autograd", "训练循环", "Profiler"]
 ---
 
-PyTorch 是当前大模型训练和推理的事实标准框架。本文聚焦于 AI Infra 工程师需要掌握的核心能力——从 Tensor 操作到完整训练循环，再到用 profiler 定位性能瓶颈，为后续的 CUDA 编程、分布式训练和推理优化打下基础。
+PyTorch 快速入门只做一件事：让你在一篇文章里看见 `Tensor → forward → loss → backward → step → checkpoint → profile` 的完整闭环。它是第 4 章的**全景预览**，不是每个子系统的最终解释；当你遇到“转置为什么不搬数据”“反向图保存了什么”“GPU 计时为什么偏小”时，4.1～4.12 会逐层拆开。
 
 <!-- more -->
+
+## 本节定位
+
+**前置知识**：会写基础 Python，理解矩阵乘法与链式法则；不了解 Transformer 也能运行本文代码。
+
+**学习成果**：读完后能独立写出一个最小训练循环，保存和恢复 checkpoint，用 Profiler 找到最耗时算子，并知道每个问题应去第 4 章哪一节继续学习。
+
+**边界**：本文只展示常用 API 和训练全景，不展开 storage/stride、Autograd 版本计数、CUDA stream、caching allocator、Dispatcher、编译器和 DDP 内部机制。
+
+完整课程与依赖顺序见[第 4 章章首页](/AIInfraGuide/prerequisites/模块一-前置知识/第4章-pytorch框架/)。
 
 ## 📑 目录
 
@@ -20,9 +31,10 @@ PyTorch 是当前大模型训练和推理的事实标准框架。本文聚焦于
 - [4. 完整训练循环](#4-完整训练循环)
 - [5. GPU 训练基础](#5-gpu-训练基础)
 - [6. 性能分析入门](#6-性能分析入门)
-- [总结](#总结)
-- [自我检验清单](#自我检验清单)
-- [参考资料](#参考资料)
+- [7. 常见错误与诊断](#7-常见错误与诊断)
+- [总结](#-总结)
+- [自我检验清单](#-自我检验清单)
+- [参考资料](#-参考资料)
 
 ---
 
@@ -52,14 +64,14 @@ t = torch.from_numpy(np.array([1.0, 2.0]))   # 从 NumPy 转换（共享内存�
 
 ### 1.2 形状操作：view, reshape, permute, squeeze, unsqueeze
 
-把 Tensor 想象成一块可以任意捏形的橡皮泥——数据不变，只是换个排列方式。
+把 Tensor 想象成一份数据和一张“怎么看这些数据”的目录：形状操作保持逻辑元素，但不保证底层布局不变。`view` 只改目录且要求布局兼容；`reshape` 必要时会复制数据，具体机制见 4.1。
 
 ```python
 import torch
 
 x = torch.arange(12)             # 一维，12 个元素
 a = x.view(3, 4)                 # 变成 3x4（要求内存连续）
-b = x.reshape(3, 4)              # 和 view 类似，但内存不连续时也能用
+b = x.reshape(3, 4)              # 得到目标形状；必要时会复制底层数据
 c = x.view(-1, 4)                # -1 自动推断为 3
 
 # permute：交换维度，Transformer 中常用
@@ -126,7 +138,7 @@ x_bf16 = x.to(torch.bfloat16)             # 转 bf16
 
 > **比喻**：想象你在做一道菜。你把食材 A 和 B 混合得到 C，再把 C 加热得到 D（成品）。如果 D 味道不对（loss 太大），你需要反推——是 C 的问题？还是 A、B 的比例不对？计算图就是 PyTorch 帮你记下的"食谱"：它记录每一步操作，这样就能从结果反向推导出每种食材对结果的影响（梯度）。
 
-**正式定义**：计算图（Computational Graph）是一个有向无环图（DAG），节点代表 Tensor，边代表运算操作。PyTorch 在前向传播时动态构建图，反向传播时沿图计算梯度。PyTorch 采用**动态计算图**（Define-by-Run），支持 if/else、for 循环等 Python 控制流。
+**正式定义**：Autograd 在前向时按实际执行的 Tensor 操作构建有向无环图（DAG）。Tensor 承载数值，Autograd `Function` 节点表达操作历史，反向传播沿这些节点应用链式法则。PyTorch 采用**动态计算图**（Define-by-Run），支持 if/else、for 循环等 Python 控制流。
 
 ### 2.2 requires_grad 和 backward()
 
@@ -140,7 +152,7 @@ z.backward()       # 反向传播
 print(x.grad)      # tensor([3., 3.])，dz/dx = 3
 ```
 
-要点：`backward()` 只能对标量调用；叶节点才保存梯度；计算图用完即释放。
+要点：标量输出可以直接调用 `backward()`；非标量输出也能反向，但必须传入同 shape 的 `gradient` 作为 vector-Jacobian product 种子。默认只有叶节点把梯度累积到 `.grad`，计算图通常在反向后释放。
 
 ### 2.3 梯度累积与清零
 
@@ -299,7 +311,7 @@ loader = DataLoader(dataset, batch_size=64, shuffle=True,
                     num_workers=4, pin_memory=True, drop_last=True)
 ```
 
-> **AI Infra 视角**：`num_workers` 过小会导致 GPU 等数据（data loading bottleneck）；`pin_memory=True` 使传输走异步 DMA，避免 CPU 拷贝开销。
+> **AI Infra 视角**：`num_workers` 过小会导致 GPU 等数据（data loading bottleneck）；`pin_memory=True` 提供页锁定内存，满足设备、stream 等条件时可配合 `.to(device, non_blocking=True)` 异步搬运。它不是单独开启异步传输的开关，完整边界见 4.4 与 4.6。
 
 ### 4.2 标准训练流程
 
@@ -460,43 +472,11 @@ torch.cuda.reset_peak_memory_stats()
 print(f"峰值: {torch.cuda.max_memory_allocated() / 1024**3:.2f} GB")
 ```
 
-### 代码示例：混合精度 vs fp32 显存对比
+### 显存对比为什么不能在同一进程里顺手做？
 
-```python
-import torch
-import torch.nn as nn
+先创建 FP32 模型，再在同一进程创建 AMP 模型，会让前一组仍存活的参数、梯度、优化器状态和 allocator cache 污染后一组峰值；`reset_peak_memory_stats()` 只重置统计量，不会释放这些对象。autocast 也只改变部分算子的计算 dtype，不会自动把参数存储整体改成 BF16。
 
-assert torch.cuda.is_available(), "需要 GPU"
-device = torch.device('cuda')
-criterion = nn.CrossEntropyLoss()
-data = torch.randn(256, 1024, device=device)
-labels = torch.randint(0, 10, (256,), device=device)
-
-def make_model():
-    return nn.Sequential(nn.Linear(1024, 2048), nn.ReLU(),
-                         nn.Linear(2048, 1024), nn.ReLU(),
-                         nn.Linear(1024, 10)).to(device)
-
-# fp32 训练
-model_fp32, opt_fp32 = make_model(), None
-opt_fp32 = torch.optim.AdamW(model_fp32.parameters(), lr=1e-3)
-torch.cuda.reset_peak_memory_stats()
-criterion(model_fp32(data), labels).backward()
-opt_fp32.step(); opt_fp32.zero_grad()
-fp32_peak = torch.cuda.max_memory_allocated() / 1024**2
-
-# bf16 混合精度训练
-model_bf16, opt_bf16 = make_model(), None
-opt_bf16 = torch.optim.AdamW(model_bf16.parameters(), lr=1e-3)
-torch.cuda.reset_peak_memory_stats()
-with torch.autocast(device_type='cuda', dtype=torch.bfloat16):
-    loss = criterion(model_bf16(data), labels)
-loss.backward()
-opt_bf16.step(); opt_bf16.zero_grad()
-bf16_peak = torch.cuda.max_memory_allocated() / 1024**2
-
-print(f"FP32: {fp32_peak:.1f} MB | BF16: {bf16_peak:.1f} MB | 节省: {(1-bf16_peak/fp32_peak)*100:.1f}%")
-```
+因此 4.0 只演示如何读取计数，不给“节省百分比”。需要比较两种方案时，应在**独立进程**中使用相同模型、输入、warmup、step 边界和环境，分别记录 allocated/reserved/peak，再报告重复实验分布。具体方法见 [4.7 显存管理](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/47-显存管理/)与 [4.8 Benchmark 与 Profiler](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/48-benchmark与profiler/)。
 
 ---
 
@@ -597,7 +577,21 @@ print(prof.key_averages().table(sort_by="cuda_time_total", row_limit=15))
 prof.export_chrome_trace("trace.json")   # 可在 chrome://tracing 中可视化
 ```
 
-从输出中可以快速判断：backward 是否比 forward 慢（正常约 2 倍），数据搬运是否占过多时间，优化器步骤是否有异常耗时。
+从输出中可以定位 forward、backward、数据搬运和优化器步骤各自的事件区间。它们的耗时比例取决于模型、shape、dtype、设备和算子实现，不存在可脱离工作负载套用的“正常倍数”；结论必须回到 4.8 的固定输入与重复测量口径。
+
+---
+
+## 7. 常见错误与诊断
+
+| 症状 | 先检查什么 | 最小修复 |
+|---|---|---|
+| loss 正常但参数一步比一步跳得大 | `optimizer.zero_grad()` 是否在预期位置 | 明确每步清零，只有需要梯度累积时才延后 |
+| `Expected all tensors to be on the same device` | 模型、输入、标签各自的 `device` | 在数据进入模型前统一迁移，不在层内临时 `.cuda()` |
+| 开了 `pin_memory` 仍没有重叠 | 是否使用 CUDA、`non_blocking=True` 与正确 stream | 先用 4.4/4.6 的最小实验验证条件，不凭一个参数判断异步 |
+| Profiler 只有 CPU 事件 | `activities` 是否包含 CUDA 且环境有 CUDA | CPU 环境只解释 CPU trace；有 CUDA 时再加入 `ProfilerActivity.CUDA` |
+| checkpoint 加载后结果不同 | 是否保存模型之外的优化器、step 与随机状态 | 4.0 先验证同一模型权重往返；4.5 再做完整训练恢复 |
+
+这些是全景诊断入口。storage、Autograd、Module 和数据流水线的失败路径分别在 4.1～4.4 展开。
 
 ---
 
@@ -620,14 +614,18 @@ prof.export_chrome_trace("trace.json")   # 可在 chrome://tracing 中可视化
 
 完成本文学习后，你应该能够：
 
-- 能用 `torch.randn`、`torch.zeros` 等方法创建任意形状的 Tensor，并熟练使用 `view`、`permute`、`squeeze` 等操作变换形状
-- 能解释 `requires_grad=True` 的作用，手动构建计算图并调用 `backward()` 获取梯度
-- 能解释为什么每个训练 step 都需要调用 `optimizer.zero_grad()`，以及梯度累积的原理
-- 能继承 `nn.Module` 实现自定义模型，并使用 `parameters()` 和 `state_dict()` 管理参数
-- 能写出完整的训练循环：DataLoader → forward → loss → backward → optimizer.step → checkpoint
-- 能使用 `torch.autocast` 实现 bf16/fp16 混合精度训练，并解释 `GradScaler` 的作用
-- 能使用 `torch.profiler` 分析训练 step，读懂输出并识别数据加载和 CPU-GPU 传输瓶颈
-- 能解释 fp32、fp16、bf16 三种精度的区别及选择依据
+- 能在 10 分钟内写出一个 `3×4` Tensor，并用 `view`、`permute`、`squeeze` 输出三种指定 shape
+- 能对 `y=(3x).sum()` 写出 `requires_grad=True` 与 `backward()`，验证 `x.grad` 全为 3
+- 能连续反向两次观察梯度累积，再用 `zero_grad()` 把梯度清为 `None` 或 0
+- 能继承 `nn.Module` 实现两层 MLP，并在 `state_dict()` 中找到两层权重键
+- 能写出 DataLoader → forward → loss → backward → step 的 CPU 训练循环，连续 20 step 后 loss 低于初始值
+- 能保存并加载模型 `state_dict`，验证同一输入的加载前后输出在默认容差内一致
+- 能在环境支持时用 `torch.autocast` 跑通一个 step，并说清 FP16 何时需要 `GradScaler`
+- 能导出一个至少包含 forward、backward、optimizer_step 标记的 Profiler trace
+- 能根据固定症状，在梯度未清零、设备不一致、pin memory 条件不足和 Profiler 活动缺失中选出首个检查项
+- 能解释 fp32、fp16、bf16 的元素字节数、指数范围差异和适用边界
+
+下一节进入 [4.1 Tensor 存储与视图语义](/AIInfraGuide/prerequisites/模块一-前置知识/pytorch/41-tensor存储与视图语义/)，把本节形状 API 背后的 storage 与 stride 拆开。
 
 ## 📚 参考资料
 
