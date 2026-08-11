@@ -15,6 +15,9 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* 固定头部 64px + 32px 留白:原生 #hash 跳转与 scrollIntoView 均避开 fixed header */
+    /* 注意:scroll-padding 与目标元素 scroll-margin 会叠加,只保留其一 */
+    scroll-padding-top: 96px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
