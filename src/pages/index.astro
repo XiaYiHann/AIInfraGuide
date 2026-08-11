@@ -7,11 +7,14 @@ import { GUIDE_CATEGORIES, type CategorySlug } from '../utils/categories';
 const guides = await getCollection('guides', ({ data }) => !data.draft);
 const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const papers = (await getCollection('papers', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const papers = (await getCollection('papers', ({ data }) => !data.draft));
 
-// 首页 Paper 精读:最新 3 篇
-const latestPapers = papers.slice(0, 3);
+// 首页 Paper 精读:按精读路线展示开头 3 篇(assisted-generation → PagedAttention → Orca)
+const routeStart = ['assisted-generation-notes', 'pagedattention-notes', 'orca-notes'];
+const startPapers = routeStart
+  .map((id) => papers.find((p) => p.id === id))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+const latestPapers = startPapers;
 
 // 博客卡片：合并 posts 集合与 about 目录下的独立页面
 const getPathEarly = (path: string) => {
@@ -186,14 +189,14 @@ const getFirstGuideUrl = (category: string, urlPrefix: string) => {
     </div>
   </section>
 
-  <!-- Paper 精读 -->
+  <!-- Paper 精读:从这里开始 -->
   {latestPapers.length > 0 && (
     <section class="home-section home-reading-list py-20 border-t border-gray-100 dark:border-white/[0.04]">
       <div class="max-w-7xl mx-auto px-6">
         <div class="home-section__heading text-center mb-14">
-          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-3"><span class="classic-only-emoji">📖 </span>Paper 精读</h2>
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-3"><span class="classic-only-emoji">📖 </span>Paper 精读 · 从这里开始</h2>
           <p class="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-            论文与技术博客的中文通俗精读 ·
+            按学习顺序读,不按发布时间刷:先建直觉,再进推理引擎主干,每篇标注阶段、时长与前置。 ·
             <a
               href={getPath('/papers')}
               class="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400 hover:text-[#007aff] dark:hover:text-[#0a84ff] transition-colors duration-200 cursor-pointer"

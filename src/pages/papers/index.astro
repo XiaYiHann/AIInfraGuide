@@ -3,11 +3,89 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import PaperCard from '../../components/PaperCard.astro';
 
-const papers = (await getCollection('papers', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const papers = (await getCollection('papers', ({ data }) => !data.draft));
+
+// —— 精读路线:阶段定义(数组顺序即学习顺序)——
+const STAGES = [
+  {
+    id: 'intuition',
+    title: '第 0 站 · 直觉启动',
+    emoji: '🌱',
+    goal: '先建立“投机解码到底在省什么”的直觉,零负担入场。',
+  },
+  {
+    id: 'engine',
+    title: '第 1 站 · 推理引擎主干',
+    emoji: '⚙️',
+    goal: 'KV 管理、batching、前缀缓存与 PD 解耦——推理岗 80% 的系统面经题落在这里。',
+  },
+  {
+    id: 'speculative',
+    title: '第 2 站 · 投机解码谱系',
+    emoji: '🚀',
+    goal: '对比自回归 / 并行 / 半自回归三条 drafter 路线与验证预算调度。',
+  },
+  {
+    id: 'attention',
+    title: '第 3 站 · 注意力与长上下文',
+    emoji: '🔍',
+    goal: '在线 softmax、split-K 与稀疏注意力如何省 FLOPs 和显存。',
+  },
+  {
+    id: 'distributed',
+    title: '第 4 站 · 分布式训练',
+    emoji: '🏋️',
+    goal: '训练方向:显存账本、TP/PP/EP 与通信计算重叠。',
+  },
+  {
+    id: 'production',
+    title: '第 5 站 · 生产与前沿(并行阅读)',
+    emoji: '🌐',
+    goal: '生产架构视野与前沿谈资,任何阶段都可读,不构成前置依赖。',
+  },
+];
+
+// —— 既有文章(不修改已上线文件的 frontmatter)的路线配置,以代码为准 ——
+const LEGACY_ROUTE: Record<string, { stage: string; order: number; minutes: number; difficulty: number; prereqs: string[] }> = {
+  'assisted-generation-notes': { stage: 'intuition', order: 1, minutes: 25, difficulty: 1, prereqs: [] },
+  'dspark-notes': { stage: 'speculative', order: 4, minutes: 50, difficulty: 3, prereqs: ['assisted-generation-notes'] },
+  'deepseek-v4-notes': { stage: 'production', order: 1, minutes: 40, difficulty: 2, prereqs: [] },
+  'kimi-k3-notes': { stage: 'production', order: 2, minutes: 45, difficulty: 2, prereqs: [] },
+  'glm-5-notes': { stage: 'production', order: 3, minutes: 40, difficulty: 2, prereqs: [] },
+  'gemma-4-notes': { stage: 'production', order: 4, minutes: 35, difficulty: 2, prereqs: [] },
+  'kimi-k25-notes': { stage: 'production', order: 5, minutes: 35, difficulty: 2, prereqs: [] },
+};
+
+const routeOf = (paper: (typeof papers)[number]) => {
+  const d = paper.data;
+  if (d.stage && typeof d.order === 'number') {
+    return {
+      stage: d.stage,
+      order: d.order,
+      minutes: d.minutes ?? undefined,
+      difficulty: d.difficulty ?? undefined,
+      prereqs: d.prereqs ?? [],
+    };
+  }
+  return LEGACY_ROUTE[paper.id] ?? { stage: 'production', order: 999, minutes: undefined, difficulty: undefined, prereqs: [] };
+};
+
+const titleOf = (id: string) => papers.find((p) => p.id === id)?.data.title ?? id;
+const stageById = (id: string) => STAGES.find((s) => s.id === id);
+
+const grouped = STAGES.map((stage) => ({
+  ...stage,
+  items: papers
+    .map((paper) => ({ paper, route: routeOf(paper) }))
+    .filter(({ route }) => route.stage === stage.id)
+    .sort((a, b) => a.route.order - b.route.order),
+})).filter((g) => g.items.length > 0);
 ---
 
-<Layout title="Paper 精读 - AIInfraGuide" description="论文与技术博客的中文通俗精读:用'工程师给工程师讲课'的方式重述原文,保留全部关键事实,补上直觉与上下文">
+<Layout
+  title="Paper 精读 - AIInfraGuide"
+  description="论文与技术博客的中文通俗精读:按学习顺序组织,覆盖推理引擎、投机解码、注意力、分布式训练与生产前沿"
+>
   <section class="collection-landing paper-landing relative pt-28 pb-20 min-h-screen">
     <div class="max-w-7xl mx-auto px-6">
       <header class="collection-header max-w-2xl mb-12">
@@ -16,16 +94,64 @@ const papers = (await getCollection('papers', ({ data }) => !data.draft))
           <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Paper 精读</h1>
         </div>
         <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed">
-          论文与技术博客的中文通俗精读——保留原文全部关键事实,补上直觉、比喻与上下文,不查原文也能读懂。
+          论文与技术博客的中文通俗精读——按学习顺序读,而不是按发布时间刷。每篇标注阶段、时长与前置,从第 0 站开始一路读到生产前沿。
         </p>
       </header>
 
-      {papers.length > 0 ? (
-        <div class="collection-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {papers.map((paper) => (
-            <PaperCard paper={paper} />
-          ))}
-        </div>
+      <!-- 路线概览 -->
+      <div class="mb-14">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-5">
+          <span class="classic-only-emoji">🗺️ </span>精读路线
+        </h2>
+        <ol class="space-y-3">
+          {STAGES.map((stage, i) => {
+            const count = papers.filter((p) => routeOf(p).stage === stage.id).length;
+            return (
+              <li class="flex items-start gap-3 rounded-xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] px-5 py-3.5">
+                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-xs font-bold text-indigo-600 dark:text-indigo-300">
+                  {i + 1}
+                </span>
+                <div class="min-w-0">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="classic-only-emoji">{stage.emoji}</span>
+                    <span class="font-semibold text-gray-900 dark:text-white">{stage.title}</span>
+                    <span class="text-xs text-gray-400 dark:text-gray-500">{count} 篇</span>
+                  </div>
+                  <p class="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{stage.goal}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+
+      <!-- 按阶段分组 -->
+      {grouped.length > 0 ? (
+        grouped.map((group) => (
+          <section class="mb-14">
+            <div class="mb-6">
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                <span class="classic-only-emoji">{group.emoji} </span>{group.title}
+              </h2>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                {group.goal}
+                {group.id === 'production' && <span class="classic-only-emoji">(随时可读)</span>}
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {group.items.map(({ paper, route }) => (
+                <PaperCard
+                  paper={paper}
+                  stageLabel={stageById(route.stage)?.title ?? route.stage}
+                  routeOrder={route.order}
+                  minutes={route.minutes}
+                  difficulty={route.difficulty}
+                  prereqTitles={route.prereqs.map(titleOf)}
+                />
+              ))}
+            </div>
+          </section>
+        ))
       ) : (
         <div class="py-20 text-center text-gray-400 dark:text-gray-500">
           精读文章正在路上,敬请期待

@@ -69,6 +69,12 @@ const papers = defineCollection({
     originalAuthor: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
+    /** 精读路线(可选):阶段、站内顺序、前置文章 id、预计时长(分钟)、难度 1-3 */
+    stage: z.enum(['intuition', 'engine', 'speculative', 'attention', 'distributed', 'production']).optional(),
+    order: z.number().optional(),
+    prereqs: z.array(z.string()).default([]),
+    minutes: z.number().optional(),
+    difficulty: z.number().min(1).max(3).optional(),
   }),
 });
 
