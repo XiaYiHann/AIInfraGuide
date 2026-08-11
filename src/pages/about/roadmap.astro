@@ -72,7 +72,7 @@ const modules = [
 ---
 
 <Layout title="教程更新计划 - AIInfraGuide" description="AIInfraGuide 本站教程的更新计划与进度安排">
-  <article class="py-24 max-w-3xl mx-auto px-6">
+  <article class="standalone-article roadmap-content py-24 max-w-3xl mx-auto px-6">
     <!-- Breadcrumb -->
     <nav class="mb-8 text-sm text-gray-400 dark:text-gray-500">
       <a href={getPath('/about')} class="hover:text-[#007aff] dark:hover:text-[#0a84ff] transition-colors">关于</a>
@@ -80,15 +80,15 @@ const modules = [
       <span class="text-gray-600 dark:text-gray-300">教程更新计划</span>
     </nav>
 
-    <div class="mb-12 text-center">
+    <header class="standalone-header mb-12 text-center">
       <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-gray-900 dark:text-white">
         本站教程更新计划
       </h1>
       <p class="text-lg text-gray-500 dark:text-gray-400">四大模块、37 个章节的系统化课程路线</p>
-    </div>
+    </header>
 
     <div
-      class="prose prose-gray dark:prose-invert prose-lg max-w-none
+      class="content-prose prose prose-gray dark:prose-invert prose-lg max-w-none
         prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
         prose-h2:text-2xl prose-h2:mt-12 prose-h2:border-b prose-h2:border-gray-200 dark:prose-h2:border-white/10 prose-h2:pb-2
         prose-h3:text-xl
@@ -96,7 +96,7 @@ const modules = [
         prose-hr:border-gray-200 dark:prose-hr:border-white/10"
     >
       <!-- 写在前面 -->
-      <div class="not-prose mb-10 p-6 rounded-xl bg-blue-50/80 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800/20">
+      <div class="editorial-callout not-prose mb-10 p-6 rounded-xl bg-blue-50/80 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800/20">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
           <svg class="w-5 h-5 text-[#007aff] dark:text-[#0a84ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
@@ -104,18 +104,18 @@ const modules = [
           写在前面
         </h2>
         <p class="text-[15px] text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-          感谢大家对 AIInfraGuide 的关注和支持！作者白天需要上班，只能利用<strong>晚上和周末</strong>的业余时间来编写和更新教程内容。因此更新节奏可能不会特别快，但我会尽量保证每篇文章的质量和深度。
+          感谢大家对 AIInfraGuide 的关注和支持！内容由 Ethan 持续撰写和维护。更新节奏以质量为先，每篇文章都会尽量兼顾原理、工程实践与可复核证据。
         </p>
         <p class="text-[15px] text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-          如果你觉得这个项目对你有帮助，希望能给个 <strong><a href="https://github.com/caomaolufei/AIInfraGuide" target="_blank" rel="noopener noreferrer" class="text-[#007aff] dark:text-[#0a84ff] font-medium hover:underline">Star</a> </strong> 鼓励一下，也欢迎分享给身边对 AI Infra 感兴趣的朋友。你们的支持是我持续更新的最大动力！
+          如果你觉得这个项目有帮助，欢迎在 <strong><a href="https://github.com/XiaYiHann/AIInfraGuide" target="_blank" rel="noopener noreferrer" class="text-[#007aff] dark:text-[#0a84ff] font-medium hover:underline">GitHub</a></strong> 点 Star，也欢迎分享给对 AI Infra 感兴趣的朋友。
         </p>
         <p class="text-[15px] text-gray-600 dark:text-gray-300 leading-relaxed">
-          有任何建议或想看的内容，欢迎通过 <strong> GitHub Issue</strong> 或者 <strong> 公众号留言</strong> 告诉我。
+          有任何建议或想看的内容，欢迎通过 <a href="https://github.com/XiaYiHann/AIInfraGuide/issues" target="_blank" rel="noopener noreferrer" class="text-[#007aff] dark:text-[#0a84ff] font-medium hover:underline"><strong>GitHub Issue</strong></a> 告诉我。
         </p>
       </div>
 
       <!-- 最新动态 -->
-      <div class="not-prose mb-10 p-6 rounded-xl bg-emerald-50/80 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/20">
+      <div class="editorial-callout not-prose mb-10 p-6 rounded-xl bg-emerald-50/80 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/20">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
           <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6V7.5Z" />
@@ -123,7 +123,7 @@ const modules = [
           获取最新更新
         </h2>
         <p class="text-[15px] text-gray-600 dark:text-gray-300 leading-relaxed">
-          作者新产出的文章都会第一时间在 <a href="https://zhihu.com/people/zi-you-zi-zai-de-zhan-sheng" target="_blank" rel="noopener noreferrer" class="text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">知乎</a> 和 <a href="https://mp.weixin.qq.com/s/oxUBDTd-b1aZnh0jGR5tqw" target="_blank" rel="noopener noreferrer" class="text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">公众号《AI Infra Guide》</a> 发布，之后才会同步更新到 GitHub 和本站。想第一时间了解最新内容，推荐关注知乎或公众号。
+          最新文章与课程更新会直接发布到本站，并同步保存在 <a href="https://github.com/XiaYiHann/AIInfraGuide" target="_blank" rel="noopener noreferrer" class="text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">GitHub 仓库</a>。可以通过仓库提交记录和本站更新日志追踪变化。
         </p>
       </div>
 
@@ -132,10 +132,10 @@ const modules = [
     </div>
 
     <!-- Module Cards -->
-    <div class="mt-8 space-y-6">
+    <div class="roadmap-modules mt-8 space-y-6">
       {modules.map((mod, i) => (
-        <div class="rounded-xl border border-gray-200 dark:border-white/[0.06] overflow-hidden">
-          <div class="px-6 py-4 flex items-center gap-3" style={`background: ${mod.color}10;`}>
+        <section class="directory-card rounded-xl border border-gray-200 dark:border-white/[0.06] overflow-hidden">
+          <div class="directory-card__header px-6 py-4 flex items-center gap-3" style={`background: ${mod.color}10;`}>
             <div class="w-2 h-2 rounded-full shrink-0" style={`background: ${mod.color};`} />
             <h3 class="font-semibold text-gray-900 dark:text-white text-[15px]">{mod.name}</h3>
             <span class="ml-auto text-xs text-gray-400 dark:text-gray-500 font-medium tabular-nums">{mod.chapters.length} 章</span>
@@ -150,12 +150,12 @@ const modules = [
               </li>
             ))}
           </ul>
-        </div>
+        </section>
       ))}
     </div>
 
     <!-- 更新节奏 -->
-    <div class="mt-12 prose prose-gray dark:prose-invert prose-lg max-w-none
+    <div class="content-prose mt-12 prose prose-gray dark:prose-invert prose-lg max-w-none
       prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
       prose-h2:text-2xl prose-h2:mt-12 prose-h2:border-b prose-h2:border-gray-200 dark:prose-h2:border-white/10 prose-h2:pb-2">
       <h2>更新节奏</h2>
@@ -176,7 +176,7 @@ const modules = [
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
         </svg>
-        草帽路飞介绍
+        关于 Ethan
       </a>
     </div>
   </article>

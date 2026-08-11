@@ -25,16 +25,16 @@ const getPath = (path: string) => {
 };
 ---
 
-<div class="max-w-[1500px] mx-auto px-6 py-12 flex gap-10">
+<div class="docs-shell content-layout interview-content max-w-[1500px] mx-auto px-6 py-12 flex gap-10">
   <!-- Left Sidebar -->
   <aside class="hidden lg:block">
     <InterviewSidebar urlPrefix={urlPrefix} />
   </aside>
 
   <!-- Main Content -->
-  <article class="flex-1 min-w-0">
+  <article class="content-article flex-1 min-w-0">
     <!-- Article Header -->
-    <header class="mb-10 pb-8 border-b border-gray-200 dark:border-white/[0.06]">
+    <header class="content-header mb-10 pb-8 border-b border-gray-200 dark:border-white/[0.06]">
       <div class="flex items-center gap-3 mb-5 flex-wrap">
         <span
           class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md"
@@ -85,7 +85,7 @@ const getPath = (path: string) => {
 
     <!-- Article Body -->
     <div
-      class="prose prose-gray dark:prose-invert max-w-none
+      class="content-prose prose prose-gray dark:prose-invert max-w-none
         prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
         prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-3 prose-h2:pb-3 prose-h2:border-b prose-h2:border-gray-100 dark:prose-h2:border-white/[0.06]
         prose-h3:text-xl prose-h3:mt-6
@@ -104,7 +104,7 @@ const getPath = (path: string) => {
     </div>
 
     <!-- Prev/Next Navigation -->
-    <nav class="mt-16 pt-8 border-t border-gray-200 dark:border-white/[0.06] grid grid-cols-2 gap-4">
+    <nav class="content-pagination mt-16 pt-8 border-t border-gray-200 dark:border-white/[0.06] grid grid-cols-2 gap-4">
       {prevEntry ? (
         <a
           href={getPath(`${urlPrefix}/${prevEntry.id}`)}

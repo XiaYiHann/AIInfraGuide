@@ -8,16 +8,16 @@ const getPath = (path: string) => {
 ---
 
 <Layout title="404 - 页面未找到">
-  <section class="py-32 text-center">
+  <section class="error-page py-32 text-center">
     <div class="max-w-lg mx-auto px-6">
-      <div class="text-8xl font-bold bg-gradient-to-r from-[#007aff] to-[#5ac8fa] bg-clip-text text-transparent mb-6">
+      <div class="error-code text-8xl font-bold bg-gradient-to-r from-[#007aff] to-[#5ac8fa] bg-clip-text text-transparent mb-6">
         404
       </div>
       <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">页面未找到</h1>
       <p class="text-gray-500 dark:text-gray-400 mb-8">你访问的页面不存在或已被移动</p>
       <a
         href={getPath('/')}
-        class="inline-flex items-center gap-2 px-6 py-3 bg-[#007aff] text-white rounded-xl font-medium hover:bg-[#0062cc] transition-colors"
+        class="surface-action inline-flex items-center gap-2 px-6 py-3 bg-[#007aff] text-white rounded-xl font-medium hover:bg-[#0062cc] transition-colors"
       >
         返回首页
       </a>

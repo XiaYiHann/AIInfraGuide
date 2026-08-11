@@ -46,8 +46,8 @@ const getPath = (path: string) => {
 ---
 
 <Layout title={`${post.data.title} - AIInfraGuide`} description={post.data.description}>
-  <article class="py-24 max-w-3xl mx-auto px-6">
-    <div class="mb-12 text-center">
+  <article class="standalone-article blog-content py-24 max-w-3xl mx-auto px-6">
+    <header class="standalone-header mb-12 text-center">
       <div class="mb-6 flex gap-2 justify-center flex-wrap">
         {post.data.tags.map((tag) => (
           <span class="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30 rounded-full text-xs text-[#007aff] dark:text-[#0a84ff]">
@@ -84,10 +84,10 @@ const getPath = (path: string) => {
       <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto border-l-4 border-[#007aff] pl-6 italic text-left">
         {post.data.description}
       </p>
-    </div>
+    </header>
 
     <div
-      class="prose prose-gray dark:prose-invert max-w-none
+      class="content-prose prose prose-gray dark:prose-invert max-w-none
         prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
         prose-h2:text-2xl prose-h2:mt-12 prose-h2:border-b prose-h2:border-gray-200 dark:prose-h2:border-white/10 prose-h2:pb-2
         prose-h3:text-xl
@@ -101,7 +101,7 @@ const getPath = (path: string) => {
     </div>
 
     <!-- Prev/Next Navigation -->
-    <nav class="mt-16 pt-8 border-t border-gray-200 dark:border-white/[0.06] grid grid-cols-2 gap-4">
+    <nav class="content-pagination mt-16 pt-8 border-t border-gray-200 dark:border-white/[0.06] grid grid-cols-2 gap-4">
       {prevPost ? (
         <a
           href={getPath(`/blog/${prevPost.id}`)}

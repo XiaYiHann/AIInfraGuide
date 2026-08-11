@@ -6,174 +6,60 @@ const getPath = (path: string) => {
   return base === '/' ? path : `${base.replace(/\/$/, '')}${path}`;
 };
 
-const expertise = ['分布式训练', '推理优化', '算子优化', 'CPU+GPU异构优化', 'CUDA', 'HPC'];
-
-const contacts = [
-  {
-    label: '公众号',
-    value: '《AI Infra Guide》',
-    href: 'https://mp.weixin.qq.com/s/oxUBDTd-b1aZnh0jGR5tqw',
-    accent: 'text-emerald-600 dark:text-emerald-400',
-    bg: 'bg-emerald-50 dark:bg-emerald-500/10',
-    icon: 'M8.505 11.53a.72.72 0 0 1-.727.72.72.72 0 0 1-.728-.72c0-.397.326-.72.728-.72.401 0 .727.323.727.72Zm3.264-.72a.72.72 0 0 0-.728.72c0 .397.326.72.728.72a.72.72 0 0 0 .727-.72.72.72 0 0 0-.727-.72Zm-2.6-4.526C4.735 6.284 1.5 9.09 1.5 12.57c0 1.998 1.078 3.775 2.766 4.938a.55.55 0 0 1 .2.618l-.376 1.402c-.033.124.11.225.217.152l1.826-1.065a.65.65 0 0 1 .543-.072 8.36 8.36 0 0 0 2.293.32c.156 0 .31-.006.463-.016a5.35 5.35 0 0 1-.276-1.703c0-3.098 3.014-5.613 6.732-5.613.154 0 .306.006.457.016-.53-2.673-3.36-4.783-6.876-4.783Z',
-  },
-  {
-    label: '知乎',
-    value: '草帽路飞',
-    href: 'https://zhihu.com/people/zi-you-zi-zai-de-zhan-sheng',
-    accent: 'text-[#0084ff] dark:text-[#0a84ff]',
-    bg: 'bg-blue-50 dark:bg-blue-500/10',
-    icon: 'M5.721 0C2.251 0 0 2.25 0 5.719V18.28C0 21.751 2.252 24 5.721 24h12.56C21.751 24 24 21.75 24 18.281V5.72C24 2.249 21.75 0 18.281 0zm1.964 4.078c-.271.73-.5 1.434-.68 2.11h4.587c.545-.006.445 1.168.445 1.171H9.384a58.104 58.104 0 01-.112 3.797h2.712c.388.023.393 1.251.393 1.266H9.183a9.223 9.223 0 01-.408 2.102l.757-.604c.452.456 1.512 1.712 1.906 2.177.473.681.063 2.081.063 2.081l-2.794-3.382c-.653 2.518-1.845 3.607-1.845 3.607-.523.468-1.58.82-2.64.516 2.218-1.73 3.44-3.917 3.667-6.497H4.491c0-.015.197-1.243.806-1.266h2.71c.024-.32.086-3.254.086-3.797H6.598c-.136.406-.158.447-.268.753-.594 1.095-1.603 1.122-1.907 1.155.906-1.821 1.416-3.6 1.591-4.064.425-1.124 1.671-1.125 1.671-1.125zM13.078 6h6.377v11.33h-2.573l-2.184 1.373-.401-1.373h-1.219zm1.313 1.219v8.86h.623l.263.937 1.455-.938h1.456v-8.86z',
-  },
-  {
-    label: '小红书',
-    value: '草帽路飞',
-    href: 'https://www.xiaohongshu.com/user/profile/621228ae00000000100042fc',
-    accent: 'text-[#ff2442] dark:text-[#ff4d5f]',
-    bg: 'bg-red-50 dark:bg-red-500/10',
-    icon: 'M22.405 9.879c.002.016.01.02.07.019h.725a.797.797 0 0 0 .78-.972.794.794 0 0 0-.884-.618.795.795 0 0 0-.692.794c0 .101-.002.666.001.777zm-11.509 4.808c-.203.001-1.353.004-1.685.003a2.528 2.528 0 0 1-.766-.126.025.025 0 0 0-.03.014L7.7 16.127a.025.025 0 0 0 .01.032c.111.06.336.124.495.124.66.01 1.32.002 1.981 0 .01 0 .02-.006.023-.015l.712-1.545a.025.025 0 0 0-.024-.036zM.477 9.91c-.071 0-.076.002-.076.01a.834.834 0 0 0-.01.08c-.027.397-.038.495-.234 3.06-.012.24-.034.389-.135.607-.026.057-.033.042.003.112.046.092.681 1.523.787 1.74.008.015.011.02.017.02.008 0 .033-.026.047-.044.147-.187.268-.391.371-.606.306-.635.44-1.325.486-1.706.014-.11.021-.22.03-.33l.204-2.616.022-.293c.003-.029 0-.033-.03-.034zm7.203 3.757a1.427 1.427 0 0 1-.135-.607c-.004-.084-.031-.39-.235-3.06a.443.443 0 0 0-.01-.082c-.004-.011-.052-.008-.076-.008h-1.48c-.03.001-.034.005-.03.034l.021.293c.076.982.153 1.964.233 2.946.05.4.186 1.085.487 1.706.103.215.223.419.37.606.015.018.037.051.048.049.02-.003.742-1.642.804-1.765.036-.07.03-.055.003-.112zm3.861-.913h-.872a.126.126 0 0 1-.116-.178l1.178-2.625a.025.025 0 0 0-.023-.035l-1.318-.003a.148.148 0 0 1-.135-.21l.876-1.954a.025.025 0 0 0-.023-.035h-1.56c-.01 0-.02.006-.024.015l-.926 2.068c-.085.169-.314.634-.399.938a.534.534 0 0 0-.02.191.46.46 0 0 0 .23.378.981.981 0 0 0 .46.119h.59c.041 0-.688 1.482-.834 1.972a.53.53 0 0 0-.023.172.465.465 0 0 0 .23.398c.15.092.342.12.475.12l1.66-.001c.01 0 .02-.006.023-.015l.575-1.28a.025.025 0 0 0-.024-.035zm-6.93-4.937H3.1a.032.032 0 0 0-.034.033c0 1.048-.01 2.795-.01 6.829 0 .288-.269.262-.28.262h-.74c-.04.001-.044.004-.04.047.001.037.465 1.064.555 1.263.01.02.03.033.051.033.157.003.767.009.938-.014.153-.02.3-.06.438-.132.3-.156.49-.419.595-.765.052-.172.075-.353.075-.533.002-2.33 0-4.66-.007-6.991a.032.032 0 0 0-.032-.032zm11.784 6.896c0-.014-.01-.021-.024-.022h-1.465c-.048-.001-.049-.002-.05-.049v-4.66c0-.072-.005-.07.07-.07h.863c.08 0 .075.004.075-.074V8.393c0-.082.006-.076-.08-.076h-3.5c-.064 0-.075-.006-.075.073v1.445c0 .083-.006.077.08.077h.854c.075 0 .07-.004.07.07v4.624c0 .095.008.084-.085.084-.37 0-1.11-.002-1.304 0-.048.001-.06.03-.06.03l-.697 1.519s-.014.025-.008.036c.006.01.013.008.058.008 1.748.003 3.495.002 5.243.002.03-.001.034-.006.035-.033v-1.539zm4.177-3.43c0 .013-.007.023-.02.024-.346.006-.692.004-1.037.004-.014-.002-.022-.01-.022-.024-.005-.434-.007-.869-.01-1.303 0-.072-.006-.071.07-.07l.733-.003c.041 0 .081.002.12.015.093.025.16.107.165.204.006.431.002 1.153.001 1.153zm2.67.244a1.953 1.953 0 0 0-.883-.222h-.18c-.04-.001-.04-.003-.042-.04V10.21c0-.132-.007-.263-.025-.394a1.823 1.823 0 0 0-.153-.53 1.533 1.533 0 0 0-.677-.71 2.167 2.167 0 0 0-1-.258c-.153-.003-.567 0-.72 0-.07 0-.068.004-.068-.065V7.76c0-.031-.01-.041-.046-.039H17.93s-.016 0-.023.007c-.006.006-.008.012-.008.023v.546c-.008.036-.057.015-.082.022h-.95c-.022.002-.028.008-.03.032v1.481c0 .09-.004.082.082.082h.913c.082 0 .072.128.072.128V11.19s.003.117-.06.117h-1.482c-.068 0-.06.082-.06.082v1.445s-.01.068.064.068h1.457c.082 0 .076-.006.076.079v3.225c0 .088-.007.081.082.081h1.43c.09 0 .082.007.082-.08v-3.27c0-.029.006-.035.033-.035l2.323-.003c.098 0 .191.02.28.061a.46.46 0 0 1 .274.407c.008.395.003.79.003 1.185 0 .259-.107.367-.33.367h-1.218c-.023.002-.029.008-.028.033.184.437.374.871.57 1.303a.045.045 0 0 0 .04.026c.17.005.34.002.51.003.15-.002.517.004.666-.01a2.03 2.03 0 0 0 .408-.075c.59-.18.975-.698.976-1.313v-1.981c0-.128-.01-.254-.034-.38 0 .078-.029-.641-.724-.998z',
-  },
-];
 ---
 
-<Layout title="关于 - AIInfraGuide" description="关于 AIInfraGuide 作者草帽路飞">
-  <div class="relative overflow-hidden">
-    <!-- Background effects -->
-    <div class="absolute inset-0 pointer-events-none -z-10">
+<Layout title="关于 Ethan - AIInfraGuide" description="关于 AIInfraGuide 维护者 Ethan">
+  <div class="about-page relative overflow-hidden">
+    <div class="decorative-effects absolute inset-0 pointer-events-none -z-10">
       <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-500/[0.07] dark:bg-blue-500/[0.10] rounded-full blur-[120px]"></div>
       <div class="absolute top-40 right-1/4 w-[400px] h-[400px] bg-violet-500/[0.05] dark:bg-violet-500/[0.09] rounded-full blur-[120px]"></div>
     </div>
 
-    <article class="py-24 max-w-3xl mx-auto px-6">
-      <!-- Hero / identity -->
-      <header class="mb-16 text-center">
-        <div class="inline-flex items-center justify-center w-24 h-24 mb-6 rounded-2xl overflow-hidden shadow-lg shadow-blue-500/20 ring-1 ring-gray-200/60 dark:ring-white/10">
+    <article class="standalone-article about-content py-24 max-w-3xl mx-auto px-6">
+      <header class="standalone-header identity-header mb-16 text-center">
+        <div class="identity-avatar inline-flex items-center justify-center w-24 h-24 mb-6 rounded-2xl overflow-hidden shadow-lg shadow-blue-500/20 ring-1 ring-gray-200/60 dark:ring-white/10">
           <img
-            src={getPath('/images/caomaolufei.png')}
-            alt="草帽路飞头像"
-            width="96"
-            height="96"
+            src={getPath('/images/ethan-ai-researcher.webp')}
+            alt="Ethan AI Researcher 标识"
+            width="512"
+            height="512"
             class="w-full h-full object-cover"
           />
         </div>
         <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-gray-900 dark:text-white">
-          草帽路飞
+          Ethan
         </h1>
         <p class="text-base md:text-lg text-gray-500 dark:text-gray-400 mb-6">
-          互联网大厂 AI Infra 在职 · AIInfraGuide 作者
+          AI Researcher
         </p>
-        <div class="flex flex-wrap justify-center gap-2">
-          {expertise.map((tag) => (
-            <span class="px-3 py-1 rounded-full text-[13px] font-medium bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-300 border border-gray-200/60 dark:border-white/[0.06]">
-              {tag}
-            </span>
-          ))}
-        </div>
       </header>
 
-      <!-- About section -->
       <section class="mb-16">
         <h2 class="flex items-center gap-2.5 text-xl font-bold text-gray-900 dark:text-white mb-6">
           <span class="w-1 h-5 rounded-full bg-[#007aff]"></span>
-          关于我
+          项目链接
         </h2>
-        <div class="space-y-5 text-[15px] md:text-base leading-[2.4] text-gray-600 dark:text-gray-300">
-          <p>
-            你好！我是 <strong class="font-semibold text-gray-900 dark:text-white">草帽路飞</strong>，目前在互联网大厂从事 AI Infra 方向的研发工作，拥有多年相关工作经验，主攻<strong class="font-semibold text-gray-900 dark:text-white">模型训练、推理和算子优化</strong>方向。
-          </p>
-          <p>
-            我也是开源项目 <a href="https://github.com/caomaolufei/AIInfraGuide" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#007aff] dark:text-[#0a84ff] hover:underline">AIInfraGuide</a> 的作者——这是一套「从 0 入门 AI Infra 全栈」的学习教程，希望帮助更多人系统性地构建从底层 CUDA 编程到分布式训练、推理优化的完整知识体系。
-          </p>
-          <p>
-            我硕士研究方向为传统高性能计算（HPC），主要从事面向 CPU 与 GPU 异构平台的数值模式优化工作，在算子级优化与系统级性能调优方面具备较为扎实的积累。硕士期间拥有 3 段 AI Infra 相关实习，毕业后通过校招加入某大厂从事 AI Infra 研发至今。
-          </p>
-          <p>
-            做这个项目的初衷，是把工作中零散积累的知识重新梳理成体系，也希望和更多对 AI Infra 感兴趣的朋友一起交流成长。后续我会结合一线工程实践，持续输出学习笔记与系统化教程～
-          </p>
-        </div>
+        <a
+          href="https://github.com/XiaYiHann/AIInfraGuide"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact-card group relative flex items-center gap-4 p-5 rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] hover:border-[#007aff]/40 dark:hover:border-[#0a84ff]/40 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-200 cursor-pointer"
+        >
+          <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-gray-100 dark:bg-white/[0.06] text-gray-700 dark:text-gray-200">
+            <svg class="w-[22px] h-[22px]" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+            </svg>
+          </span>
+          <span>
+            <span class="block text-xs font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-1">GitHub</span>
+            <span class="block text-[15px] font-semibold text-gray-900 dark:text-white">XiaYiHann/AIInfraGuide</span>
+          </span>
+          <svg class="w-4 h-4 ml-auto text-gray-300 dark:text-gray-600 group-hover:text-[#007aff] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+          </svg>
+        </a>
       </section>
 
-      <!-- Contact section -->
-      <section class="mb-16">
-        <h2 class="flex items-center gap-2.5 text-xl font-bold text-gray-900 dark:text-white mb-6">
-          <span class="w-1 h-5 rounded-full bg-[#007aff]"></span>
-          联系方式
-        </h2>
-        <div class="grid gap-4 sm:grid-cols-3">
-          {contacts.map((c) => {
-            const inner = (
-              <>
-                <span class={`inline-flex items-center justify-center w-11 h-11 rounded-xl ${c.bg} ${c.accent} mb-4 transition-transform duration-200 group-hover:scale-110`}>
-                  <svg class="w-[22px] h-[22px]" fill="currentColor" viewBox="0 0 24 24" stroke="none">
-                    <path d={c.icon} />
-                  </svg>
-                </span>
-                <span class="block text-xs font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-1">{c.label}</span>
-                <span class="block text-[15px] font-semibold text-gray-900 dark:text-white break-all leading-snug">{c.value}</span>
-                {c.href && (
-                  <span class="absolute top-5 right-5 text-gray-300 dark:text-gray-600 group-hover:text-[#007aff] dark:group-hover:text-[#0a84ff] transition-colors duration-200">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                    </svg>
-                  </span>
-                )}
-              </>
-            );
-            return c.href ? (
-              <a
-                href={c.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group relative block p-5 rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] hover:border-[#007aff]/40 dark:hover:border-[#0a84ff]/40 hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
-              >
-                {inner}
-              </a>
-            ) : (
-              <div class="group relative block p-5 rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03]">
-                {inner}
-              </div>
-            );
-          })}
-        </div>
-
-        <!-- WeChat group QR -->
-        <div class="mt-8 flex flex-col sm:flex-row items-center gap-6 p-6 rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-gradient-to-br from-gray-50/80 to-white dark:from-white/[0.04] dark:to-white/[0.01]">
-          <img
-            src="https://caomaolufei.github.io/AIInfraGuide/images/wx_qun.png"
-            alt="AIInfraGuide 微信交流群二维码"
-            width="240"
-            height="240"
-            loading="lazy"
-            class="w-40 h-40 shrink-0 object-contain rounded-xl border border-gray-200 dark:border-white/10 bg-white"
-          />
-          <div class="text-center sm:text-left">
-            <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-2">加入AIInfraGuide交流群</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-              扫码加入 AIInfraGuide 微信交流群，与更多 AI Infra 同好一起讨论训练、推理与算子优化的实战经验。
-            </p>
-          </div>
-        </div>
-
-        <!-- Personal WeChat QR -->
-        <div class="mt-6 flex flex-col sm:flex-row items-center gap-6 p-6 rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-gradient-to-br from-gray-50/80 to-white dark:from-white/[0.04] dark:to-white/[0.01]">
-          <img
-            src={getPath('/images/caomaolufei_vx.jpeg')}
-            alt="草帽路飞个人微信二维码"
-            width="240"
-            height="240"
-            loading="lazy"
-            class="w-40 h-40 shrink-0 object-contain rounded-xl border border-gray-200 dark:border-white/10 bg-white"
-          />
-          <div class="text-center sm:text-left">
-            <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-2">草帽路飞个人微信</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-              扫码添加我的个人微信，一起交流 AI Infra 学习与实战经验，也欢迎技术合作与探讨。另外需要【求职咨询/学习规划/求职陪跑】等服务的可以加我。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Navigation -->
       <div class="pt-8 border-t border-gray-200 dark:border-white/[0.06] flex justify-end">
         <a
           href={getPath('/about/roadmap')}

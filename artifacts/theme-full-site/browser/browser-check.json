@@ -1,0 +1,4704 @@
+{
+  "generatedAt": "2026-08-10T18:31:24.514Z",
+  "baseUrl": "http://localhost:4323/AIInfraGuide",
+  "chromium": "chromium",
+  "pageCount": 13,
+  "modeCount": 4,
+  "screenshotCount": 55,
+  "interactions": {
+    "classicQuery": {
+      "theme": "classic",
+      "saved": "classic"
+    },
+    "headerSwitch": {
+      "theme": "editorial",
+      "saved": "editorial"
+    },
+    "switchPersistence": {
+      "theme": "editorial",
+      "saved": "editorial"
+    },
+    "editorialQuery": {
+      "theme": "editorial",
+      "saved": "editorial"
+    },
+    "searchOpen": {
+      "open": true,
+      "inputReady": true,
+      "bodyLocked": true
+    },
+    "mobileMenu": {
+      "open": true,
+      "overlay": true,
+      "bodyLocked": true
+    },
+    "mobileToc": {
+      "open": true
+    }
+  },
+  "failures": [],
+  "results": [
+    {
+      "page": "home",
+      "path": "/",
+      "mode": "light-1440",
+      "title": "AIInfraGuide - AI Infra全栈知识库",
+      "h1": "AI Infra\n \nGuide",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "module",
+      "path": "/prerequisites/",
+      "mode": "light-1440",
+      "title": "前置知识 - AIInfraGuide",
+      "h1": "模块一：前置知识",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "guide-4-8",
+      "path": "/prerequisites/模块一-前置知识/pytorch/48-benchmark与profiler/",
+      "mode": "light-1440",
+      "title": "4.8 Benchmark 与 Profiler - AIInfraGuide",
+      "h1": "4.8 Benchmark 与 Profiler",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 638,
+          "right": 8610,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3333,
+          "right": 4640,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7309,
+          "right": 669,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 775,
+          "right": 8747,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3195,
+          "right": 4777,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7171,
+          "right": 807,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 775,
+          "right": 8747,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3195,
+          "right": 4777,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7171,
+          "right": 807,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 485,
+          "right": 8457,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3485,
+          "right": 4487,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7462,
+          "right": 517,
+          "width": 7978,
+          "scrollWidth": 0
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "rir_i",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 14,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "base",
+          "text": "ri​",
+          "width": 15,
+          "clientWidth": 15,
+          "scrollWidth": 17,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "nn",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 11,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "ti⏟单次调用时间=ri⏟第 i 个 block 原始时间n⏟number_per_run\\underbrace{t_i}_{\\text{单次调用时间}}\n=\n\\frac{\\underbrace{r_",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 244,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "ti⏟单次调用时间=ri⏟第 i 个 block 原始时间n⏟number_per_run\\underbrace{t_i}_{\\text{单次调用时间}}\n=\n\\frac{\\underbrace{r_",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 244,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "ti​​",
+          "width": 32,
+          "clientWidth": 32,
+          "scrollWidth": 34,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "mord",
+          "text": "ti​",
+          "width": 13,
+          "clientWidth": 13,
+          "scrollWidth": 15,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "number_per_runn​​第 i 个 block 原始时间ri​​​",
+          "width": 134,
+          "clientWidth": 134,
+          "scrollWidth": 136,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "mord",
+          "text": "number_per_runn​​",
+          "width": 101,
+          "clientWidth": 101,
+          "scrollWidth": 103,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "n​",
+          "width": 32,
+          "clientWidth": 32,
+          "scrollWidth": 34,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "第 i 个 block 原始时间ri​​​",
+          "width": 134,
+          "clientWidth": 134,
+          "scrollWidth": 136,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "guide-4-12",
+      "path": "/prerequisites/模块一-前置知识/pytorch/412-minigpt综合项目/",
+      "mode": "light-1440",
+      "title": "4.12 MiniGPT 综合项目 - AIInfraGuide",
+      "h1": "4.12 MiniGPT 综合项目",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 556,
+          "right": 8528,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3362,
+          "right": 4610,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7286,
+          "right": 692,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 772,
+          "right": 8744,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3147,
+          "right": 4826,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7071,
+          "right": 907,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 608,
+          "right": 8580,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3345,
+          "right": 4627,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7305,
+          "right": 673,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 718,
+          "right": 8690,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3243,
+          "right": 4729,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7209,
+          "right": 769,
+          "width": 7978,
+          "scrollWidth": 0
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "[t0,t1,t2,t3,t4][t_0,t_1,t_2,t_3,t_4]",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 130,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "[t0,t1,t2,t3,t4][t_0,t_1,t_2,t_3,t_4]",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 130,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 362,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 362,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "模型输入x=[t0​,t1​,t2​,t3​]​",
+          "width": 136,
+          "clientWidth": 136,
+          "scrollWidth": 138,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "x=[t0​,t1​,t2​,t3​]​",
+          "width": 136,
+          "clientWidth": 136,
+          "scrollWidth": 138,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "x=[t0​,t1​,t2​,t3​]​",
+          "width": 136,
+          "clientWidth": 136,
+          "scrollWidth": 138,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "base",
+          "text": "每个位置预测下一个字符y=[t1​,t2​,t3​,t4​]​​",
+          "width": 153,
+          "clientWidth": 153,
+          "scrollWidth": 155,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "y=[t1​,t2​,t3​,t4​]​",
+          "width": 135,
+          "clientWidth": 135,
+          "scrollWidth": 137,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "Nwindow⏟可用窗口数=Ntoken⏟语料 token 数−T⏟block  ize\\underbrace{N_{window}}_{\\text{可用窗口数}}\n=\n\\underbrace{N_{",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 251,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "Nwindow⏟可用窗口数=Ntoken⏟语料 token 数−T⏟block  ize\\underbrace{N_{window}}_{\\text{可用窗口数}}\n=\n\\underbrace{N_{",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 251,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "interview-index",
+      "path": "/interview/",
+      "mode": "light-1440",
+      "title": "面试宝典 - AIInfraGuide",
+      "h1": "面试宝典",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "interview-article",
+      "path": "/interview/美团-ai-infra-一面/",
+      "mode": "light-1440",
+      "title": "美团 AI Infra 一面 - 面试宝典",
+      "h1": "美团 AI Infra 一面",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "paper-index",
+      "path": "/papers/",
+      "mode": "light-1440",
+      "title": "Paper 精读 - AIInfraGuide",
+      "h1": "Paper 精读",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Zhipu AI & T inghua Univer ity",
+          "width": 199,
+          "clientWidth": 199,
+          "scrollWidth": 204,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Google DeepMind Gemma Team",
+          "width": 199,
+          "clientWidth": 199,
+          "scrollWidth": 215,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "paper-article",
+      "path": "/papers/kimi-k3-notes/",
+      "mode": "light-1440",
+      "title": "Kimi K3 解读:2.8T 参数的开源前沿模型是怎么造出来的 - AIInfraGuide",
+      "h1": "Kimi K3 解读:2.8T 参数的开源前沿模型是怎么造出来的",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 264,
+          "right": 8236,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3631,
+          "right": 4341,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7532,
+          "right": 446,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 588,
+          "right": 8560,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3371,
+          "right": 4602,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7335,
+          "right": 643,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 368,
+          "right": 8341,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3550,
+          "right": 4422,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7475,
+          "right": 503,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 536,
+          "right": 8508,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3389,
+          "right": 4584,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7319,
+          "right": 659,
+          "width": 7978,
+          "scrollWidth": 0
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "StS_t",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 19,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "base",
+          "text": "St​",
+          "width": 18,
+          "clientWidth": 18,
+          "scrollWidth": 20,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 628,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 455,
+          "clientWidth": 455,
+          "scrollWidth": 628,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "semantics",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 455,
+          "clientWidth": 455,
+          "scrollWidth": 628,
+          "overflowX": "visible",
+          "minWidth": "auto"
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qt",
+          "width": 455,
+          "clientWidth": 455,
+          "scrollWidth": 628,
+          "overflowX": "visible",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "遗忘项:按通道衰减旧状态(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 182,
+          "clientWidth": 182,
+          "scrollWidth": 184,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 182,
+          "clientWidth": 182,
+          "scrollWidth": 184,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 182,
+          "clientWidth": 182,
+          "scrollWidth": 184,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "βt​kt​vt⊤​​",
+          "width": 56,
+          "clientWidth": 56,
+          "scrollWidth": 58,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "βt​kt​vt⊤​",
+          "width": 56,
+          "clientWidth": 56,
+          "scrollWidth": 58,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "blog-index",
+      "path": "/blog/",
+      "mode": "light-1440",
+      "title": "博客 - AIInfraGuide",
+      "h1": "博客",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "blog-article",
+      "path": "/blog/update-log/",
+      "mode": "light-1440",
+      "title": "AIInfraGuide 文章更新日志 - AIInfraGuide",
+      "h1": "AIInfraGuide 文章更新日志",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "O(N2)O(N^2)",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 55,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "O(N)O(N)",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 43,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "about",
+      "path": "/about/",
+      "mode": "light-1440",
+      "title": "关于 Ethan - AIInfraGuide",
+      "h1": "Ethan",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "roadmap",
+      "path": "/about/roadmap/",
+      "mode": "light-1440",
+      "title": "教程更新计划 - AIInfraGuide",
+      "h1": "本站教程更新计划",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "404",
+      "path": "/404.html",
+      "mode": "light-1440",
+      "title": "404 - 页面未找到",
+      "h1": "页面未找到",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "home",
+      "path": "/",
+      "mode": "dark-1440",
+      "title": "AIInfraGuide - AI Infra全栈知识库",
+      "h1": "AI Infra\n \nGuide",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "module",
+      "path": "/prerequisites/",
+      "mode": "dark-1440",
+      "title": "前置知识 - AIInfraGuide",
+      "h1": "模块一：前置知识",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "guide-4-8",
+      "path": "/prerequisites/模块一-前置知识/pytorch/48-benchmark与profiler/",
+      "mode": "dark-1440",
+      "title": "4.8 Benchmark 与 Profiler - AIInfraGuide",
+      "h1": "4.8 Benchmark 与 Profiler",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 638,
+          "right": 8610,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3333,
+          "right": 4640,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7309,
+          "right": 669,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 775,
+          "right": 8747,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3195,
+          "right": 4777,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7171,
+          "right": 807,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 775,
+          "right": 8747,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3195,
+          "right": 4777,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7171,
+          "right": 807,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 485,
+          "right": 8457,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3485,
+          "right": 4487,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7462,
+          "right": 517,
+          "width": 7978,
+          "scrollWidth": 0
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "rir_i",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 14,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "base",
+          "text": "ri​",
+          "width": 15,
+          "clientWidth": 15,
+          "scrollWidth": 17,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "nn",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 11,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "ti⏟单次调用时间=ri⏟第 i 个 block 原始时间n⏟number_per_run\\underbrace{t_i}_{\\text{单次调用时间}}\n=\n\\frac{\\underbrace{r_",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 244,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "ti⏟单次调用时间=ri⏟第 i 个 block 原始时间n⏟number_per_run\\underbrace{t_i}_{\\text{单次调用时间}}\n=\n\\frac{\\underbrace{r_",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 244,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "ti​​",
+          "width": 32,
+          "clientWidth": 32,
+          "scrollWidth": 34,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "mord",
+          "text": "ti​",
+          "width": 13,
+          "clientWidth": 13,
+          "scrollWidth": 15,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "number_per_runn​​第 i 个 block 原始时间ri​​​",
+          "width": 134,
+          "clientWidth": 134,
+          "scrollWidth": 136,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "mord",
+          "text": "number_per_runn​​",
+          "width": 101,
+          "clientWidth": 101,
+          "scrollWidth": 103,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "n​",
+          "width": 32,
+          "clientWidth": 32,
+          "scrollWidth": 34,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "第 i 个 block 原始时间ri​​​",
+          "width": 134,
+          "clientWidth": 134,
+          "scrollWidth": 136,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "guide-4-12",
+      "path": "/prerequisites/模块一-前置知识/pytorch/412-minigpt综合项目/",
+      "mode": "dark-1440",
+      "title": "4.12 MiniGPT 综合项目 - AIInfraGuide",
+      "h1": "4.12 MiniGPT 综合项目",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 556,
+          "right": 8528,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3362,
+          "right": 4610,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7286,
+          "right": 692,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 772,
+          "right": 8744,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3147,
+          "right": 4826,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7071,
+          "right": 907,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 608,
+          "right": 8580,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3345,
+          "right": 4627,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7305,
+          "right": 673,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 718,
+          "right": 8690,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3243,
+          "right": 4729,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7209,
+          "right": 769,
+          "width": 7978,
+          "scrollWidth": 0
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "[t0,t1,t2,t3,t4][t_0,t_1,t_2,t_3,t_4]",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 130,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "[t0,t1,t2,t3,t4][t_0,t_1,t_2,t_3,t_4]",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 130,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 362,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 362,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "模型输入x=[t0​,t1​,t2​,t3​]​",
+          "width": 136,
+          "clientWidth": 136,
+          "scrollWidth": 138,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "x=[t0​,t1​,t2​,t3​]​",
+          "width": 136,
+          "clientWidth": 136,
+          "scrollWidth": 138,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "x=[t0​,t1​,t2​,t3​]​",
+          "width": 136,
+          "clientWidth": 136,
+          "scrollWidth": 138,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "base",
+          "text": "每个位置预测下一个字符y=[t1​,t2​,t3​,t4​]​​",
+          "width": 153,
+          "clientWidth": 153,
+          "scrollWidth": 155,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "y=[t1​,t2​,t3​,t4​]​",
+          "width": 135,
+          "clientWidth": 135,
+          "scrollWidth": 137,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "Nwindow⏟可用窗口数=Ntoken⏟语料 token 数−T⏟block  ize\\underbrace{N_{window}}_{\\text{可用窗口数}}\n=\n\\underbrace{N_{",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 251,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "Nwindow⏟可用窗口数=Ntoken⏟语料 token 数−T⏟block  ize\\underbrace{N_{window}}_{\\text{可用窗口数}}\n=\n\\underbrace{N_{",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 251,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "interview-index",
+      "path": "/interview/",
+      "mode": "dark-1440",
+      "title": "面试宝典 - AIInfraGuide",
+      "h1": "面试宝典",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "interview-article",
+      "path": "/interview/美团-ai-infra-一面/",
+      "mode": "dark-1440",
+      "title": "美团 AI Infra 一面 - 面试宝典",
+      "h1": "美团 AI Infra 一面",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "paper-index",
+      "path": "/papers/",
+      "mode": "dark-1440",
+      "title": "Paper 精读 - AIInfraGuide",
+      "h1": "Paper 精读",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Zhipu AI & T inghua Univer ity",
+          "width": 199,
+          "clientWidth": 199,
+          "scrollWidth": 204,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Google DeepMind Gemma Team",
+          "width": 199,
+          "clientWidth": 199,
+          "scrollWidth": 215,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "paper-article",
+      "path": "/papers/kimi-k3-notes/",
+      "mode": "dark-1440",
+      "title": "Kimi K3 解读:2.8T 参数的开源前沿模型是怎么造出来的 - AIInfraGuide",
+      "h1": "Kimi K3 解读:2.8T 参数的开源前沿模型是怎么造出来的",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 264,
+          "right": 8236,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3631,
+          "right": 4341,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7532,
+          "right": 446,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 588,
+          "right": 8560,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3371,
+          "right": 4602,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7335,
+          "right": 643,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 368,
+          "right": 8341,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3550,
+          "right": 4422,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7475,
+          "right": 503,
+          "width": 7978,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": 536,
+          "right": 8508,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -3389,
+          "right": 4584,
+          "width": 7972,
+          "scrollWidth": 0
+        },
+        {
+          "element": "path",
+          "id": null,
+          "className": null,
+          "text": null,
+          "left": -7319,
+          "right": 659,
+          "width": 7978,
+          "scrollWidth": 0
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "StS_t",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 19,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "base",
+          "text": "St​",
+          "width": 18,
+          "clientWidth": 18,
+          "scrollWidth": 20,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 628,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 455,
+          "clientWidth": 455,
+          "scrollWidth": 628,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "semantics",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 455,
+          "clientWidth": 455,
+          "scrollWidth": 628,
+          "overflowX": "visible",
+          "minWidth": "auto"
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qt",
+          "width": 455,
+          "clientWidth": 455,
+          "scrollWidth": 628,
+          "overflowX": "visible",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "遗忘项:按通道衰减旧状态(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 182,
+          "clientWidth": 182,
+          "scrollWidth": 184,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 182,
+          "clientWidth": 182,
+          "scrollWidth": 184,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 182,
+          "clientWidth": 182,
+          "scrollWidth": 184,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "βt​kt​vt⊤​​",
+          "width": 56,
+          "clientWidth": 56,
+          "scrollWidth": 58,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "βt​kt​vt⊤​",
+          "width": 56,
+          "clientWidth": 56,
+          "scrollWidth": 58,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "blog-index",
+      "path": "/blog/",
+      "mode": "dark-1440",
+      "title": "博客 - AIInfraGuide",
+      "h1": "博客",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "blog-article",
+      "path": "/blog/update-log/",
+      "mode": "dark-1440",
+      "title": "AIInfraGuide 文章更新日志 - AIInfraGuide",
+      "h1": "AIInfraGuide 文章更新日志",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "O(N2)O(N^2)",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 55,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "O(N)O(N)",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 43,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "about",
+      "path": "/about/",
+      "mode": "dark-1440",
+      "title": "关于 Ethan - AIInfraGuide",
+      "h1": "Ethan",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "roadmap",
+      "path": "/about/roadmap/",
+      "mode": "dark-1440",
+      "title": "教程更新计划 - AIInfraGuide",
+      "h1": "本站教程更新计划",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "404",
+      "path": "/404.html",
+      "mode": "dark-1440",
+      "title": "404 - 页面未找到",
+      "h1": "页面未找到",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "home",
+      "path": "/",
+      "mode": "light-390",
+      "title": "AIInfraGuide - AI Infra全栈知识库",
+      "h1": "AI Infra\n \nGuide",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "module",
+      "path": "/prerequisites/",
+      "mode": "light-390",
+      "title": "前置知识 - AIInfraGuide",
+      "h1": "模块一：前置知识",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "guide-4-8",
+      "path": "/prerequisites/模块一-前置知识/pytorch/48-benchmark与profiler/",
+      "mode": "light-390",
+      "title": "4.8 Benchmark 与 Profiler - AIInfraGuide",
+      "h1": "4.8 Benchmark 与 Profiler",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "torch.equal(reference, candidate)",
+          "left": 102,
+          "right": 404,
+          "width": 302,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "# 通过后才创建 Timer",
+          "left": 404,
+          "right": 555,
+          "width": 151,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"local_ob ervation_not_general_conclu ion\"",
+          "left": 144,
+          "right": 496,
+          "width": 353,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": ",",
+          "left": 496,
+          "right": 505,
+          "width": 8,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"本机实际版本\"",
+          "left": 295,
+          "right": 396,
+          "width": 101,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": ",",
+          "left": 396,
+          "right": 412,
+          "width": 17,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"cuda_device\"",
+          "left": 412,
+          "right": 522,
+          "width": 109,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": ":",
+          "left": 522,
+          "right": 538,
+          "width": 17,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"本机实际设备\"",
+          "left": 538,
+          "right": 639,
+          "width": 101,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "}",
+          "left": 639,
+          "right": 648,
+          "width": 8,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"input_ten or\"",
+          "left": 295,
+          "right": 412,
+          "width": 118,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": ": input_ten or},",
+          "left": 412,
+          "right": 547,
+          "width": 134,
+          "scrollWidth": 0
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "code",
+          "id": null,
+          "className": "",
+          "text": "reference = torch.relu(input_ten or)\ncandidate = input_ten or.clamp_min(0)\na ert torch.equal(referen",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 534,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "a ert torch.equal(reference, candidate)  # 通过后才创建 Timer",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 534,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "code",
+          "id": null,
+          "className": "",
+          "text": "{\n  \" cope\": \"local_ob ervation_not_general_conclu ion\",\n  \"environment\": {\"pytorch\": \"本机实际版本\", \"cud",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 627,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "\" cope\": \"local_ob ervation_not_general_conclu ion\",",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 484,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "\"environment\": {\"pytorch\": \"本机实际版本\", \"cuda_device\": \"本机实际设备\"}",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 627,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "code",
+          "id": null,
+          "className": "",
+          "text": "from torch.util  import benchmark\n\nrelu_timer = benchmark.Timer(\n     tmt=\"torch.relu(input_ten or)\"",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 526,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "global ={\"torch\": torch, \"input_ten or\": input_ten or},",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 526,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "label=\"fixed- hape elementwi e activation\",",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 425,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": " ub_label=\"256x256 float32 on cpu\",",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 358,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "relu_timer.blocked_autorange(min_run_time=0.05)",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 459,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "rir_i",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 13,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "guide-4-12",
+      "path": "/prerequisites/模块一-前置知识/pytorch/412-minigpt综合项目/",
+      "mode": "light-390",
+      "title": "4.12 MiniGPT 综合项目 - AIInfraGuide",
+      "h1": "4.12 MiniGPT 综合项目",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "doc /guide /模块一-前置知识/pytorch/4.12-MiniGPT综合项目.md",
+          "left": 51,
+          "right": 516,
+          "width": 465,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "example /pytorch/te t /te t_minigpt_project.py",
+          "left": 51,
+          "right": 438,
+          "width": 386,
+          "scrollWidth": 0
+        },
+        {
+          "element": "semantics",
+          "id": null,
+          "className": "",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "left": 195,
+          "right": 542,
+          "width": 347,
+          "scrollWidth": 347
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符",
+          "left": 195,
+          "right": 542,
+          "width": 347,
+          "scrollWidth": 347
+        },
+        {
+          "element": "mspace",
+          "id": null,
+          "className": "",
+          "text": null,
+          "left": 372,
+          "right": 391,
+          "width": 19,
+          "scrollWidth": 19
+        },
+        {
+          "element": "munder",
+          "id": null,
+          "className": "",
+          "text": "y=[t1,t2,t3,t4]⏟每个位置预测下一个字符",
+          "left": 391,
+          "right": 542,
+          "width": 151,
+          "scrollWidth": 151
+        },
+        {
+          "element": "munder",
+          "id": null,
+          "className": "",
+          "text": "y=[t1,t2,t3,t4]⏟",
+          "left": 403,
+          "right": 530,
+          "width": 127,
+          "scrollWidth": 127
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "y=[t1,t2,t3,t4]",
+          "left": 403,
+          "right": 530,
+          "width": 127,
+          "scrollWidth": 127
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "y",
+          "left": 403,
+          "right": 411,
+          "width": 8,
+          "scrollWidth": 8
+        },
+        {
+          "element": "mo",
+          "id": null,
+          "className": "",
+          "text": "=",
+          "left": 416,
+          "right": 427,
+          "width": 11,
+          "scrollWidth": 11
+        },
+        {
+          "element": "mo",
+          "id": null,
+          "className": "",
+          "text": "[",
+          "left": 432,
+          "right": 439,
+          "width": 6,
+          "scrollWidth": 6
+        },
+        {
+          "element": "msub",
+          "id": null,
+          "className": "",
+          "text": "t1",
+          "left": 439,
+          "right": 454,
+          "width": 15,
+          "scrollWidth": 15
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "code",
+          "id": null,
+          "className": "",
+          "text": "doc /guide /模块一-前置知识/pytorch/4.12-MiniGPT综合项目.md\nexample /pytorch/minigpt_project.py\nexample /pytorc",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 495,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "doc /guide /模块一-前置知识/pytorch/4.12-MiniGPT综合项目.md",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 495,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "example /pytorch/te t /te t_minigpt_project.py",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 417,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "[t0,t1,t2,t3,t4][t_0,t_1,t_2,t_3,t_4]",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 121,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "[t0,t1,t2,t3,t4][t_0,t_1,t_2,t_3,t_4]",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 121,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-display",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 350,
+          "clientWidth": 350,
+          "scrollWidth": 352,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 350,
+          "clientWidth": 350,
+          "scrollWidth": 352,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 347,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 347,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-html",
+          "text": "模型输入x=[t0​,t1​,t2​,t3​]​​→每个位置预测下一个字符y=[t1​,t2​,t3​,t4​]​​",
+          "width": 350,
+          "clientWidth": 350,
+          "scrollWidth": 352,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "模型输入x=[t0​,t1​,t2​,t3​]​",
+          "width": 132,
+          "clientWidth": 132,
+          "scrollWidth": 134,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "interview-index",
+      "path": "/interview/",
+      "mode": "light-390",
+      "title": "面试宝典 - AIInfraGuide",
+      "h1": "面试宝典",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "interview-article",
+      "path": "/interview/美团-ai-infra-一面/",
+      "mode": "light-390",
+      "title": "美团 AI Infra 一面 - 面试宝典",
+      "h1": "美团 AI Infra 一面",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "paper-index",
+      "path": "/papers/",
+      "mode": "light-390",
+      "title": "Paper 精读 - AIInfraGuide",
+      "h1": "Paper 精读",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Joao Gante (Hugging Face)",
+          "width": 183,
+          "clientWidth": 183,
+          "scrollWidth": 187,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Zhipu AI & T inghua Univer ity",
+          "width": 183,
+          "clientWidth": 183,
+          "scrollWidth": 204,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Google DeepMind Gemma Team",
+          "width": 183,
+          "clientWidth": 183,
+          "scrollWidth": 215,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "paper-article",
+      "path": "/papers/kimi-k3-notes/",
+      "mode": "light-390",
+      "title": "Kimi K3 解读:2.8T 参数的开源前沿模型是怎么造出来的 - AIInfraGuide",
+      "h1": "Kimi K3 解读:2.8T 参数的开源前沿模型是怎么造出来的",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "left": 20,
+          "right": 450,
+          "width": 430,
+          "scrollWidth": 601
+        },
+        {
+          "element": "semantics",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "left": 20,
+          "right": 450,
+          "width": 430,
+          "scrollWidth": 601
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qt",
+          "left": 20,
+          "right": 450,
+          "width": 430,
+          "scrollWidth": 601
+        },
+        {
+          "element": "munder",
+          "id": null,
+          "className": "",
+          "text": "βtktvt⊤⏟写入项:把新 token 的信息写进状态",
+          "left": 289,
+          "right": 495,
+          "width": 206,
+          "scrollWidth": 206
+        },
+        {
+          "element": "munder",
+          "id": null,
+          "className": "",
+          "text": "βtktvt⊤⏟",
+          "left": 362,
+          "right": 421,
+          "width": 59,
+          "scrollWidth": 59
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "βtktvt⊤",
+          "left": 362,
+          "right": 421,
+          "width": 59,
+          "scrollWidth": 59
+        },
+        {
+          "element": "msub",
+          "id": null,
+          "className": "",
+          "text": "kt",
+          "left": 383,
+          "right": 399,
+          "width": 17,
+          "scrollWidth": 17
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "k",
+          "left": 383,
+          "right": 392,
+          "width": 10,
+          "scrollWidth": 10
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "t",
+          "left": 392,
+          "right": 396,
+          "width": 4,
+          "scrollWidth": 4
+        },
+        {
+          "element": "msubsup",
+          "id": null,
+          "className": "",
+          "text": "vt⊤",
+          "left": 399,
+          "right": 421,
+          "width": 22,
+          "scrollWidth": 22
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "v",
+          "left": 399,
+          "right": 408,
+          "width": 9,
+          "scrollWidth": 9
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "t",
+          "left": 408,
+          "right": 412,
+          "width": 4,
+          "scrollWidth": 4
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "div",
+          "id": null,
+          "className": "content-prose prose prose-gray dark:prose-invert max-w-[75ch] mx-auto\n          prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-w",
+          "text": "原文:Kimi K3: Open Frontier Intelligence(Kimi Team / Moon hot AI,arXiv 2607.24653,2026-07-27)+ 官方仓库 RE",
+          "width": 350,
+          "clientWidth": 350,
+          "scrollWidth": 360,
+          "overflowX": "clip",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "StS_t",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 17,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "base",
+          "text": "St​",
+          "width": 18,
+          "clientWidth": 18,
+          "scrollWidth": 20,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 601,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 430,
+          "clientWidth": 430,
+          "scrollWidth": 601,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "semantics",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 430,
+          "clientWidth": 430,
+          "scrollWidth": 601,
+          "overflowX": "visible",
+          "minWidth": "auto"
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qt",
+          "width": 430,
+          "clientWidth": 430,
+          "scrollWidth": 601,
+          "overflowX": "visible",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "遗忘项:按通道衰减旧状态(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 177,
+          "clientWidth": 177,
+          "scrollWidth": 179,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 177,
+          "clientWidth": 177,
+          "scrollWidth": 179,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 177,
+          "clientWidth": 177,
+          "scrollWidth": 179,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "βt​kt​vt⊤​​",
+          "width": 54,
+          "clientWidth": 54,
+          "scrollWidth": 56,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "blog-index",
+      "path": "/blog/",
+      "mode": "light-390",
+      "title": "博客 - AIInfraGuide",
+      "h1": "博客",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "blog-article",
+      "path": "/blog/update-log/",
+      "mode": "light-390",
+      "title": "AIInfraGuide 文章更新日志 - AIInfraGuide",
+      "h1": "AIInfraGuide 文章更新日志",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "O(N2)O(N^2)",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 52,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "O(N)O(N)",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 42,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "about",
+      "path": "/about/",
+      "mode": "light-390",
+      "title": "关于 Ethan - AIInfraGuide",
+      "h1": "Ethan",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "roadmap",
+      "path": "/about/roadmap/",
+      "mode": "light-390",
+      "title": "教程更新计划 - AIInfraGuide",
+      "h1": "本站教程更新计划",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "404",
+      "path": "/404.html",
+      "mode": "light-390",
+      "title": "404 - 页面未找到",
+      "h1": "页面未找到",
+      "siteTheme": "editorial",
+      "colorTheme": "light",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "home",
+      "path": "/",
+      "mode": "dark-390",
+      "title": "AIInfraGuide - AI Infra全栈知识库",
+      "h1": "AI Infra\n \nGuide",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "module",
+      "path": "/prerequisites/",
+      "mode": "dark-390",
+      "title": "前置知识 - AIInfraGuide",
+      "h1": "模块一：前置知识",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "guide-4-8",
+      "path": "/prerequisites/模块一-前置知识/pytorch/48-benchmark与profiler/",
+      "mode": "dark-390",
+      "title": "4.8 Benchmark 与 Profiler - AIInfraGuide",
+      "h1": "4.8 Benchmark 与 Profiler",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "torch.equal(reference, candidate)",
+          "left": 102,
+          "right": 404,
+          "width": 302,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "# 通过后才创建 Timer",
+          "left": 404,
+          "right": 555,
+          "width": 151,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"local_ob ervation_not_general_conclu ion\"",
+          "left": 144,
+          "right": 496,
+          "width": 353,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": ",",
+          "left": 496,
+          "right": 505,
+          "width": 8,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"本机实际版本\"",
+          "left": 295,
+          "right": 396,
+          "width": 101,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": ",",
+          "left": 396,
+          "right": 412,
+          "width": 17,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"cuda_device\"",
+          "left": 412,
+          "right": 522,
+          "width": 109,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": ":",
+          "left": 522,
+          "right": 538,
+          "width": 17,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"本机实际设备\"",
+          "left": 538,
+          "right": 639,
+          "width": 101,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "}",
+          "left": 639,
+          "right": 648,
+          "width": 8,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "\"input_ten or\"",
+          "left": 295,
+          "right": 412,
+          "width": 118,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": ": input_ten or},",
+          "left": 412,
+          "right": 547,
+          "width": 134,
+          "scrollWidth": 0
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "code",
+          "id": null,
+          "className": "",
+          "text": "reference = torch.relu(input_ten or)\ncandidate = input_ten or.clamp_min(0)\na ert torch.equal(referen",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 534,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "a ert torch.equal(reference, candidate)  # 通过后才创建 Timer",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 534,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "code",
+          "id": null,
+          "className": "",
+          "text": "{\n  \" cope\": \"local_ob ervation_not_general_conclu ion\",\n  \"environment\": {\"pytorch\": \"本机实际版本\", \"cud",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 627,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "\" cope\": \"local_ob ervation_not_general_conclu ion\",",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 484,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "\"environment\": {\"pytorch\": \"本机实际版本\", \"cuda_device\": \"本机实际设备\"}",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 627,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "code",
+          "id": null,
+          "className": "",
+          "text": "from torch.util  import benchmark\n\nrelu_timer = benchmark.Timer(\n     tmt=\"torch.relu(input_ten or)\"",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 526,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "global ={\"torch\": torch, \"input_ten or\": input_ten or},",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 526,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "label=\"fixed- hape elementwi e activation\",",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 425,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": " ub_label=\"256x256 float32 on cpu\",",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 358,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "relu_timer.blocked_autorange(min_run_time=0.05)",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 459,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "rir_i",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 13,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "guide-4-12",
+      "path": "/prerequisites/模块一-前置知识/pytorch/412-minigpt综合项目/",
+      "mode": "dark-390",
+      "title": "4.12 MiniGPT 综合项目 - AIInfraGuide",
+      "h1": "4.12 MiniGPT 综合项目",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "doc /guide /模块一-前置知识/pytorch/4.12-MiniGPT综合项目.md",
+          "left": 51,
+          "right": 516,
+          "width": 465,
+          "scrollWidth": 0
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "example /pytorch/te t /te t_minigpt_project.py",
+          "left": 51,
+          "right": 438,
+          "width": 386,
+          "scrollWidth": 0
+        },
+        {
+          "element": "semantics",
+          "id": null,
+          "className": "",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "left": 195,
+          "right": 542,
+          "width": 347,
+          "scrollWidth": 347
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符",
+          "left": 195,
+          "right": 542,
+          "width": 347,
+          "scrollWidth": 347
+        },
+        {
+          "element": "mspace",
+          "id": null,
+          "className": "",
+          "text": null,
+          "left": 372,
+          "right": 391,
+          "width": 19,
+          "scrollWidth": 19
+        },
+        {
+          "element": "munder",
+          "id": null,
+          "className": "",
+          "text": "y=[t1,t2,t3,t4]⏟每个位置预测下一个字符",
+          "left": 391,
+          "right": 542,
+          "width": 151,
+          "scrollWidth": 151
+        },
+        {
+          "element": "munder",
+          "id": null,
+          "className": "",
+          "text": "y=[t1,t2,t3,t4]⏟",
+          "left": 403,
+          "right": 530,
+          "width": 127,
+          "scrollWidth": 127
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "y=[t1,t2,t3,t4]",
+          "left": 403,
+          "right": 530,
+          "width": 127,
+          "scrollWidth": 127
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "y",
+          "left": 403,
+          "right": 411,
+          "width": 8,
+          "scrollWidth": 8
+        },
+        {
+          "element": "mo",
+          "id": null,
+          "className": "",
+          "text": "=",
+          "left": 416,
+          "right": 427,
+          "width": 11,
+          "scrollWidth": 11
+        },
+        {
+          "element": "mo",
+          "id": null,
+          "className": "",
+          "text": "[",
+          "left": 432,
+          "right": 439,
+          "width": 6,
+          "scrollWidth": 6
+        },
+        {
+          "element": "msub",
+          "id": null,
+          "className": "",
+          "text": "t1",
+          "left": 439,
+          "right": 454,
+          "width": 15,
+          "scrollWidth": 15
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "code",
+          "id": null,
+          "className": "",
+          "text": "doc /guide /模块一-前置知识/pytorch/4.12-MiniGPT综合项目.md\nexample /pytorch/minigpt_project.py\nexample /pytorc",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 495,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "doc /guide /模块一-前置知识/pytorch/4.12-MiniGPT综合项目.md",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 495,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "line",
+          "text": "example /pytorch/te t /te t_minigpt_project.py",
+          "width": 348,
+          "clientWidth": 348,
+          "scrollWidth": 417,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "[t0,t1,t2,t3,t4][t_0,t_1,t_2,t_3,t_4]",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 121,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "[t0,t1,t2,t3,t4][t_0,t_1,t_2,t_3,t_4]",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 121,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-display",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 350,
+          "clientWidth": 350,
+          "scrollWidth": 352,
+          "overflowX": "auto",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 350,
+          "clientWidth": 350,
+          "scrollWidth": 352,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 347,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "x=[t0,t1,t2,t3]⏟模型输入→y=[t1,t2,t3,t4]⏟每个位置预测下一个字符\\underbrace{x=[t_0,t_1,t_2,t_3]}_{\\text{模型输入}}\n\\quad",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 347,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-html",
+          "text": "模型输入x=[t0​,t1​,t2​,t3​]​​→每个位置预测下一个字符y=[t1​,t2​,t3​,t4​]​​",
+          "width": 350,
+          "clientWidth": 350,
+          "scrollWidth": 352,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "模型输入x=[t0​,t1​,t2​,t3​]​",
+          "width": 132,
+          "clientWidth": 132,
+          "scrollWidth": 134,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "interview-index",
+      "path": "/interview/",
+      "mode": "dark-390",
+      "title": "面试宝典 - AIInfraGuide",
+      "h1": "面试宝典",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "interview-article",
+      "path": "/interview/美团-ai-infra-一面/",
+      "mode": "dark-390",
+      "title": "美团 AI Infra 一面 - 面试宝典",
+      "h1": "美团 AI Infra 一面",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "paper-index",
+      "path": "/papers/",
+      "mode": "dark-390",
+      "title": "Paper 精读 - AIInfraGuide",
+      "h1": "Paper 精读",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Joao Gante (Hugging Face)",
+          "width": 183,
+          "clientWidth": 183,
+          "scrollWidth": 187,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Zhipu AI & T inghua Univer ity",
+          "width": 183,
+          "clientWidth": 183,
+          "scrollWidth": 204,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "text-xs text-gray-400 dark:text-gray-500 truncate max-w-[60%]",
+          "text": "作者: Google DeepMind Gemma Team",
+          "width": 183,
+          "clientWidth": 183,
+          "scrollWidth": 215,
+          "overflowX": "hidden",
+          "minWidth": "auto"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "paper-article",
+      "path": "/papers/kimi-k3-notes/",
+      "mode": "dark-390",
+      "title": "Kimi K3 解读:2.8T 参数的开源前沿模型是怎么造出来的 - AIInfraGuide",
+      "h1": "Kimi K3 解读:2.8T 参数的开源前沿模型是怎么造出来的",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "left": 20,
+          "right": 450,
+          "width": 430,
+          "scrollWidth": 601
+        },
+        {
+          "element": "semantics",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "left": 20,
+          "right": 450,
+          "width": 430,
+          "scrollWidth": 601
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qt",
+          "left": 20,
+          "right": 450,
+          "width": 430,
+          "scrollWidth": 601
+        },
+        {
+          "element": "munder",
+          "id": null,
+          "className": "",
+          "text": "βtktvt⊤⏟写入项:把新 token 的信息写进状态",
+          "left": 289,
+          "right": 495,
+          "width": 206,
+          "scrollWidth": 206
+        },
+        {
+          "element": "munder",
+          "id": null,
+          "className": "",
+          "text": "βtktvt⊤⏟",
+          "left": 362,
+          "right": 421,
+          "width": 59,
+          "scrollWidth": 59
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "βtktvt⊤",
+          "left": 362,
+          "right": 421,
+          "width": 59,
+          "scrollWidth": 59
+        },
+        {
+          "element": "msub",
+          "id": null,
+          "className": "",
+          "text": "kt",
+          "left": 383,
+          "right": 399,
+          "width": 17,
+          "scrollWidth": 17
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "k",
+          "left": 383,
+          "right": 392,
+          "width": 10,
+          "scrollWidth": 10
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "t",
+          "left": 392,
+          "right": 396,
+          "width": 4,
+          "scrollWidth": 4
+        },
+        {
+          "element": "msubsup",
+          "id": null,
+          "className": "",
+          "text": "vt⊤",
+          "left": 399,
+          "right": 421,
+          "width": 22,
+          "scrollWidth": 22
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "v",
+          "left": 399,
+          "right": 408,
+          "width": 9,
+          "scrollWidth": 9
+        },
+        {
+          "element": "mi",
+          "id": null,
+          "className": "",
+          "text": "t",
+          "left": 408,
+          "right": 412,
+          "width": 4,
+          "scrollWidth": 4
+        }
+      ],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "div",
+          "id": null,
+          "className": "content-prose prose prose-gray dark:prose-invert max-w-[75ch] mx-auto\n          prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-w",
+          "text": "原文:Kimi K3: Open Frontier Intelligence(Kimi Team / Moon hot AI,arXiv 2607.24653,2026-07-27)+ 官方仓库 RE",
+          "width": 350,
+          "clientWidth": 350,
+          "scrollWidth": 360,
+          "overflowX": "clip",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "StS_t",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 17,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "base",
+          "text": "St​",
+          "width": 18,
+          "clientWidth": 18,
+          "scrollWidth": 20,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 601,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "math",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 430,
+          "clientWidth": 430,
+          "scrollWidth": 601,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "semantics",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qtS_t = \\underbrace{(I -",
+          "width": 430,
+          "clientWidth": 430,
+          "scrollWidth": 601,
+          "overflowX": "visible",
+          "minWidth": "auto"
+        },
+        {
+          "element": "mrow",
+          "id": null,
+          "className": "",
+          "text": "St=(I−βtktkt⊤Diag(αt))⏟遗忘项:按通道衰减旧状态St−1+βtktvt⊤⏟写入项:把新 token 的信息写进状态,o~t=St⊤qt",
+          "width": 430,
+          "clientWidth": 430,
+          "scrollWidth": 601,
+          "overflowX": "visible",
+          "minWidth": "auto"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "vlist",
+          "text": "遗忘项:按通道衰减旧状态(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 177,
+          "clientWidth": 177,
+          "scrollWidth": 179,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "",
+          "text": "(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 177,
+          "clientWidth": 177,
+          "scrollWidth": 179,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "(I−βt​kt​kt⊤​Diag(αt​))​",
+          "width": 177,
+          "clientWidth": 177,
+          "scrollWidth": 179,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "minner munder",
+          "text": "βt​kt​vt⊤​​",
+          "width": 54,
+          "clientWidth": 54,
+          "scrollWidth": 56,
+          "overflowX": "visible",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "blog-index",
+      "path": "/blog/",
+      "mode": "dark-390",
+      "title": "博客 - AIInfraGuide",
+      "h1": "博客",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "blog-article",
+      "path": "/blog/update-log/",
+      "mode": "dark-390",
+      "title": "AIInfraGuide 文章更新日志 - AIInfraGuide",
+      "h1": "AIInfraGuide 文章更新日志",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "O(N2)O(N^2)",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 52,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        },
+        {
+          "element": "span",
+          "id": null,
+          "className": "katex-mathml",
+          "text": "O(N)O(N)",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 42,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "about",
+      "path": "/about/",
+      "mode": "dark-390",
+      "title": "关于 Ethan - AIInfraGuide",
+      "h1": "Ethan",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "roadmap",
+      "path": "/about/roadmap/",
+      "mode": "dark-390",
+      "title": "教程更新计划 - AIInfraGuide",
+      "h1": "本站教程更新计划",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    },
+    {
+      "page": "404",
+      "path": "/404.html",
+      "mode": "dark-390",
+      "title": "404 - 页面未找到",
+      "h1": "页面未找到",
+      "siteTheme": "editorial",
+      "colorTheme": "dark",
+      "noHorizontalOverflow": true,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "overflowingElements": [],
+      "wideContainers": [
+        {
+          "element": "a",
+          "id": null,
+          "className": "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#007aff] focus:text-white focus:rounded-lg focus:te",
+          "text": "跳到主要内容",
+          "width": 1,
+          "clientWidth": 1,
+          "scrollWidth": 96,
+          "overflowX": "hidden",
+          "minWidth": "0px"
+        }
+      ],
+      "duplicateIds": [],
+      "readingProgressCount": 1,
+      "backToTopCount": 1,
+      "errors": []
+    }
+  ]
+}

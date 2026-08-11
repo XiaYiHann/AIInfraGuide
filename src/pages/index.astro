@@ -21,8 +21,8 @@ const getPathEarly = (path: string) => {
 
 const aboutPages = [
   {
-    title: '草帽路飞介绍',
-    description: '互联网大厂 AI Infra 在职，多年相关工作经验，AIInfraGuide 作者，主攻模型训练、推理与算子优化方向。',
+    title: '关于 Ethan',
+    description: 'AIInfraGuide 维护者，持续整理和撰写 AI Infra 系统化学习内容。',
     href: getPathEarly('/about'),
     pubDate: new Date('2026-04-20'),
     tags: ['关于', '作者'],
@@ -106,11 +106,6 @@ const getFirstGuideUrl = (category: string, urlPrefix: string) => {
     </div>
 
     <div class="home-hero__inner max-w-4xl mx-auto px-6 text-center relative z-10">
-      <!-- 镜像站提示 -->
-      <div class="home-mirror-notice inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-amber-200 dark:border-amber-400/20 bg-amber-50 dark:bg-amber-400/10 text-[13px] text-amber-700 dark:text-amber-300">
-        <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
-        <span>本站为 <strong>AIInfraGuide 镜像站</strong>，内容同步自 <a href="https://github.com/caomaolufei/AIInfraGuide" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:opacity-80">caomaolufei/AIInfraGuide</a>，并持续补充新内容</span>
-      </div>
       <!-- Badge -->
       <div class="home-kicker inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm text-sm text-gray-600 dark:text-gray-400">
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -156,7 +151,7 @@ const getFirstGuideUrl = (category: string, urlPrefix: string) => {
           </svg>
         </a>
         <a
-          href="https://github.com/caomaolufei/AIInfraGuide"
+          href="https://github.com/XiaYiHann/AIInfraGuide"
           target="_blank"
           rel="noopener noreferrer"
           class="home-action inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white dark:bg-white/5 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-white/10 rounded-xl font-semibold hover:border-gray-300 dark:hover:border-white/20 hover:bg-gray-50 dark:hover:bg-white/10 transition-all duration-300 cursor-pointer"

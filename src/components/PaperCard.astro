@@ -9,9 +9,9 @@ const { paper } = Astro.props;
 const { data } = paper;
 
 const sourceTypeMeta = {
-  paper: { label: '📄 论文', class: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300' },
-  blog: { label: '📝 博客', class: 'bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-300' },
-  docs: { label: '📘 文档', class: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-300' },
+  paper: { emoji: '📄', label: '论文', class: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300' },
+  blog: { emoji: '📝', label: '博客', class: 'bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-300' },
+  docs: { emoji: '📘', label: '文档', class: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-300' },
 } as const;
 
 const meta = sourceTypeMeta[data.sourceType];
@@ -23,11 +23,11 @@ const getPath = (path: string) => {
 
 <a
   href={getPath(`/papers/${paper.id}`)}
-  class="group relative block p-6 rounded-2xl cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-indigo-300 dark:hover:border-indigo-500/40 hover:shadow-xl hover:-translate-y-1 flex flex-col"
+  class="collection-card paper-card group relative block p-6 rounded-2xl cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-indigo-300 dark:hover:border-indigo-500/40 hover:shadow-xl hover:-translate-y-1 flex flex-col"
 >
   <div class="flex items-center justify-between mb-3">
     <span class={`inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded-md ${meta.class}`}>
-      {meta.label}
+      <span class="classic-only-emoji">{meta.emoji} </span>{meta.label}
     </span>
     <time class="text-xs text-gray-400 dark:text-gray-500">
       {data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}

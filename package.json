@@ -8,6 +8,8 @@
     "build": "astro check && astro build && node scripts/check-home-navigation.mjs && pagefind --site dist && cp -r dist/pagefind public/pagefind",
     "preview": "astro preview",
     "check:navigation": "node scripts/check-home-navigation.mjs",
+    "check:theme-browser": "node scripts/check-theme-browser.mjs",
+    "check:theme-regression": "node scripts/check-theme-regression.mjs",
     "astro": "astro"
   },
   "dependencies": {

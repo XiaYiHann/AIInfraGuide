@@ -8,11 +8,11 @@ const papers = (await getCollection('papers', ({ data }) => !data.draft))
 ---
 
 <Layout title="Paper 精读 - AIInfraGuide" description="论文与技术博客的中文通俗精读:用'工程师给工程师讲课'的方式重述原文,保留全部关键事实,补上直觉与上下文">
-  <section class="relative pt-28 pb-20 min-h-screen">
+  <section class="collection-landing paper-landing relative pt-28 pb-20 min-h-screen">
     <div class="max-w-7xl mx-auto px-6">
-      <header class="max-w-2xl mb-12">
+      <header class="collection-header max-w-2xl mb-12">
         <div class="flex items-center gap-2 mb-4">
-          <span class="text-2xl">📖</span>
+          <span class="classic-only-emoji text-2xl">📖</span>
           <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Paper 精读</h1>
         </div>
         <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed">
@@ -21,7 +21,7 @@ const papers = (await getCollection('papers', ({ data }) => !data.draft))
       </header>
 
       {papers.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="collection-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {papers.map((paper) => (
             <PaperCard paper={paper} />
           ))}

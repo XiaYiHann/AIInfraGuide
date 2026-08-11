@@ -3,8 +3,6 @@ import { type CollectionEntry, getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import MobileToc from '../../components/MobileToc.astro';
-import ReadingProgress from '../../components/ReadingProgress.astro';
-import BackToTop from '../../components/BackToTop.astro';
 
 export async function getStaticPaths() {
   const papers = await getCollection('papers', ({ data }) => !data.draft);
@@ -23,9 +21,9 @@ const { Content, headings } = await render(paper);
 const readingMinutes = Math.max(1, Math.round((paper.body ?? '').replace(/\s/g, '').length / 400));
 
 const sourceTypeMeta = {
-  paper: { label: '📄 论文精读', class: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300' },
-  blog: { label: '📝 博客精读', class: 'bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-300' },
-  docs: { label: '📘 文档精读', class: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-300' },
+  paper: { emoji: '📄', label: '论文精读', class: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300' },
+  blog: { emoji: '📝', label: '博客精读', class: 'bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-300' },
+  docs: { emoji: '📘', label: '文档精读', class: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-300' },
 } as const;
 
 const meta = sourceTypeMeta[data.sourceType];
@@ -36,12 +34,10 @@ const getPath = (path: string) => {
 ---
 
 <Layout title={`${data.title} - AIInfraGuide`} description={data.description}>
-  <ReadingProgress />
-  <BackToTop />
 
-  <div class="max-w-[1400px] mx-auto px-6 py-12 flex gap-10">
+  <div class="docs-shell content-layout paper-content max-w-[1400px] mx-auto px-6 py-12 flex gap-10">
     <!-- Main Content -->
-    <article class="flex-1 min-w-0">
+    <article class="content-article flex-1 min-w-0">
       <!-- 移动端折叠目录 -->
       <MobileToc headings={headings} />
 
@@ -54,10 +50,10 @@ const getPath = (path: string) => {
       </a>
 
       <!-- Article Header -->
-      <header class="mb-10 pb-8 border-b border-gray-200 dark:border-white/[0.06]">
+      <header class="content-header mb-10 pb-8 border-b border-gray-200 dark:border-white/[0.06]">
         <div class="flex items-center gap-3 mb-5 flex-wrap">
           <span class={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-md ${meta.class}`}>
-            {meta.label}
+            <span class="classic-only-emoji">{meta.emoji} </span>{meta.label}
           </span>
           {data.originalAuthor && (
             <span class="text-xs text-gray-400 dark:text-gray-500">作者: {data.originalAuthor}</span>
@@ -100,7 +96,7 @@ const getPath = (path: string) => {
 
       <!-- Article Body -->
       <div
-        class="prose prose-gray dark:prose-invert max-w-[75ch] mx-auto
+        class="content-prose prose prose-gray dark:prose-invert max-w-[75ch] mx-auto
           prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
           prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-3 prose-h2:pb-3 prose-h2:border-b prose-h2:border-gray-100 dark:prose-h2:border-white/[0.06]
           prose-h3:text-xl prose-h3:mt-6
