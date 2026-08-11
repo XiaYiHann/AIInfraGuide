@@ -1,7 +1,7 @@
 # Paper 精读:候选清单与学习路线规划
 
-> 状态:**待审阅(未提交)**
-> 日期:2026-08-11
+> 状态:**第一批已上线(2026-08-11)**
+> 第一批:PagedAttention / Orca / Splitwise 三篇精读 + 精读路线站点改造,均已部署上线
 > 目标:让精读从"按日期平铺的列表"升级为"有时间顺序的阅读路线",并给出新增候选的优先级与写作流程。
 
 ## 1. 现状盘点
@@ -137,3 +137,31 @@
 - **第 3 批**:FlashAttention-2 → Mooncake → DeepSeek-V3 报告
 - 之后:DSA、RadixAttention、DistServe、ZeRO、Megatron 按需推进
 - 站点改造(第 5 节)与第 1 批同步实施,首批三篇上线时索引页即呈现路线形态
+
+
+---
+
+## 8. 执行状态(2026-08-11 更新)
+
+### 第一批:已完成并上线
+
+| 文章 | 阶段/顺序 | 审校 | 提交 | 部署 run |
+| --- | --- | --- | --- | --- |
+| PagedAttention | 第 1 站 · 第 1 篇 | 独立审校 PASS(含一次人工裁定) | `ef5646a` | 31459385571 |
+| Orca | 第 1 站 · 第 2 篇 | 独立审校 PASS | `ad9b40c` | 31461035569 |
+| Splitwise | 第 1 站 · 第 5 篇 | 独立审校 PASS(含一次人工裁定) | `9574c55` | 31464357649 |
+
+### 站点改造:已完成
+
+- `src/content/config.ts`:papers schema 增加可选字段 stage/order/prereqs/minutes/difficulty;
+- `src/pages/papers/index.astro`:精读路线概览 + 按阶段分组渲染(既有文章由代码侧路线配置归类,未改已上线文章);
+- `src/components/PaperCard.astro`:卡片显示阶段、站内顺序、预计时长、难度、前置阅读;
+- `src/pages/index.astro`:精读区改为「从这里开始」,展示路线开头 3 篇;
+- `docs/guides/AI Infra学习路线.md`:新增「精读路线(Paper 精读)」小节;
+- 每篇上线后构建 486→487→488 页,0 errors,Pagefind 可搜,线上断言全部通过。
+
+### 后续批次(按第 3 节优先级推进)
+
+- P0 剩余:FlashAttention-2、Mooncake;
+- P1:EAGLE-2、DFlash、SARATHI、RadixAttention、DistServe、DeepSeek-V3.2(DSA)、ZeRO、DeepSeek-V3 技术报告;
+- P2:按需。
