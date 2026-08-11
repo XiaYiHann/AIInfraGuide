@@ -13,9 +13,13 @@ interface Props {
   difficulty?: number;
   /** 前置文章标题列表 */
   prereqTitles?: string[];
+  /** 发布 14 天内显示「新」徽标 */
+  isNew?: boolean;
+  /** 渲染「标为已读」切换钮(索引页已读进度用) */
+  readToggle?: boolean;
 }
 
-const { paper, stageLabel, routeOrder, minutes, difficulty, prereqTitles = [] } = Astro.props;
+const { paper, stageLabel, routeOrder, minutes, difficulty, prereqTitles = [], isNew = false, readToggle = false } = Astro.props;
 const { data } = paper;
 
 const sourceTypeMeta = {
@@ -53,8 +57,21 @@ const difficultyDots = typeof difficulty === 'number'
       <span class="inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-md bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300">
         {stageLabel}
       </span>
+      {isNew && (
+        <span class="inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-md bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-300">
+          新
+        </span>
+      )}
       {typeof routeOrder === 'number' && (
         <span class="text-[11px] text-gray-400 dark:text-gray-500">站内第 {routeOrder} 篇</span>
+      )}
+      {readToggle && (
+        <span
+          class="read-toggle ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 dark:border-white/10 text-gray-300 dark:text-gray-600 hover:text-emerald-600 dark:hover:text-emerald-400 cursor-pointer select-none transition-colors"
+          data-paper-id={paper.id}
+          title="标为已读/未读"
+          aria-label="标为已读"
+        >✓</span>
       )}
     </div>
   )}

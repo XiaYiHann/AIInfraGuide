@@ -9,39 +9,51 @@ const papers = (await getCollection('papers', ({ data }) => !data.draft));
 const STAGES = [
   {
     id: 'intuition',
+    num: 0,
     title: '第 0 站 · 直觉启动',
     emoji: '🌱',
     goal: '先建立“投机解码到底在省什么”的直觉,零负担入场。',
+    planned: [] as string[],
   },
   {
     id: 'engine',
+    num: 1,
     title: '第 1 站 · 推理引擎主干',
     emoji: '⚙️',
     goal: 'KV 管理、batching、前缀缓存与 PD 解耦——推理岗 80% 的系统面经题落在这里。',
+    planned: ['SARATHI · Chunked Prefill (2308.16369)', 'RadixAttention / SGLang (2312.07104)', 'DistServe (2401.09670)'],
   },
   {
     id: 'speculative',
+    num: 2,
     title: '第 2 站 · 投机解码谱系',
     emoji: '🚀',
     goal: '对比自回归 / 并行 / 半自回归三条 drafter 路线与验证预算调度。',
+    planned: ['EAGLE-2 (2406.16858)', 'DFlash (2602.06036)'],
   },
   {
     id: 'attention',
+    num: 3,
     title: '第 3 站 · 注意力与长上下文',
     emoji: '🔍',
     goal: '在线 softmax、split-K 与稀疏注意力如何省 FLOPs 和显存。',
+    planned: ['FlashAttention-2 (2307.08691)', 'FlashDecoding / FlashDecoding++', 'DSA / NSA 稀疏注意力'],
   },
   {
     id: 'distributed',
+    num: 4,
     title: '第 4 站 · 分布式训练',
     emoji: '🏋️',
     goal: '训练方向:显存账本、TP/PP/EP 与通信计算重叠。',
+    planned: ['ZeRO (1910.02054)', 'Megatron-LM (1909.08053)', 'DeepSeek-V3 技术报告 (2412.19437)'],
   },
   {
     id: 'production',
+    num: 5,
     title: '第 5 站 · 生产与前沿(并行阅读)',
     emoji: '🌐',
     goal: '生产架构视野与前沿谈资,任何阶段都可读,不构成前置依赖。',
+    planned: ['Mooncake (2407.00079)', 'Efficiently Serving LLM Mixtures (LMSYS)'],
   },
 ];
 
@@ -73,13 +85,30 @@ const routeOf = (paper: (typeof papers)[number]) => {
 const titleOf = (id: string) => papers.find((p) => p.id === id)?.data.title ?? id;
 const stageById = (id: string) => STAGES.find((s) => s.id === id);
 
+// 顺序阅读链(生产站为并行区,不进入“下一步”推荐)
+const SEQUENTIAL_IDS = ['assisted-generation-notes', 'pagedattention-notes', 'orca-notes', 'splitwise-notes', 'dspark-notes'];
+
 const grouped = STAGES.map((stage) => ({
   ...stage,
   items: papers
     .map((paper) => ({ paper, route: routeOf(paper) }))
     .filter(({ route }) => route.stage === stage.id)
     .sort((a, b) => a.route.order - b.route.order),
-})).filter((g) => g.items.length > 0);
+}));
+
+const totalPapers = papers.length;
+const NEW_WINDOW_DAYS = 14;
+const isNew = (p: (typeof papers)[number]) => Date.now() - p.data.pubDate.getTime() <= NEW_WINDOW_DAYS * 86400000;
+
+// 客户端「下一步该读」的静态回退(assisted-generation 或第一篇顺序文章)
+const firstSequential = SEQUENTIAL_IDS.map((id) => papers.find((p) => p.id === id)).find((p) => Boolean(p));
+
+// 注入给页面脚本的顺序路线数据(define:vars 会使脚本 inline,不能用 import.meta)
+const baseUrl = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
+const routeData = SEQUENTIAL_IDS.map((id) => {
+  const paper = papers.find((p) => p.id === id);
+  return paper ? { id, title: paper.data.title, stage: stageById(routeOf(paper).stage)?.title ?? '' } : null;
+}).filter((x): x is { id: string; title: string; stage: string } => Boolean(x));
 ---
 
 <Layout
@@ -96,67 +125,266 @@ const grouped = STAGES.map((stage) => ({
         <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed">
           论文与技术博客的中文通俗精读——按学习顺序读,而不是按发布时间刷。每篇标注阶段、时长与前置,从第 0 站开始一路读到生产前沿。
         </p>
+        <p class="mt-3 text-sm text-gray-400 dark:text-gray-500">
+          共 {totalPapers} 篇精读 · 路线 {STAGES.length} 站 · 标记已读后,页面会记住你的进度并推荐下一站
+        </p>
       </header>
+
+      <!-- 下一步该读(客户端动态计算,静态回退到路线开头) -->
+      {firstSequential && (
+        <div
+          id="next-paper-panel"
+          class="mb-10 rounded-xl border border-indigo-200 dark:border-indigo-500/20 bg-indigo-50/60 dark:bg-indigo-500/5 px-5 py-4"
+        >
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-sm font-semibold text-indigo-700 dark:text-indigo-300">
+              <span class="classic-only-emoji">🎯 </span>下一步该读
+            </span>
+            <a
+              id="next-paper-link"
+              href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/papers/${firstSequential.id}/`}
+              class="text-sm font-medium text-gray-900 dark:text-white underline decoration-dotted underline-offset-4 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            >
+              {firstSequential.data.title}
+            </a>
+            <span id="next-paper-stage" class="text-xs text-gray-400 dark:text-gray-500">
+              {stageById(routeOf(firstSequential).stage)?.title ?? ''}
+            </span>
+          </div>
+        </div>
+      )}
+
+      <!-- 过滤条 -->
+      <div class="mb-12 flex flex-wrap items-center gap-3">
+        <input
+          id="paper-filter-input"
+          type="text"
+          placeholder="按标题 / 描述 / 标签过滤…"
+          class="w-full sm:w-72 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.03] px-3.5 py-2 text-sm text-gray-700 dark:text-gray-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+        />
+        <label class="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer select-none">
+          <input id="paper-hide-read" type="checkbox" class="accent-indigo-500" />
+          隐藏已读
+        </label>
+        <span id="paper-filter-count" class="ml-auto text-xs text-gray-400 dark:text-gray-500"></span>
+      </div>
 
       <!-- 路线概览 -->
       <div class="mb-14">
         <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-5">
           <span class="classic-only-emoji">🗺️ </span>精读路线
         </h2>
-        <ol class="space-y-3">
-          {STAGES.map((stage, i) => {
+        <ol class="space-y-2.5">
+          {STAGES.map((stage) => {
             const count = papers.filter((p) => routeOf(p).stage === stage.id).length;
             return (
-              <li class="flex items-start gap-3 rounded-xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] px-5 py-3.5">
-                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-xs font-bold text-indigo-600 dark:text-indigo-300">
-                  {i + 1}
-                </span>
-                <div class="min-w-0">
-                  <div class="flex flex-wrap items-center gap-2">
-                    <span class="classic-only-emoji">{stage.emoji}</span>
-                    <span class="font-semibold text-gray-900 dark:text-white">{stage.title}</span>
-                    <span class="text-xs text-gray-400 dark:text-gray-500">{count} 篇</span>
-                  </div>
-                  <p class="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{stage.goal}</p>
-                </div>
+              <li>
+                <a
+                  href={`#stage-${stage.id}`}
+                  class="flex items-start gap-3 rounded-xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] px-5 py-3.5 hover:border-indigo-300 dark:hover:border-indigo-500/40 transition-colors"
+                >
+                  <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-xs font-bold text-indigo-600 dark:text-indigo-300">
+                    {stage.num}
+                  </span>
+                  <span class="min-w-0">
+                    <span class="flex flex-wrap items-center gap-2">
+                      <span class="classic-only-emoji">{stage.emoji}</span>
+                      <span class="font-semibold text-gray-900 dark:text-white">{stage.title}</span>
+                      <span class="text-xs text-gray-400 dark:text-gray-500">
+                        {count} 篇{stage.planned.length > 0 ? ` + ${stage.planned.length} 计划中` : ''}
+                      </span>
+                    </span>
+                    <span class="mt-0.5 block text-sm text-gray-500 dark:text-gray-400">{stage.goal}</span>
+                  </span>
+                </a>
               </li>
             );
           })}
         </ol>
       </div>
 
-      <!-- 按阶段分组 -->
-      {grouped.length > 0 ? (
-        grouped.map((group) => (
-          <section class="mb-14">
-            <div class="mb-6">
-              <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                <span class="classic-only-emoji">{group.emoji} </span>{group.title}
-              </h2>
+      <!-- 按阶段分组(含空阶段的计划占位) -->
+      {grouped.map((group) => {
+        const stage = stageById(group.id)!;
+        return (
+          <section id={`stage-${group.id}`} class="stage-section mb-14 scroll-mt-24">
+            <div class="mb-4">
+              <div class="flex flex-wrap items-center gap-3">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                  <span class="classic-only-emoji">{stage.emoji} </span>{stage.title}
+                </h2>
+                <span
+                  class="stage-progress-text text-xs text-gray-400 dark:text-gray-500"
+                  data-stage-progress={group.id}
+                ></span>
+              </div>
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {group.goal}
-                {group.id === 'production' && <span class="classic-only-emoji">(随时可读)</span>}
+                {stage.goal}
+                {stage.id === 'production' && <span class="classic-only-emoji">(随时可读)</span>}
               </p>
+              <div class="mt-3 h-1 w-full max-w-xs overflow-hidden rounded-full bg-gray-100 dark:bg-white/5">
+                <div
+                  class="stage-progress-bar h-full rounded-full bg-emerald-500/80 transition-all duration-300"
+                  data-stage-bar={group.id}
+                  style="width: 0%"
+                ></div>
+              </div>
             </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {group.items.map(({ paper, route }) => (
-                <PaperCard
-                  paper={paper}
-                  stageLabel={stageById(route.stage)?.title ?? route.stage}
-                  routeOrder={route.order}
-                  minutes={route.minutes}
-                  difficulty={route.difficulty}
-                  prereqTitles={route.prereqs.map(titleOf)}
-                />
+                <div
+
+                  class="paper-item"
+                  data-paper-id={paper.id}
+                  data-stage={route.stage}
+                  data-search={`${paper.data.title} ${paper.data.description} ${paper.data.tags.join(' ')}`.toLowerCase()}
+                >
+                  <PaperCard
+                    paper={paper}
+                    stageLabel={stageById(route.stage)?.title ?? route.stage}
+                    routeOrder={route.order}
+                    minutes={route.minutes}
+                    difficulty={route.difficulty}
+                    prereqTitles={route.prereqs.map(titleOf)}
+                    isNew={isNew(paper)}
+                    readToggle={true}
+                  />
+                </div>
               ))}
             </div>
+
+            {group.planned.length > 0 && (
+              <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="text-xs text-gray-400 dark:text-gray-500">计划中:</span>
+                {group.planned.map((p) => (
+                  <span
+
+                    class="inline-flex items-center rounded-md border border-dashed border-gray-200 dark:border-white/10 px-2.5 py-1 text-xs text-gray-400 dark:text-gray-500"
+                  >
+                    {p}
+                  </span>
+                ))}
+              </div>
+            )}
           </section>
-        ))
-      ) : (
-        <div class="py-20 text-center text-gray-400 dark:text-gray-500">
-          精读文章正在路上,敬请期待
-        </div>
-      )}
+        );
+      })}
     </div>
   </section>
 </Layout>
+
+<script define:vars={{ routeData, baseUrl }}>
+  const ROUTE = routeData;
+
+  const base = baseUrl;
+  const KEY = 'aiinfra-paper-read-v1';
+  let read;
+  try {
+    read = new Set(JSON.parse(localStorage.getItem(KEY) || '[]'));
+  } catch {
+    read = new Set();
+  }
+
+  const save = () => localStorage.setItem(KEY, JSON.stringify([...read]));
+
+  const renderNext = () => {
+    const panel = document.getElementById('next-paper-panel');
+    if (!panel) return;
+    const next = ROUTE.find((r) => !read.has(r.id));
+    const link = document.getElementById('next-paper-link');
+    const stageEl = document.getElementById('next-paper-stage');
+    if (!next) {
+      if (link) {
+        link.textContent = '顺序路线已全部读完 — 到第 5 站前沿区自由挑选';
+        link.removeAttribute('href');
+      }
+      if (stageEl) stageEl.textContent = '已读完 🎉';
+      return;
+    }
+    if (link) {
+      link.textContent = next.title;
+      link.href = `${base}/papers/${next.id}/`;
+    }
+    if (stageEl) stageEl.textContent = next.stage;
+  };
+
+  const renderProgress = () => {
+    document.querySelectorAll('[data-stage-progress]').forEach((el) => {
+      const stageId = el.dataset.stageProgress;
+      const ids = [...document.querySelectorAll(`.stage-section .paper-item[data-stage="${stageId}"]`)].map(
+        (n) => n.dataset.paperId
+      );
+      const done = ids.filter((id) => read.has(id)).length;
+      el.textContent = ids.length > 0 ? `已读 ${done}/${ids.length}` : '';
+      const bar = document.querySelector(`[data-stage-bar="${stageId}"]`);
+      if (bar) bar.style.width = ids.length > 0 ? `${(done / ids.length) * 100}%` : '0%';
+    });
+  };
+
+  const renderReadState = () => {
+    document.querySelectorAll('.paper-item').forEach((item) => {
+      const id = item.dataset.paperId;
+      const card = item.querySelector('.paper-card');
+      const toggle = item.querySelector('.read-toggle');
+      if (card) card.classList.toggle('is-read', read.has(id));
+      if (toggle) {
+        toggle.classList.toggle('bg-emerald-500/10', read.has(id));
+        toggle.classList.toggle('border-emerald-400/40', read.has(id));
+        toggle.classList.toggle('text-emerald-600', read.has(id));
+        toggle.classList.toggle('dark:text-emerald-400', read.has(id));
+      }
+    });
+  };
+
+  const applyFilters = () => {
+    const kw = document.getElementById('paper-filter-input').value.trim().toLowerCase();
+    const hideRead = document.getElementById('paper-hide-read').checked;
+    let visible = 0;
+    document.querySelectorAll('.stage-section').forEach((section) => {
+      let sectionVisible = 0;
+      section.querySelectorAll('.paper-item').forEach((item) => {
+        const matchKw = !kw || (item.dataset.search || '').includes(kw);
+        const matchRead = !hideRead || !read.has(item.dataset.paperId);
+        const show = matchKw && matchRead;
+        item.classList.toggle('hidden', !show);
+        if (show) sectionVisible += 1;
+      });
+      const anyVisible = sectionVisible > 0 || section.querySelectorAll('.paper-item').length === 0;
+      section.classList.toggle('hidden', !anyVisible && !kw);
+      visible += sectionVisible;
+    });
+    const count = document.getElementById('paper-filter-count');
+    if (count) count.textContent = kw || hideRead ? `显示 ${visible}/${document.querySelectorAll('.paper-item').length} 篇` : '';
+  };
+
+  renderNext();
+  renderProgress();
+  renderReadState();
+  applyFilters();
+
+  document.addEventListener('click', (e) => {
+    const target = e.target.closest('[data-paper-id]');
+    if (!target || !target.classList.contains('read-toggle')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const id = target.dataset.paperId;
+    if (read.has(id)) read.delete(id);
+    else read.add(id);
+    save();
+    renderReadState();
+    renderProgress();
+    renderNext();
+    applyFilters();
+  });
+
+  document.getElementById('paper-filter-input')?.addEventListener('input', applyFilters);
+  document.getElementById('paper-hide-read')?.addEventListener('change', applyFilters);
+</script>
+
+<style>
+  .paper-card.is-read {
+    opacity: 0.55;
+    filter: saturate(0.6);
+  }
+</style>
