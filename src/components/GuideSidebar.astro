@@ -58,7 +58,7 @@ const grouped = categoriesToShow
   .filter((group) => group.items.length > 0);
 ---
 
-<nav class="docs-sidebar guide-sidebar w-72 shrink-0 sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto sidebar-scroll pr-2">
+<nav class="docs-sidebar guide-sidebar w-72 shrink-0 sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto sidebar-scroll auto-scrollbar pr-2">
   <div class="space-y-6">
     {grouped.map((group) => {
       const { chapters, ungrouped } = group.chapterData;

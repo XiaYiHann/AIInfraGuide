@@ -29,7 +29,7 @@ const isActivePath = (id: string) => {
 const currentCompany = interviews.find((i) => isActivePath(i.id))?.data.company;
 ---
 
-<nav class="docs-sidebar interview-sidebar w-72 shrink-0 sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto sidebar-scroll pr-2">
+<nav class="docs-sidebar interview-sidebar w-72 shrink-0 sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto sidebar-scroll auto-scrollbar pr-2">
   <div class="space-y-6">
     {tierGroups.map((group) => (
       <div>

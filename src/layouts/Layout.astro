@@ -351,6 +351,24 @@ const mobileNavLinkClass = (prefix: string) =>
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
+      // Auto-hide scrollbars: 滚动时显示,静止 900ms 后隐藏(容器 + 窗口)
+      let scrollbarTimer = 0;
+      const markScrolling = (target: EventTarget | null) => {
+        let el: HTMLElement | null = null;
+        if (target === document) {
+          el = document.documentElement;
+        } else if (target instanceof Element && target.classList.contains('auto-scrollbar')) {
+          el = target as HTMLElement;
+        }
+        if (!el) return;
+        el.classList.add('is-scrolling');
+        clearTimeout(scrollbarTimer);
+        scrollbarTimer = window.setTimeout(() => {
+          document.querySelectorAll('.is-scrolling').forEach((n) => n.classList.remove('is-scrolling'));
+        }, 900);
+      };
+      document.addEventListener('scroll', (e) => markScrolling(e.target), { capture: true, passive: true });
+
       // Mobile menu
       const mobileMenuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenuClose = document.getElementById('mobile-menu-close');
