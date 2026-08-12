@@ -9,6 +9,23 @@ tags: ["公告", "更新日志"]
 
 ---
 
+## 2026-08-12
+
+### 模块一第 5 章补全：GPU 硬件概论
+
+第 5 章从 2 篇补齐为完整章节(7 篇)：将原大杂烩《GPU基础知识》拆分为 6 篇新文章并大幅扩展（deepseek-v4-flash workflow 写作+审计，规格数字对照官方资料核实）：
+
+- **文章：** [5.2 GPU 架构总览](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/gpu/52-gpu架构总览) | CPU vs GPU 设计哲学、SM/CUDA Core/Tensor Core 层次、Warp 调度
+- **文章：** [5.3 存储层次与 Memory Wall](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/gpu/53-存储层次与memory-wall) | 寄存器→共享→L1/L2→HBM→主机，带宽/延迟量级，为什么带宽先成瓶颈
+- **文章：** [5.4 Tensor Core 与 AI 加速](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/gpu/54-tensor-core与ai加速) | 4×4 MMA 原理、FP16/BF16/FP8、GEMM 硬件基础
+- **文章：** [5.5 主流 AI GPU 规格对比与 Roofline](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/gpu/55-主流ai-gpu规格对比与roofline) | A100→B200 参数表、Arithmetic Intensity、Roofline Model
+- **文章：** [5.6 显存管理基础](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/gpu/56-显存管理基础) | 训练显存账本（18B/参数）、显存优化策略的硬件视角
+- **文章：** [5.7 多卡互联拓扑](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/gpu/57-多卡互联拓扑) | NVLink/NVSwitch/InfiniBand、topo -m 实战、拓扑→并行策略
+
+原《GPU基础知识》大杂烩已拆分删除；每篇含 2 张 Mermaid 图（配中文导读）、公式三件套；规格数字标注来源口径。
+
+---
+
 ## 2026-08-09
 
 ---
