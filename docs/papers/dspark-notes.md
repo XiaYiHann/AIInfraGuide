@@ -1,6 +1,6 @@
 ---
-title: "DSpark 精读:用半自回归草稿和置信度调度重画推理 Pareto 前沿"
-description: "拆解 DeepSeek 与北大提出的 DSpark:并行骨干加轻量 Markov Head 如何缓解草稿后缀衰减,置信度与硬件吞吐曲线如何按请求分配验证预算,以及 DeepSeek-V4 线上匹配吞吐下单用户生成速度提升 60%–85% 的真实口径。"
+title: "DSpark 精读：用半自回归草稿和置信度调度重画推理 Pareto 前沿"
+description: "拆解 DeepSeek 与北大提出的 DSpark:并行骨干加轻量 Markov Head 如何缓解草稿后缀衰减，置信度与硬件吞吐曲线如何按请求分配验证预算，以及 DeepSeek-V4 线上匹配吞吐下单用户生成速度提升 60%–85% 的真实口径。"
 pubDate: 2026-08-11
 originalUrl: "https://arxiv.org/abs/2607.05147"
 sourceType: "paper"
@@ -8,7 +8,7 @@ originalAuthor: "Xin Cheng et al. (Peking University & DeepSeek-AI)"
 tags: ["DSpark", "Speculative Decoding", "DeepSeek-V4", "SGLang", "推理调度", "LLM Serving"]
 ---
 
-> 原文:[DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147)(Xin Cheng et al.,北京大学与 DeepSeek-AI,arXiv 2607.05147 v1,2026-07)
+> 原文：[DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147)(Xin Cheng et al.,北京大学与 DeepSeek-AI,arXiv 2607.05147 v1,2026-07)
 
 投机解码过去常被概括成“让小模型先猜、大模型再验”，DSpark 把这个故事向前推进了两步：**草稿不能只追求一次猜得多，还要让长草稿前后连贯；验证也不能固定长度，而要把有限的 GPU 批容量分给最可能被接受的 token。** 论文在 Qwen3-4B/8B/14B 的离线实验中，相对 DFlash 将宏平均接受长度提高 **16.3%/18.4%/18.3%**；部署到 DeepSeek-V4 线上流量后，在匹配系统吞吐的口径下，V4-Flash 单用户生成速度提高 **60%–85%**，V4-Pro 提高 **57%–78%**。但这不是“所有模型无条件快 85%”：收益取决于草稿质量、请求类型、并发负载、硬件吞吐曲线和服务引擎能否真正执行变长验证。
 
@@ -17,15 +17,15 @@ tags: ["DSpark", "Speculative Decoding", "DeepSeek-V4", "SGLang", "推理调度"
 ## 📑 目录
 
 - [🗺️ 原文阅读地图](#️-原文阅读地图)
-- [0. 读前 3 分钟:先把三笔账算清](#0-读前-3-分钟先把三笔账算清)
+- [0. 读前 3 分钟：先把三笔账算清](#0-读前-3-分钟先把三笔账算清)
 - [1. DSpark 要解决的两个失败模式](#1-dspark-要解决的两个失败模式)
-- [2. 总体架构:起草、排预算、再验证](#2-总体架构起草排预算再验证)
-- [3. 半自回归草稿:并行骨干加一点顺序依赖](#3-半自回归草稿并行骨干加一点顺序依赖)
-- [4. 置信度头:预测一段前缀能活多久](#4-置信度头预测一段前缀能活多久)
-- [5. 硬件感知前缀调度:把验证预算花在刀刃上](#5-硬件感知前缀调度把验证预算花在刀刃上)
+- [2. 总体架构：起草、排预算、再验证](#2-总体架构起草排预算再验证)
+- [3. 半自回归草稿：并行骨干加一点顺序依赖](#3-半自回归草稿并行骨干加一点顺序依赖)
+- [4. 置信度头：预测一段前缀能活多久](#4-置信度头预测一段前缀能活多久)
+- [5. 硬件感知前缀调度：把验证预算花在刀刃上](#5-硬件感知前缀调度把验证预算花在刀刃上)
 - [6. 训练目标与开源复现账本](#6-训练目标与开源复现账本)
-- [7. 离线实验:接受长度为何真的提高](#7-离线实验接受长度为何真的提高)
-- [8. 线上部署:真正改变的是吞吐与交互性的前沿](#8-线上部署真正改变的是吞吐与交互性的前沿)
+- [7. 离线实验：接受长度为何真的提高](#7-离线实验接受长度为何真的提高)
+- [8. 线上部署：真正改变的是吞吐与交互性的前沿](#8-线上部署真正改变的是吞吐与交互性的前沿)
 - [9. 从论文到当前工程:SGLang 如何把调度收益落到 GPU](#9-从论文到当前工程sglang-如何把调度收益落到-gpu)
 - [10. 权衡、局限与选型边界](#10-权衡局限与选型边界)
 - [📝 总结](#-总结)
@@ -52,7 +52,7 @@ tags: ["DSpark", "Speculative Decoding", "DeepSeek-V4", "SGLang", "推理调度"
 
 📌 **本文承诺**：读完后，你应该能手算一段草稿的前缀生存概率，解释为什么 Markov Head 能缓解后缀衰减，写出吞吐目标 $\Theta=\tau\cdot\mathrm{SPS}(B)$，并说明调度器为何必须满足 non-anticipating（不偷看未来 token）条件。
 
-## 0. 读前 3 分钟:先把三笔账算清
+## 0. 读前 3 分钟：先把三笔账算清
 
 ### 0.1 投机解码到底省了什么
 
@@ -134,11 +134,11 @@ DFlash 的优势是草稿 backbone 只跑一次，$T_{\text{draft}}$ 几乎不�
 | 并行草稿缺块内依赖，后缀衰减 | Parallel Backbone + 轻量 Sequential Head | 提高 $\tau$，少量增加 $T_{\text{draft}}$ |
 | 固定长度验证浪费批容量 | Confidence Head + Hardware-Aware Prefix Scheduler | 降低有效 $T_{\text{verify}}$ |
 
-## 2. 总体架构:起草、排预算、再验证
+## 2. 总体架构：起草、排预算、再验证
 
 <img src="/AIInfraGuide/images/dspark-fig1-architecture.png" alt="DSpark 一轮解码流程：目标模型生成锚点 D，并行骨干与轻量串行头起草 EFGH 及置信度，硬件感知前缀调度丢弃低置信 H，目标模型并行校验并接受 EF、拒绝 G 后产出纠正 token G 星" style="max-width: 88%; display: block; margin: 0 auto;" />
 
-*图源:DSpark 论文 Figure 1(arXiv:2607.05147)*
+*图源：DSpark 论文 Figure 1(arXiv:2607.05147)*
 
 沿着图走一轮：
 
@@ -159,7 +159,7 @@ DFlash 的优势是草稿 backbone 只跑一次，$T_{\text{draft}}$ 几乎不�
 | 成功条件 | sequential head 足够轻；confidence 已校准；引擎能执行变长验证 |
 | 失败条件 | 草稿普遍难猜；成本表失真；变长请求仍被 padding 回固定宽度 |
 
-## 3. 半自回归草稿:并行骨干加一点顺序依赖
+## 3. 半自回归草稿：并行骨干加一点顺序依赖
 
 ### 3.1 重活并行做，轻活串行做
 
@@ -213,7 +213,7 @@ $$
 
 <img src="/AIInfraGuide/images/dspark-fig2-position-acceptance.png" alt="Qwen3-4B 上 Math、Code、Chat 各 draft 位置的条件接受率：DFlash 起点高但后缀下滑，Eagle3 后期回升，DSpark 全程更高更稳" style="max-width: 95%; display: block; margin: 0 auto;" />
 
-*图源:DSpark 论文 Figure 2(arXiv:2607.05147)*
+*图源：DSpark 论文 Figure 2(arXiv:2607.05147)*
 
 Figure 2 不是普通的“前缀存活率”，而是**位置条件接受率**：只有前面位置全部已接受的样本，才进入第 $k$ 个位置的分母。它把“前面先错了”的惩罚剥掉，直接观察某个位置自身的预测质量。
 
@@ -225,13 +225,13 @@ Figure 2 不是普通的“前缀存活率”，而是**位置条件接受率**�
 
 <img src="/AIInfraGuide/images/dspark-fig4-block-size.png" alt="不同 draft 长度下 Math、Code、Chat 的接受长度与整轮时延：DSpark 的 Markov 和 RNN 方案持续优于 DFlash，优势随长度扩大，串行头额外时延约 0.2% 到 1.3%" style="max-width: 98%; display: block; margin: 0 auto;" />
 
-*图源:DSpark 论文 Figure 4(arXiv:2607.05147)*
+*图源：DSpark 论文 Figure 4(arXiv:2607.05147)*
 
 当 proposal length 从 $\gamma=7$ 增至 $15$ 时，DSpark 相对 DFlash 的接受长度提升从 Math/Code/Chat 的 **16%/15%/18%** 扩大到 **30%/26%/22%**。与此同时，在 batch size 128、上下文长度取 512/1024/2048/4096 平均的实验里，把总 draft 长度从 4 拉到 16，相对 DFlash 的整轮时延只增加 **0.2%–1.3%**。
 
 ⚠️ **注意口径**：这里的“串行开销很小”发生在论文给定的 batch、目标模型和引擎设置中，且目标模型验证占主导。不能据此断言任意小模型、batch=1 或任意 kernel 下 Markov loop 都可忽略。
 
-## 4. 置信度头:预测一段前缀能活多久
+## 4. 置信度头：预测一段前缀能活多久
 
 ### 4.1 它预测的不是“这个 token 看起来像不像”
 
@@ -283,11 +283,11 @@ $$
 
 <img src="/AIInfraGuide/images/dspark-fig5-confidence-threshold.png" alt="置信度阈值扫描：提高阈值会剪掉将被拒绝的后缀 token，接受率上升；Chat 场景剪枝最强，接受率由约 46% 升至约 96%" style="max-width: 95%; display: block; margin: 0 auto;" />
 
-*图源:DSpark 论文 Figure 5(arXiv:2607.05147)*
+*图源：DSpark 论文 Figure 5(arXiv:2607.05147)*
 
 Figure 5 是离线静态阈值诊断，不是最终硬件调度器。阈值提高后，Chat 接受率从 **45.7%** 升到 **95.7%**，Math 从 **76.9%** 升到 **92.5%**，Code 从 **67.6%** 升到 **92.0%**。接受率升高的同时，每步保留 token 数也在下降——**高接受率本身不是免费收益，它来自主动少验一些 token。** 最终要不要剪，仍要交给下一节的系统吞吐目标判断。
 
-## 5. 硬件感知前缀调度:把验证预算花在刀刃上
+## 5. 硬件感知前缀调度：把验证预算花在刀刃上
 
 ### 5.1 把问题写成吞吐最大化
 
@@ -430,7 +430,7 @@ $$
 
 ⚠️ **不要把 Table 1 的 checkpoint 直接外推到任意模型。** Target-dependent drafter 学的是“怎样贴近这一份 target 分布”，模型、推理模式、领域和 tokenizer 变化都可能降低接受率。
 
-## 7. 离线实验:接受长度为何真的提高
+## 7. 离线实验：接受长度为何真的提高
 
 ### 7.1 主结果先看宏平均
 
@@ -467,7 +467,7 @@ $$
 - checkpoint 和 target 强绑定；
 - 训练成本没有给出 GPU 小时账本。
 
-## 8. 线上部署:真正改变的是吞吐与交互性的前沿
+## 8. 线上部署：真正改变的是吞吐与交互性的前沿
 
 ### 8.1 V4 生产版与开源实验不是同一配置
 
@@ -478,11 +478,11 @@ DeepSeek-V4 内部部署使用 DSpark-5，最大 draft length $\gamma=5$，默�
 
 这些是内部 V4 训练/部署设置，不等同于 DeepSpec 的 Qwen/Gemma 配置。
 
-### 8.2 先看稳定口径:匹配吞吐与中等 SLA
+### 8.2 先看稳定口径：匹配吞吐与中等 SLA
 
 <img src="/AIInfraGuide/images/dspark-fig7-production-frontier.png" alt="DeepSeek-V4-Flash 与 V4-Pro 线上吞吐和单用户 TPS 前沿：DSpark 相对 MTP-1 将 Pareto 前沿向右上方外推；匹配吞吐下 Flash 单用户速度提高 60% 到 85%，Pro 提高 57% 到 78%" style="max-width: 95%; display: block; margin: 0 auto;" />
 
-*图源:DSpark 论文 Figure 7(arXiv:2607.05147);散点为线上 telemetry，实线为拟合前沿*
+*图源：DSpark 论文 Figure 7(arXiv:2607.05147)；散点为线上 telemetry，实线为拟合前沿*
 
 论文用真实用户流量比较 DSpark-5 与此前生产基线 MTP-1：
 
@@ -515,7 +515,7 @@ DeepSeek-V4 内部部署使用 DSpark-5，最大 draft length $\gamma=5$，默�
 - 空闲时 $\mathrm{SPS}(B)$ 对多几个 token 不敏感，应该尽量提高 $\tau$；
 - 繁忙时 $\mathrm{SPS}(B)$ 对 batch token 数敏感，应该剪掉低生存概率后缀。
 
-## 9. 从论文到当前工程:SGLang 如何把调度收益落到 GPU
+## 9. 从论文到当前工程：SGLang 如何把调度收益落到 GPU
 
 论文发布后，SGLang 在 2026-07-06 的官方工程文章中公开了 DSpark 集成。**以下均是 SGLang 的后续工程实现，不是 DSpark 论文的实验栈。** 本文核对的是文章给出的复现 commit [`692c5f7d`](https://github.com/sgl-project/sglang/commit/692c5f7d532f129424b57961c262bbd253b411dc)。SGLang 明确声明：硬件、引擎和流量都与论文不同，因此复现的是**机制和曲线形状**，不是逐位复制论文数字。
 
@@ -618,15 +618,15 @@ SGLang 把 GSM8K、Arena-Hard、Poetry 混在一个服务流量里，示例平�
 ## 📚 参考资料
 
 - 论文与代码:
-  - [DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147):本文精读对象，算法、离线实验、V4 线上部署与 Appendix A 无偏性反例的原始来源。
+  - [DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147)：本文精读对象，算法、离线实验、V4 线上部署与 Appendix A 无偏性反例的原始来源。
   - [DeepSpec — DeepSeek-AI](https://github.com/deepseek-ai/DeepSpec):DSpark、DFlash、Eagle3 的训练/评估代码和公开 checkpoint；本文核对 commit `005e03b`。
-  - [DeepSpec checkpoints](https://huggingface.co/collections/deepseek-ai/deepspec):论文 Table 1 对应的 Qwen3 与 Gemma4 草稿模型集合。
+  - [DeepSpec checkpoints](https://huggingface.co/collections/deepseek-ai/deepspec)：论文 Table 1 对应的 Qwen3 与 Gemma4 草稿模型集合。
 - 当前工程:
   - [DSpark in SGLang](https://www.lmsys.org/blog/2026-07-06-dspark-sglang/):Ragged verify、CUDA Graph、三种 verify mode、cost table 和复现命令；本文核对其公开 commit `692c5f7d`。
-  - [NVIDIA NeMo AutoModel DSpark Recipe](https://docs.nvidia.com/nemo/automodel/recipes-e2e-examples/dspark-speculative-decoding):另一条当前训练路径，说明三项 loss、FSDP2 和 Qwen3/Gemma4 配置面。
+  - [NVIDIA NeMo AutoModel DSpark Recipe](https://docs.nvidia.com/nemo/automodel/recipes-e2e-examples/dspark-speculative-decoding)：另一条当前训练路径，说明三项 loss、FSDP2 和 Qwen3/Gemma4 配置面。
 - 站内相关:
-  - [5.1 投机解码与 Rejection Sampling](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/51-核心原理与rejection-sampling):补齐标准 speculative sampling 的无偏性推导。
-  - [5.2 Draft 模型与 N-gram 方案](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/52-draft模型与n-gram方案):理解 target-dependent drafter、草稿成本和接受率权衡。
-  - [5.3 Medusa 与 EAGLE](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/53-self-draft方案-medusa与eagle):对比多头、自回归特征 drafter 与 DSpark 的并行—半自回归路线。
-  - [5.4 收益边界与限制](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/54-收益边界与限制):从 $T_d/T_t$、接受率和 batch 解释何时投机不赚钱。
-  - [5.5 vLLM 投机解码实战](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/55-vllm投机解码实战):建立 benchmark 与生产参数的实践入口；DSpark 当前公开工程实现以 SGLang 为主。
+  - [5.1 投机解码与 Rejection Sampling](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/51-核心原理与rejection-sampling)：补齐标准 speculative sampling 的无偏性推导。
+  - [5.2 Draft 模型与 N-gram 方案](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/52-draft模型与n-gram方案)：理解 target-dependent drafter、草稿成本和接受率权衡。
+  - [5.3 Medusa 与 EAGLE](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/53-self-draft方案-medusa与eagle)：对比多头、自回归特征 drafter 与 DSpark 的并行—半自回归路线。
+  - [5.4 收益边界与限制](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/54-收益边界与限制)：从 $T_d/T_t$、接受率和 batch 解释何时投机不赚钱。
+  - [5.5 vLLM 投机解码实战](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/55-vllm投机解码实战)：建立 benchmark 与生产参数的实践入口；DSpark 当前公开工程实现以 SGLang 为主。
