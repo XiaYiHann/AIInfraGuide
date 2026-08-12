@@ -11,6 +11,23 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-12
 
+### 模块一第 6 章补全：集合通信基础
+
+第 6 章从 1 篇补齐为完整章节(章首页 + 6 篇)：将原《集群通信网络与NCCL》大杂烩拆分为 6 篇新文章并大幅扩展（deepseek-v4-flash workflow 写作+审计，公式与 NCCL 环境变量对照官方文档核实）：
+
+- **文章：** [6.1 集合通信原语](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/communication/61-集合通信原语) | 点对点 Send/Recv 与五类集合原语的数据流、通信量与适用场景
+- **文章：** [6.2 Ring AllReduce](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/communication/62-ring-allreduce) | 带宽最优原理、2(N-1)/N 通信量推导与数值算例
+- **文章：** [6.3 Tree AllReduce 与算法选型](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/communication/63-tree-allreduce与算法选型) | Tree 原理、Ring vs Tree 对比、分层/双通道变体
+- **文章：** [6.4 通信与计算 Overlap](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/communication/64-通信与计算-overlap) | 依赖分析、分块流水、异步执行
+- **文章：** [6.5 NCCL 实战](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/communication/65-nccl实战) | 库定位、基本用法、环境变量调优、nccl-tests 压测
+- **文章：** [6.6 通信视角的并行策略](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/communication/66-通信视角的并行策略) | TP/PP/DP 通信模式与通信量对比，衔接模块三
+
+原大杂烩已拆分删除；NVLink/InfiniBand 硬件细节不重复(指向 5.7)；每篇 2 张 Mermaid 图配中文导读。
+
+---
+
+## 2026-08-12
+
 ### 模块一第 5 章补全：GPU 硬件概论
 
 第 5 章从 2 篇补齐为完整章节(7 篇)：将原大杂烩《GPU基础知识》拆分为 6 篇新文章并大幅扩展（deepseek-v4-flash workflow 写作+审计，规格数字对照官方资料核实）：
