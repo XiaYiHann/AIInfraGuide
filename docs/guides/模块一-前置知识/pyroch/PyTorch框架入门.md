@@ -341,7 +341,7 @@ torch.save({
 }, 'checkpoint.pt')
 
 # 加载
-ckpt = torch.load('checkpoint.pt', weights_only=False)
+ckpt = torch.load('checkpoint.pt', weights_only=True)
 model.load_state_dict(ckpt['model_state_dict'])
 optimizer.load_state_dict(ckpt['optimizer_state_dict'])
 ```
@@ -446,7 +446,7 @@ for images, labels in train_loader:
     optimizer.zero_grad()
 
 # FP16 混合精度（需要 GradScaler 防止梯度下溢）
-scaler = torch.cuda.amp.GradScaler()
+scaler = torch.amp.GradScaler('cuda')
 for images, labels in train_loader:
     images, labels = images.to(device), labels.to(device)
     with torch.autocast(device_type='cuda', dtype=torch.float16):

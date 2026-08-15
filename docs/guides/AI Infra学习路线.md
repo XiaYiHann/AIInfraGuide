@@ -284,7 +284,7 @@ AI Infra 不是从零开始学的领域——它建立在编程能力、数学�
 这一层的检验核心是**算得清账、跑得通代码**：
 
 - **显存账本**：拿到一个 7B 参数的模型，能先声明十进制/二进制单位与实现假设，再口算 FP16/BF16 参数约 14GB、FP32 主权重约 28GB、Adam 两份 FP32 动量约 56GB；仅这四项已约 98GB，尚未计入梯度、激活和临时 buffer，据此判断单卡能否容纳及是否需要分片
-- **ZeRO 拆解**：有人问你“ZeRO-2 和 ZeRO-3 到底差在哪”，你能一句话讲清：ZeRO-2 只在 backward 时按需 AllReduce 梯度，参数每卡各存一份；ZeRO-3 连参数也切了，forward/backward 都要 AllGather 拿参数、用完即弃，通信量约翻倍但每卡显存降到 1/N
+- **ZeRO 拆解**：有人问你“ZeRO-2 和 ZeRO-3 到底差在哪”，你能一句话讲清：ZeRO-2 只在 backward 时按需 AllReduce 梯度，参数每卡各存一份；ZeRO-3 连参数也切了，forward/backward 都要 AllGather 拿参数、用完即弃，通信量约多 50%（$3\Psi$ vs DDP 的 $2\Psi$，推导见 2.1 §5.2 的通信量表）但每卡显存降到 1/N
 - **DDP 改造**：拿到一个单卡 PyTorch 训练脚本，30 分钟内改成 DDP 多卡版本并跑通——包括 `init_process_group`、`DistributedSampler`、模型 wrap、梯度同步，不需要查太多文档就能搞定
 - **3D 并行拓扑**：给一个 64 卡集群（8 节点 x 8 卡），能设计出 TP=8（机内）、PP=4（跨机）、DP=2 的并行方案，画出拓扑图标注哪些通信走 NVLink、哪些走 IB，并解释为什么 TP 不能跨机（带宽不够）
 - **混合精度原理**：能回答“BF16 和 FP16 都是 16 位，为什么大模型训练更偏爱 BF16”——因为 BF16 的指数位更宽（8 位 vs 5 位），动态范围接近 FP32，不容易 overflow/underflow，大多数情况下可以不做 Loss Scaling
