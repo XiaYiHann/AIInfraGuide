@@ -113,7 +113,7 @@ x_gpu = torch.randn(3, 4, device='cuda')
 | float16 (fp16) | 2 | 小，易溢出 | 混合精度训练（需 Loss Scaling） |
 | bfloat16 (bf16) | 2 | 与 fp32 相同 | 混合精度训练（推荐，Ampere+ GPU） |
 
-> **白话理解**：fp32 像高清照片，又大又清晰；fp16 像压缩照片，体积减半但偶尔"失真"（溢出）；bf16 是聪明的压缩，体积和 fp16 一样小，但"失真"概率大大降低。
+> **白话理解**：fp32 像高清照片，又大又清晰；fp16 像压缩照片，体积减半但偶尔“失真”（溢出）；bf16 是聪明的压缩，体积和 fp16 一样小，但“失真”概率大大降低。
 
 ```python
 import torch
@@ -132,11 +132,11 @@ x_bf16 = x.to(torch.bfloat16)             # 转 bf16
 
 ## 2. 自动微分（autograd）
 
-训练神经网络的核心是"根据损失调整参数"，而调整的依据就是梯度。PyTorch 的 autograd 引擎帮你自动完成这件事。
+训练神经网络的核心是“根据损失调整参数”，而调整的依据就是梯度。PyTorch 的 autograd 引擎帮你自动完成这件事。
 
 ### 2.1 什么是计算图
 
-> **比喻**：想象你在做一道菜。你把食材 A 和 B 混合得到 C，再把 C 加热得到 D（成品）。如果 D 味道不对（loss 太大），你需要反推——是 C 的问题？还是 A、B 的比例不对？计算图就是 PyTorch 帮你记下的"食谱"：它记录每一步操作，这样就能从结果反向推导出每种食材对结果的影响（梯度）。
+> **比喻**：想象你在做一道菜。你把食材 A 和 B 混合得到 C，再把 C 加热得到 D（成品）。如果 D 味道不对（loss 太大），你需要反推——是 C 的问题？还是 A、B 的比例不对？计算图就是 PyTorch 帮你记下的“食谱”：它记录每一步操作，这样就能从结果反向推导出每种食材对结果的影响（梯度）。
 
 **正式定义**：Autograd 在前向时按实际执行的 Tensor 操作构建有向无环图（DAG）。Tensor 承载数值，Autograd `Function` 节点表达操作历史，反向传播沿这些节点应用链式法则。PyTorch 采用**动态计算图**（Define-by-Run），支持 if/else、for 循环等 Python 控制流。
 
@@ -201,7 +201,7 @@ print(f"学到的模型: y = {w.item():.2f}x + {b.item():.2f}")
 
 ## 3. nn.Module：模型的组织方式
 
-> **比喻**：如果 Tensor 是积木块，`nn.Module` 就是积木的"说明书"——它定义了积木怎么拼接（前向传播），并帮你清点所有零件（参数管理）。
+> **比喻**：如果 Tensor 是积木块，`nn.Module` 就是积木的“说明书”——它定义了积木怎么拼接（前向传播），并帮你清点所有零件（参数管理）。
 
 ### 3.1 定义模型：继承 nn.Module，实现 \_\_init\_\_ 和 forward
 
@@ -291,8 +291,8 @@ print(model(torch.randn(64, 784)).shape)  # torch.Size([64, 10])
 
 ### 4.1 数据加载：Dataset 和 DataLoader
 
-- **Dataset**：定义"数据集里有什么"和"怎么取一条数据"
-- **DataLoader**：定义"怎么分 batch 喂给模型"（batching、shuffling、多进程加载）
+- **Dataset**：定义“数据集里有什么”和“怎么取一条数据”
+- **DataLoader**：定义“怎么分 batch 喂给模型”（batching、shuffling、多进程加载）
 
 ```python
 import torch

@@ -9,7 +9,7 @@ tags: ["ZeRO", "DeepSpeed", "显存优化", "Offload", "通信分析"]
 
 ## 📖 本章概述
 
-ZeRO（Zero Redundancy Optimizer）是 DeepSpeed 的核心技术。本章从"训练状态的冗余在哪里"出发，逐阶段讲解如何通过切分消除冗余，并分析每个阶段的通信代价和适用场景。
+ZeRO（Zero Redundancy Optimizer）是 DeepSpeed 的核心技术。本章从“训练状态的冗余在哪里”出发，逐阶段讲解如何通过切分消除冗余，并分析每个阶段的通信代价和适用场景。
 
 ---
 
@@ -18,7 +18,7 @@ ZeRO（Zero Redundancy Optimizer）是 DeepSpeed 的核心技术。本章从"训
 ### 1. ZeRO 的核心洞察
 
 - **冗余分析**：DDP 中每卡都冗余存储完整的优化器状态（$12\Psi$）、梯度（$2\Psi$）、参数（$2\Psi$），$N$ 卡集群有 $(N-1)/N$ 的存储是浪费
-- **设计思想**："切分-聚合"范式——平时每卡只存 $\frac{1}{N}$，需要时通过通信获取完整数据，用完即弃
+- **设计思想**：“切分-聚合”范式——平时每卡只存 $\frac{1}{N}$，需要时通过通信获取完整数据，用完即弃
 - **三阶段递进**：从最容易切的（优化器状态）到最难切的（参数），逐步消除冗余
 
 ### 2. ZeRO-1：切分优化器状态
@@ -51,7 +51,7 @@ ZeRO（Zero Redundancy Optimizer）是 DeepSpeed 的核心技术。本章从"训
 
 - **ZeRO-Offload**：将优化器状态和梯度计算卸载到 CPU，GPU 只做前向/反向
   - 适用场景：少卡（1-4卡）训练大模型
-  - 代价：CPU-GPU 数据传输带宽成为瓶颈（PCIe 4.0: ~32 GB/s）
+  - 代价：CPU-GPU 数据传输带宽成为瓶颈（PCIe 4.0： ~32 GB/s）
 - **ZeRO-Infinity**：在 Offload 基础上进一步利用 NVMe SSD 存储
   - 适用场景：极大模型（万亿参数）在有限 GPU 上训练
   - 关键技术：分块预取（prefetch）、计算与 I/O 重叠
@@ -75,7 +75,7 @@ ZeRO（Zero Redundancy Optimizer）是 DeepSpeed 的核心技术。本章从"训
 
 ## 🎯 本章学习目标
 
-- 能画出 ZeRO-1/2/3 每个阶段的"切什么、怎么通信"示意图
+- 能画出 ZeRO-1/2/3 每个阶段的“切什么、怎么通信”示意图
 - 能计算各阶段的每卡显存占用公式和每步通信量
 - 能解释 ZeRO-Offload 的 CPU 卸载机制和性能瓶颈
 - 能根据模型规模和硬件条件选择合适的 ZeRO 阶段

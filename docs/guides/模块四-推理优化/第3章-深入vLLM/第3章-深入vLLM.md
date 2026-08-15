@@ -15,7 +15,7 @@ vLLM 是本模块的实例主线。前两章讲的核心技术，本章落到 vL
 
 **整体架构**拆解 vLLM 的分层设计：`LLMEngine` / `AsyncLLM` 入口、`EngineCore` 执行循环、`Scheduler` 调度器、`KVCacheManager` 显存管理、`Worker` / `ModelRunner` 模型执行，理清一个请求从进入到返回的完整数据流。
 
-**nano-vllm 源码导读**先用约 1200 行代码的最小实现建立心智地图：双队列调度、block 记账的 KV cache、xxhash 前缀缓存、CUDA graph 与极简张量并行——这是从"会用 vLLM"到"看懂 vLLM"的捷径。
+**nano-vllm 源码导读**先用约 1200 行代码的最小实现建立心智地图：双队列调度、block 记账的 KV cache、xxhash 前缀缓存、CUDA graph 与极简张量并行——这是从“会用 vLLM”到“看懂 vLLM”的捷径。
 
 **V1 引擎**是 vLLM 近年最重要的重构：多进程隔离让 Tokenize/Detokenize 等 CPU 任务与核心循环重叠、统一 Token 预算调度器抹平 Prefill/Decode 边界、零开销 Prefix Cache 默认开启、Persistent Batch 只传增量 diff，整体吞吐相比 V0 提升约 1.7 倍。
 

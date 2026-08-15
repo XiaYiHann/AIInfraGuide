@@ -25,7 +25,7 @@ MoE（Mixture of Experts）是当前千亿/万亿参数模型（DeepSeek-V3、Mi
 ### 2. Expert Parallelism（EP）
 
 - 核心思想：不同 Expert 放在不同 GPU 上，每卡只存 $\frac{E}{N}$ 个 Expert
-- 与 TP 的区别：TP 切单个权重矩阵，EP 切的是"哪些 Expert 在哪"
+- 与 TP 的区别：TP 切单个权重矩阵，EP 切的是“哪些 Expert 在哪”
 
 ### 3. All-to-All 通信（本章重点）
 

@@ -9,7 +9,7 @@ tags: ["Speculative Decoding", "投机解码", "Medusa", "EAGLE", "N-gram", "Rej
 
 ## 本章简介
 
-自回归解码的串行瓶颈是 Decode 阶段效率低的根本原因。Speculative Decoding 通过"先猜后验"打破这一瓶颈。本章原理与 vLLM 中的实际配置并重。
+自回归解码的串行瓶颈是 Decode 阶段效率低的根本原因。Speculative Decoding 通过“先猜后验”打破这一瓶颈。本章原理与 vLLM 中的实际配置并重。
 
 **核心原理**详解 Speculative Sampling 框架：Draft 模型快速猜测多个 Token，Target 模型并行验证。通过 Rejection Sampling 机制保证正确性——数学上证明接受的 Token 严格服从 Target 分布。
 

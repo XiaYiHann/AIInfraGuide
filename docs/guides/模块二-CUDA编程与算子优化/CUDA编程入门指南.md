@@ -17,13 +17,13 @@ CUDA 是连接 AI 算法与 GPU 硬件的桥梁，负责把高层的数学计算
 - [2. CUDA 编程模型](#2-cuda-编程模型)
 - [3. 内存模型](#3-内存模型)
 - [4. 关键概念](#4-关键概念)
-- [5. 第一个完整程序：向量加法](#5-第一个完整程序：向量加法)
+- [5. 第一个完整程序：向量加法](#5-第一个完整程序向量加法)
 - [6. 常见算子实现与优化](#6-常见算子实现与优化)
 - [7. Attention 算子](#7-attention-算子)
-- [8. AI 编译器](#8-AI-编译器)
+- [8. AI 编译器](#8-ai-编译器)
 - [9. 性能分析工具](#9-性能分析工具)
 - [10. 自我检验清单](#10-自我检验清单)
-- [参考资料](#📚-参考资料)
+- [参考资料](#-参考资料)
 
 ---
 
@@ -106,9 +106,9 @@ CUDA 有三种函数修饰符：
 
 ### 2.2 Grid / Block / Thread 三层线程层级
 
-CUDA 将线程组织为三层结构，这是理解并行编程的关键。可以把它比喻为"学校 / 班级 / 学生"——Grid 是整个学校，Block 是一个班级，Thread 是班里的每个学生，每个学生独立做自己那份作业，但同一个班级的学生可以通过"黑板"（Shared Memory）互相交流。
+CUDA 将线程组织为三层结构，这是理解并行编程的关键。可以把它比喻为“学校 / 班级 / 学生”——Grid 是整个学校，Block 是一个班级，Thread 是班里的每个学生，每个学生独立做自己那份作业，但同一个班级的学生可以通过“黑板”（Shared Memory）互相交流。
 
-<img src="/AIInfraGuide/images/CUDA programming model.png" alt="CUDA programming model" style="max-width: 60%; display: block; margin: 0 auto;" />
+<img src="/AIInfraGuide/images/CUDA programming model.png" alt="CUDA 编程模型线程层次示意" style="max-width: 60%; display: block; margin: 0 auto;" />
 
 **维度与索引**
 
@@ -229,7 +229,7 @@ CUDA_CHECK(cudaDeviceSynchronize());      // 检查执行错误
 
 ## 3. 内存模型
 
-CUDA 的内存层次是性能优化的核心。**\"内存访问模式决定运行速度\"**——这是 CUDA 编程最重要的直觉。
+CUDA 的内存层次是性能优化的核心。**\“内存访问模式决定运行速度\”**——这是 CUDA 编程最重要的直觉。
 
 ### 3.1 存储层次总览
 
@@ -267,7 +267,7 @@ __global__ void kernel(float* data, int n) {
 **注意事项**：
 - 每个 SM 的寄存器总量有限（H100 每 SM 65536 个 32-bit 寄存器）
 - 每个线程用的寄存器越多，SM 上能同时运行的线程就越少（影响 Occupancy）
-- 寄存器用完会"溢出"到 Local Memory（实际是 HBM），速度骤降
+- 寄存器用完会“溢出”到 Local Memory（实际是 HBM），速度骤降
 
 查看寄存器使用：
 
@@ -279,7 +279,7 @@ nvcc -Xptxas -v kernel.cu
 
 ### 3.3 共享内存（Shared Memory）
 
-共享内存是程序员可控的片上高速缓存，相当于同一个 Block 内线程共享的"黑板"——任何一个线程往上面写了东西，同 Block 的其他线程都能看到，而且读写速度比全局内存快得多。它的典型用途是**缓存从全局内存加载的数据，供 Block 内线程重复使用**。
+共享内存是程序员可控的片上高速缓存，相当于同一个 Block 内线程共享的“黑板”——任何一个线程往上面写了东西，同 Block 的其他线程都能看到，而且读写速度比全局内存快得多。它的典型用途是**缓存从全局内存加载的数据，供 Block 内线程重复使用**。
 
 ```cpp
 __global__ void sharedMemDemo(float* input, float* output, int n) {
@@ -313,7 +313,7 @@ kernel<<<gridDim, blockDim, sharedMemBytes>>>(args);
 
 ### 3.4 全局内存（Global Memory / HBM）
 
-全局内存就是"显存"，容量最大但速度最慢。`cudaMalloc` 分配的内存、kernel 参数中的指针都指向全局内存。
+全局内存就是“显存”，容量最大但速度最慢。`cudaMalloc` 分配的内存、kernel 参数中的指针都指向全局内存。
 
 **合并访问（Coalesced Access）** 是全局内存优化的黄金法则：同一个 Warp 内的 32 个线程应该访问连续的内存地址，这样硬件可以将多次访问合并为少量内存事务。打个比方，合并访问就像一排人依次从传送带上拿东西，一次就能拿完；如果每个人跳着拿，传送带要来回好多次，效率大打折扣。
 
@@ -598,7 +598,7 @@ __global__ void reduce_base(float* input, float* output, int n) {
 }
 ```
 
-> 💡 步长从大到小（而非从小到大）是关键：这保证活跃线程编号连续，同一 Warp 内不会出现"一半工作一半空闲"的 **Warp Divergence**，硬件调度效率大幅提升。
+> 💡 步长从大到小（而非从小到大）是关键：这保证活跃线程编号连续，同一 Warp 内不会出现“一半工作一半空闲”的 **Warp Divergence**，硬件调度效率大幅提升。
 
 **优化 1：展开最后一个 Warp**
 
@@ -826,7 +826,7 @@ for (int i = tid; i < N; i += blockDim.x) {
 
 ### 6.4 算子融合（Kernel Fusion）
 
-算子融合是将多个小操作合并为一个 kernel 执行，避免中间结果写回全局内存。就像做菜时一次洗好所有菜，而不是做一道菜洗一次——每次写回全局内存再读回来，就像反复跑去水龙头前洗菜，白白浪费时间在"搬运"上。
+算子融合是将多个小操作合并为一个 kernel 执行，避免中间结果写回全局内存。就像做菜时一次洗好所有菜，而不是做一道菜洗一次——每次写回全局内存再读回来，就像反复跑去水龙头前洗菜，白白浪费时间在“搬运”上。
 
 ```
 未融合：
@@ -941,7 +941,7 @@ FlashInfer 是一个面向 Serving 场景的可定制 Attention 引擎：
 
 vLLM 提出的 PagedAttention 将操作系统的虚拟内存分页思想引入 KV Cache 管理：
 
-- KV Cache 不再要求连续内存，而是分成固定大小的"页"
+- KV Cache 不再要求连续内存，而是分成固定大小的“页”
 - 页可以按需分配和回收，消除内存碎片
 - 不同请求可以共享相同的 KV Cache 页（如共享的 system prompt）
 
@@ -1048,7 +1048,7 @@ output = fused_gelu(input_tensor)
 PyTorch 代码 → TorchDynamo（图捕获）→ TorchInductor（代码生成）→ Triton kernel
 ```
 
-**Graph Break**：当 `torch.compile` 遇到无法编译的操作（如 Python 副作用、动态控制流），会"打断"计算图，降低优化效果。排查方法：
+**Graph Break**：当 `torch.compile` 遇到无法编译的操作（如 Python 副作用、动态控制流），会“打断”计算图，降低优化效果。排查方法：
 
 ```bash
 TORCH_LOGS="graph_breaks" python your_script.py

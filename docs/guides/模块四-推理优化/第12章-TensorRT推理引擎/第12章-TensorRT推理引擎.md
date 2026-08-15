@@ -13,7 +13,7 @@ tags: ["TensorRT-LLM", "推理引擎", "部署", "量化", "KV Cache", "并行",
 
 **TensorRT-LLM 是什么**从开源仓库的真实面貌讲起：PyTorch 原生架构与 PyExecutor、与 TensorRT 的分野（1.2 起不再依赖 TensorRT engine 执行）、与 vLLM 的定位差异（Day-0 模型支持与生态绑定）、NGC 容器快速上手与遥测版本政策。
 
-**从权重到引擎**讲清 1.2 移除 `trtllm-build` 后"构建"的新含义：LLM API 直接吃 HuggingFace 权重 + ModelOpt 离线量化产物，与 TensorRT 的 ONNX→plan 流程彻底分道扬镳，并给出硬件边界与三条加载路线的决策树。
+**从权重到引擎**讲清 1.2 移除 `trtllm-build` 后“构建”的新含义：LLM API 直接吃 HuggingFace 权重 + ModelOpt 离线量化产物，与 TensorRT 的 ONNX→plan 流程彻底分道扬镳，并给出硬件边界与三条加载路线的决策树。
 
 **运行时与 LLM API**钻进 PyExecutor 后台循环与 trtllm-serve 服务形态：六个 OpenAI 兼容端点、并行参数与配置优先级（CLI 覆盖 YAML）、多模态与 VisualGen 边界、Slurm 多节点示例，以及 In-flight Batching 调度器的三个参数与一个优先级。
 
