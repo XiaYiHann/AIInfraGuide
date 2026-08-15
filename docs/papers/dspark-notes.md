@@ -8,7 +8,7 @@ originalAuthor: "Xin Cheng et al. (Peking University & DeepSeek-AI)"
 tags: ["DSpark", "Speculative Decoding", "DeepSeek-V4", "SGLang", "推理调度", "LLM Serving"]
 ---
 
-> 原文：[DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147)(Xin Cheng et al.,北京大学与 DeepSeek-AI,arXiv 2607.05147 v1,2026-07)
+> 原文：[DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147)(Xin Cheng et al.,北京大学与 DeepSeek-AI,arXiv 2607.05147 v1,2026-07);本文访问日期 2026-08-15
 
 投机解码过去常被概括成“让小模型先猜、大模型再验”，DSpark 把这个故事向前推进了两步：**草稿不能只追求一次猜得多，还要让长草稿前后连贯；验证也不能固定长度，而要把有限的 GPU 批容量分给最可能被接受的 token。** 论文在 Qwen3-4B/8B/14B 的离线实验中，相对 DFlash 将宏平均接受长度提高 **16.3%/18.4%/18.3%**；部署到 DeepSeek-V4 线上流量后，在匹配系统吞吐的口径下，V4-Flash 单用户生成速度提高 **60%–85%**，V4-Pro 提高 **57%–78%**。但这不是“所有模型无条件快 85%”：收益取决于草稿质量、请求类型、并发负载、硬件吞吐曲线和服务引擎能否真正执行变长验证。
 
@@ -53,6 +53,8 @@ tags: ["DSpark", "Speculative Decoding", "DeepSeek-V4", "SGLang", "推理调度"
 📌 **本文承诺**：读完后，你应该能手算一段草稿的前缀生存概率，解释为什么 Markov Head 能缓解后缀衰减，写出吞吐目标 $\Theta=\tau\cdot\mathrm{SPS}(B)$，并说明调度器为何必须满足 non-anticipating（不偷看未来 token）条件。
 
 ## 0. 读前 3 分钟：先把三笔账算清
+
+> 🔗 **来源锚点**：本节三笔账为本文自设的教学算例；投机解码省什么的公式对应论文 §2.1，接受长度与加速比的关系对应论文 §2.1 与 §4.3(实验分析)。
 
 ### 0.1 投机解码到底省了什么
 
@@ -105,6 +107,8 @@ Eagle3 一类自回归 drafter 主要追求第二点；DFlash 一类并行 draft
 
 ## 1. DSpark 要解决的两个失败模式
 
+> 🔗 **来源锚点**：半自回归动机(草稿串台)对应论文 §3.1，"草稿长不等于值得验证"对应论文 §3.2(置信度调度)的动机。
+
 ### 1.1 并行草稿猜得快，却容易“串台”
 
 **为什么不让并行 drafter 一口气猜 16 个 token？** 因为每个位置在同一次 forward 中独立预测，看不到本轮其他位置最终采样了什么。
@@ -135,6 +139,8 @@ DFlash 的优势是草稿 backbone 只跑一次，$T_{\text{draft}}$ 几乎不�
 | 固定长度验证浪费批容量 | Confidence Head + Hardware-Aware Prefix Scheduler | 降低有效 $T_{\text{verify}}$ |
 
 ## 2. 总体架构：起草、排预算、再验证
+
+> 🔗 **来源锚点**：总体架构对应论文 §3 Architecture(3.1 半自回归生成、3.2 置信度调度验证、3.3 训练)。
 
 <img src="/AIInfraGuide/images/dspark-fig1-architecture.png" alt="DSpark 一轮解码流程：目标模型生成锚点 D，并行骨干与轻量串行头起草 EFGH 及置信度，硬件感知前缀调度丢弃低置信 H，目标模型并行校验并接受 EF、拒绝 G 后产出纠正 token G 星" style="max-width: 88%; display: block; margin: 0 auto;" />
 
@@ -469,6 +475,8 @@ $$
 
 ## 8. 线上部署：真正改变的是吞吐与交互性的前沿
 
+> 🔗 **来源锚点**：本节对应论文 §5 Real-World Deployment(5.3 高吞吐低延迟推理、5.4 真实用户流量下的表现)。
+
 ### 8.1 V4 生产版与开源实验不是同一配置
 
 DeepSeek-V4 内部部署使用 DSpark-5，最大 draft length $\gamma=5$，默认 Markov Head；parallel backbone 是 3 层 MoE，并结合 mHC 与 sliding-window attention 128。训练系统还做了两项大规模适配：
@@ -517,6 +525,8 @@ DeepSeek-V4 内部部署使用 DSpark-5，最大 draft length $\gamma=5$，默�
 
 ## 9. 从论文到当前工程：SGLang 如何把调度收益落到 GPU
 
+> 🔗 **来源锚点**：硬件感知前缀调度对应论文 §5.2(Hardware-Aware Prefix Scheduler in Practice)；SGLang 落地为当前工程描述，访问日期见文首。
+
 论文发布后，SGLang 在 2026-07-06 的官方工程文章中公开了 DSpark 集成。**以下均是 SGLang 的后续工程实现，不是 DSpark 论文的实验栈。** 本文核对的是文章给出的复现 commit [`692c5f7d`](https://github.com/sgl-project/sglang/commit/692c5f7d532f129424b57961c262bbd253b411dc)。SGLang 明确声明：硬件、引擎和流量都与论文不同，因此复现的是**机制和曲线形状**，不是逐位复制论文数字。
 
 ### 9.1 三种 verify mode 分开正确性与观测
@@ -553,6 +563,8 @@ SGLang 把 GSM8K、Arena-Hard、Poetry 混在一个服务流量里，示例平�
 ⚠️ **原文时代 vs 当前工程**：DSpark 论文给出算法、内部 V4 生产实现和开源 DeepSpec；SGLang 随后公开了 ragged CUDA Graph、三种 verify mode、cost profiler 与复现命令。后者可以帮助理解“怎样落地”，但不能倒写成论文作者当时所有实验都使用了这些具体实现。
 
 ## 10. 权衡、局限与选型边界
+
+> 🔗 **来源锚点**：本节对应论文 §6 Related Work 与 §7 Conclusion；"本文未验证"的判断均已标注。
 
 ### 10.1 DSpark 牺牲了什么
 

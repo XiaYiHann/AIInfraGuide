@@ -8,7 +8,7 @@ originalAuthor: "Moonshot AI (Kimi Team)"
 tags: ["多模态", "Agent", "MoE", "视觉语言模型", "Agent Swarm", "推理优化"]
 ---
 
-> 原文：[Kimi K2.5: Visual Agentic Intelligence](https://arxiv.org/abs/2602.02276)(Moonshot AI Kimi Team,arXiv:2602.02276,2026-02-02)｜辅助来源：[HuggingFace 模型卡](https://huggingface.co/moonshotai/Kimi-K2.5)、[Moonshot 官方博客](https://www.kimi.com/blog/kimi-k2-5.html)
+> 原文：[Kimi K2.5: Visual Agentic Intelligence](https://arxiv.org/abs/2602.02276)(Moonshot AI Kimi Team,arXiv:2602.02276,2026-02-02)｜辅助来源：[HuggingFace 模型卡](https://huggingface.co/moonshotai/Kimi-K2.5)、[Moonshot 官方博客](https://www.kimi.com/blog/kimi-k2-5.html);本文访问日期 2026-08-15
 
 Agent(能自己调用工具、操作电脑的 AI)要往前走，卡在两个地方：一是**看不懂屏幕**——GUI 操作、看图写代码、长视频理解都需要视觉，纯文本模型天生缺一只眼睛；二是**干得太慢**——Agent 一次只能串行地"想一步、调一次工具",任务一复杂，延迟随步骤数线性上涨，几百步的推理链直接拖到不可用。Kimi K2.5 这篇技术报告给出的答案是两件事一起做：把 **1.04 万亿参数的 MoE 模型**(激活 32B,即每次推理只用 320 亿参数)改造成原生多模态模型，再给它配一个 **Agent Swarm(智能体蜂群)** 并行编排框架——模型自己学会把大任务拆成小任务、当场"招募"一批子代理并行干活，论文报告在宽搜索场景下**延迟最多降低 4.5 倍**，同时把 BrowseComp 成绩从单代理的 60.6% 抬到 78.4%,超过 GPT-5.2 Pro(77.9%)。本文逐层拆解这份报告：架构、三个反直觉的训练招数、Agent Swarm 的机制与公式、自报成绩单怎么读，以及它对推理基础设施意味着什么。
 
@@ -37,6 +37,24 @@ Agent(能自己调用工具、操作电脑的 AI)要往前走，卡在两个地�
 - [📝 总结](#-总结)
 - [🎯 自我检验清单](#-自我检验清单)
 - [📚 参考资料](#-参考资料)
+
+## 🗺️ 原文阅读地图
+
+Kimi K2.5 技术报告按"图文联合优化 → Agent Swarm → 方法总览 → 评测"组织。本文选择性精讲如下：
+
+| 原文单元 | 处理深度 | 本文位置与理由 | 来源锚点 |
+| --- | --- | --- | --- |
+| §1 Introduction(视觉 Agent 定位、K2.5 系列规模) | 精讲 | 第 1 节,先给定位与规模 | §1 |
+| §2.1 Native Multimodal Pre-Training(早一点、少一点的视觉预训练) | 精讲 | 第 4.1 节,机制卡 1 | §2.1 |
+| §2.2 Zero-Vision SFT(纯文本激活视觉) | 精讲 | 第 4.2 节,机制卡 2 | §2.2 |
+| §2.3 Joint Multimodal RL(视觉反哺文本) | 精讲 | 第 4.3 节,机制卡 3 | §2.3 |
+| §3 Agent Swarm(动态分解、冻结执行、关键路径公式) | 精讲 | 第 3 节,机制卡 4,含延迟账本 | §3 |
+| §4 Method Overview(底座 K2、架构、预训练管线、基础设施) | 简述 | 第 2 节与第 4.4 节引用关键配置 | §4.1-4.5 |
+| §5.1 Main Results(文本/视觉/电脑操作基准) | 精讲(数字表) | 第 5 节,自报口径集中呈现 | §5.1 |
+| §5.2 Agent Swarm Results(BrowseComp 60.6→78.4 等) | 精讲 | 第 5.4 节,专项对比 | §5.2 |
+| §6 Conclusions、附录(评测设置、环境) | 不展开 | 不改变本文的机制承诺 | §6;Appendix |
+
+📌 **本文承诺**：读完后，你应该能解释"零视觉 SFT"为什么能让纯文本数据激活视觉能力，复述 Agent Swarm 的关键路径公式（总延迟由最慢子任务决定），并说清 BrowseComp 提升的口径来源。
 
 ## 1. 为什么 Agent 需要两只眼睛和一群手
 

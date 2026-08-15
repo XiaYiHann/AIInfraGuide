@@ -8,7 +8,7 @@ originalAuthor: "Zhipu AI & Tsinghua University"
 tags: ["GLM-5", "MoE", "DSA稀疏注意力", "Agentic RL", "长上下文", "SWE-bench"]
 ---
 
-> 原文：[GLM-5: from Vibe Coding to Agentic Engineering](https://arxiv.org/abs/2602.15763)(GLM-5-Team,Zhipu AI & Tsinghua University,arXiv 2602.15763,2026-02-17)
+> 原文：[GLM-5: from Vibe Coding to Agentic Engineering](https://arxiv.org/abs/2602.15763)(GLM-5-Team,Zhipu AI & Tsinghua University,arXiv 2602.15763,2026-02-17);本文访问日期 2026-08-15)
 
 GLM-5 要回答的问题不是"下一个 token 预测得准不准",而是"**模型能不能像工程师一样自己干完一整件活**"。这份技术报告交出的答卷是:**744B 总参数、40B 激活**的稀疏 MoE(总规模是前代 GLM-4.5 的两倍)，把上下文拉到 **200K**；用 **DSA 稀疏注意力**把长序列的注意力算力砍掉约 **1.5–2 倍**；用 **28.5T tokens** 语料训练，再用一套**全异步的 Agentic RL** 管线让模型学会"边干活边反思、一干就是几小时"。结果：GLM-5 成为**首个在 Artificial Analysis Intelligence Index v4.0 上拿到 50 分的开源模型**(GLM-4.7 为 42 分)，八大 Agentic/推理/编码基准平均比前代提升约 **20%**;SWE-bench Verified 拿到 **77.8**，逼近闭源的 Claude Opus 4.5(80.9)。对做推理系统的人，这份报告还藏着一半干货：长程 Agent 的 rollout 推理怎么解耦、怎么用 DP-attention(数据并行注意力：注意力按数据并行切分，各 rank 自算自己的部分，不用跨卡搬 KV)省 KV 搬运、怎么用 FP8 + MTP 压长尾延迟——这些正是站内 [8.2 Tool Calling/Agent](/AIInfraGuide/inference/模块四-推理优化/第8章-生产级服务特性/82-tool-calling与reasoning) 和 [7.2 PD 解耦](/AIInfraGuide/inference/模块四-推理优化/第7章-pd解耦架构/72-解耦架构设计) 两章的实战延伸。
 
@@ -26,7 +26,28 @@ GLM-5 要回答的问题不是"下一个 token 预测得准不准",而是"**模�
 - [🎯 延伸思考：自我检验清单](#-延伸思考自我检验清单)
 - [📚 参考资料](#-参考资料)
 
+## 🗺️ 原文阅读地图
+
+GLM-5 技术报告按"预训练 → 后训练 → Agentic 工程 → 国产芯片适配 → 评测"组织。本文选择性精讲如下：
+
+| 原文单元 | 处理深度 | 本文位置与理由 | 来源锚点 |
+| --- | --- | --- | --- |
+| §1 Introduction(从 vibe coding 到 agentic engineering 的定位、50 分 Intelligence Index、8 基准平均 +20%) | 精讲 | 第 1 节与第 4 节,先给结论再拆机制 | §1;Fig. 1;Fig. 2 |
+| §2.1 Architecture(DSA 稀疏注意力、MLA、MTP、MoE 规模) | 精讲 | 第 2 节,机制卡 1-2,含参数量账本 | §2.1 |
+| §2.3 Mid-Training(4K → 200K 三段式上下文扩展) | 简述 | 第 2.5 节引用结论与训练设置 | §2.3 |
+| §2.2 Pre-training Data(28.5T、代码 +28%、Issue-PR 约 1000 万对) | 精讲(数据账) | 第 3.1 节,数据配比与取舍 | §2.2 |
+| §3.2/3.3 Reasoning RL 与 Agentic RL(GRPO + IcePop、全异步解耦) | 精讲 | 第 3.3-3.4 节,机制卡 3-4 | §3.2;§3.3 |
+| §3.6 RL 训练基础设施(slime 框架、显存与并行账) | 简述 | 第 3.6 节引用关键账本 | §3.6 |
+| §4 Agentic Engineering(异步 RL、环境扩展) | 简述 | 第 3.4 节合并叙述,不单独成节 | §4.1-4.2 |
+| §5 国产芯片适配 | 简述 | 第 5.2 节一句话带过 | §5 |
+| §6 Evaluation(ARC 基准、真实世界 Agent 工程) | 精讲(数字表) | 第 4 节,全部对比数字集中呈现并标注口径 | §6.1;Fig. 1 |
+| 附录(超参、评测细节) | 不展开 | 不改变本文的机制承诺 | Appendix A/B |
+
+📌 **本文承诺**：读完后，你应该能说清 DSA 稀疏注意力"砍掉约 1.5-2 倍长序列注意力算力"的限定条件(长序列、推理侧)，解释 20% 提升与 77.8 SWE-bench 的口径来源，并复述全异步 Agentic RL 把生成与训练解耦后省了什么。
+
 ## 1. 背景：从"一句话编程"到 Agentic 工程
+
+> 🔗 **来源锚点**：本节定位与规模数字(744B/40B、200K 上下文、50 分 Intelligence Index)对应报告 §1 Introduction 与 Fig. 1-2。
 
 **问题是：去年大家还在讨论"一句话生成代码",为什么今年风向变成了"让模型自己干几小时活"?**
 
@@ -42,6 +63,8 @@ GLM-4.5 已经把 Agentic(智能体)、Reasoning(推理)、Coding(编码)三种�
 4. **首日即全栈适配国产芯片**：昇腾、摩尔线程、海光、寒武纪、昆仑芯、MetaX、燧原 7 个平台(详见第 5 节)。
 
 ## 2. 架构：744B MoE 与"划重点"的稀疏注意力
+
+> 🔗 **来源锚点**：本节机制拆解对应报告 §2.1 Architecture(DSA、MLA、MTP、MoE 规模)；"砍掉约 1.5-2 倍注意力算力"为报告长序列推理侧口径，报告原话见 §2.1。
 
 ### 2.1 模型规模：总参数翻倍，激活参数只加 8B
 
@@ -267,6 +290,8 @@ SFT 阶段还做了 **INT4 量化感知训练(QAT)**，且量化核在训练和�
 
 ## 5. 系统与部署：长程 Agent 的推理需求
 
+> 🔗 **来源锚点**：本节对应报告 §4 Agentic Engineering(异步 RL 与 rollout 推理)与 §5 国产芯片全栈适配；DP-attention 与 KV 搬运优化见报告 §4.1。
+
 ### 5.1 长程 RL rollout 的推理系统设计
 
 报告 3.6 节几乎是一篇独立的推理系统 mini-paper,主题是:**RL rollout 的优化目标不是吞吐，是端到端延迟，尤其是长尾延迟**——一个 straggler 卡住同步点，整步训练就白等。四个设计:
@@ -294,6 +319,8 @@ SFT 阶段还做了 **INT4 量化感知训练(QAT)**，且量化核在训练和�
 官方口径：**单台国产节点 ≈ 双 GPU 国际集群的性能，长序列场景部署成本降 50%**。
 
 ## 6. 局限与意义
+
+> 🔗 **来源锚点**：本节对应报告 §7 Conclusion 与 §4.2 Environment Scaling for Agents；"报告没说的"部分为本文基于报告公开内容的观察。
 
 报告没有单独的 Limitations 章节，但正文里自认的边界非常清楚，逐条列出:
 

@@ -8,7 +8,7 @@ originalAuthor: "Moonshot AI (Kimi Team)"
 tags: ["Kimi K3", "MoE", "混合注意力", "长上下文", "强化学习", "AI Infra"]
 ---
 
-> 原文：[Kimi K3: Open Frontier Intelligence](https://arxiv.org/abs/2607.24653)(Kimi Team / Moonshot AI,arXiv 2607.24653,2026-07-27)+ [官方仓库 README](https://github.com/moonshotai/Kimi-K3)
+> 原文：[Kimi K3: Open Frontier Intelligence](https://arxiv.org/abs/2607.24653)(Kimi Team / Moonshot AI,arXiv 2607.24653,2026-07-27)+ [官方仓库 README](https://github.com/moonshotai/Kimi-K3);本文访问日期 2026-08-15
 
 2026 年 7 月 27 日，Moonshot AI 放出了 Kimi K3 的完整权重和一份 47 页技术报告:**2.8 万亿(2.8T)总参数、104B 激活参数的混合专家(MoE)模型，每个 token 只激活 896 个路由专家中的 16 个，原生视觉能力，1M(百万)token 上下文窗口**——报告称这是"世界上第一个开放的 3T 级模型",也是迄今最大的开源权重模型。报告给出的最关键数字是：**相比 Kimi K2,整体缩放效率(scaling efficiency)提升约 2.5 倍**(报告拟合的缩放定律曲线，横轴训练 FLOPs、纵轴验证损失;TDS 的解读口径是"同等质量、不到一半的训练算力"——注意这是解读，不是报告原文)。但比数字更值得读的是报告的结构本身：它把注意力机制、MoE 稳定性、强化学习环境、训练基础设施全部摊开讲，唯独**没有公开总训练 token 数、GPU 小时数和训练成本**——这正是其他前沿实验室连提都不提的部分。这篇解读带你顺着报告的骨架走一遍：一个 2.8T 参数的模型，究竟是怎么从架构、数据、强化学习到基础设施一步步造出来的。
 
@@ -26,6 +26,27 @@ tags: ["Kimi K3", "MoE", "混合注意力", "长上下文", "强化学习", "AI 
 - [📝 总结](#-总结)
 - [🎯 自我检验清单](#-自我检验清单)
 - [📚 参考资料](#-参考资料)
+
+## 🗺️ 原文阅读地图
+
+Kimi K3 技术报告共 47 页,按"架构 → 预训练 → 后训练 → 基础设施 → 评测"组织。本文选择性精讲如下：
+
+| 原文单元 | 处理深度 | 本文位置与理由 | 来源锚点 |
+| --- | --- | --- | --- |
+| §1 Introduction(2.8T/104B 激活、1M 上下文、开源定位) | 精讲 | 第 1 节,先给规模坐标 | §1 |
+| §2.1 Hybrid Attention(KDA 便签本式注意力) | 精讲 | 第 2.1 节,机制卡 1,含公式 | §2.1 |
+| §2.2 Attention Residuals(逐通道全秩输出门) | 精讲 | 第 2.3 节,机制卡 2 | §2.2 |
+| §2.3 Stable LatentMoE(896 专家、quantile balancing) | 精讲 | 第 2.4 节,机制卡 3 | §2.3 |
+| §2.4 Native Vision + §2.5 Per-Head Muon | 简述 | 第 2.5 节合并叙述 | §2.4;§2.5 |
+| §3.1 Pre-Training Data(四域 + 大规模视觉) | 简述 | 第 3.1 节引用数据配比 | §3.1 |
+| §3.2 Scaling Law(2.5× 缩放效率) | 精讲 | 第 3.2 节,区分"报告拟合"与"第三方解读口径" | §3.2 |
+| §3.3/3.4 Training Recipe 与 Long-Context Extension | 简述 | 第 3.3-3.4 节引用关键设置 | §3.3;§3.4 |
+| §4 Post-Training(MOPD 九师一徒蒸馏、部署感知后训练) | 精讲 | 第 4 节,机制卡 4 | §4 |
+| §5 Infrastructure(KDA co-design、3T 预训练、1M RL、推理服务) | 简述 | 第 4.4 与第 5 节引用关键账本 | §5.1-5.4 |
+| §6 Evaluations(自报、内部、第三方、成本效率) | 精讲(数字表) | 第 5 节,自报与第三方口径分开呈现 | §6.1-6.4 |
+| §7 Case Studies、§8 Conclusion、附录 | 不展开 | 不改变本文的机制承诺 | §7-8;Appendix |
+
+📌 **本文承诺**：读完后，你应该能解释 KDA 把"文件柜"换成"便签本"省了什么、Stable LatentMoE 的专家稳定性从哪来，并区分 2.5× 缩放效率是"报告拟合"还是"实测"，以及报告刻意没公开哪些训练成本。
 
 ## 1. 背景：2.8T 为什么是最大开源
 

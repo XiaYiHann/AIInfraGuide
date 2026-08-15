@@ -8,7 +8,7 @@ originalAuthor: "Google DeepMind Gemma Team"
 tags: ["Gemma", "多模态", "MoE", "KV Cache", "量化", "投机解码"]
 ---
 
-> 原文：[Gemma 4 Technical Report](https://arxiv.org/abs/2607.02770)(Google DeepMind Gemma Team,arXiv:2607.02770,2026-07-02 提交，v2 更新于 2026-07-24,17 页 2 图)
+> 原文：[Gemma 4 Technical Report](https://arxiv.org/abs/2607.02770)(Google DeepMind Gemma Team,arXiv:2607.02770,2026-07-02 提交，v2 更新于 2026-07-24,17 页 2 图);本文访问日期 2026-08-15
 
 **2.3B 有效参数、量化后权重只有 0.8GB 的模型，数学竞赛成绩(AIME 2026 无工具 37.5)几乎是 27B 上一代的翻倍(Gemma 3 27B 为 20.8)**——这是 Gemma 4 报告里最反直觉的一组数字。Gemma 4 是 Google DeepMind 开源家族(Gemma)的第四代：共五个档位，从 2.3B 有效参数的 E2B 到 31B 稠密模型，外加一个 26B 总量 / 3.8B 激活的 MoE(混合专家)变体，全部原生支持文本、图像、音频输入。旗舰 31B 在 Arena Text 人类盲评拿到 **1451 Elo(2026-06-19 快照)，是榜单上排名最高的开源稠密模型**——排在它前面的开源选手几乎全是 500B 以上的巨型 MoE(如 744B/40B 的 GLM 5.1、1.6T/49B 的 DeepSeek V4 Pro 为 1456)。部署侧的数字同样关键：报告通过 pp-RoPE(旋转位置编码 RoPE 的变体：只旋转部分维度来省 KV Cache)、键值复用、KV Cache 共享把全局 KV Cache 削减最多 **37.5%**;12B 用 **35M 参数的投影层**替掉 550M 视觉编码器，整条多模态链路不再需要独立编码器；最小的 E2B 量化后 0.8GB,瞄准手机。本文逐节拆解这份报告：模型家族怎么排布、长上下文和显存怎么省、多模态两条路线怎么选、自报基准怎么读，以及哪些关键信息(比如与 Gemini 的蒸馏关系)报告没有公开。
 
@@ -27,6 +27,25 @@ tags: ["Gemma", "多模态", "MoE", "KV Cache", "量化", "投机解码"]
 - [📝 总结](#-总结)
 - [🎯 自我检验清单](#-自我检验清单)
 - [📚 参考资料](#-参考资料)
+
+## 🗺️ 原文阅读地图
+
+Gemma 4 Technical Report 共 17 页,按"架构 → 指令微调 → 评测 → 安全"组织。本文选择性精讲如下：
+
+| 原文单元 | 处理深度 | 本文位置与理由 | 来源锚点 |
+| --- | --- | --- | --- |
+| §1 Introduction(五档模型、密集与 MoE 双线) | 精讲 | 第 2 节,先给家族全貌 | §1;Table 1 |
+| §2.1 Vision modality(两代 ViT 编码器、可变分辨率、局部滑窗 + 全局注意力) | 精讲 | 第 3.1、4.1 节,机制卡 1-2 | §2.1 |
+| §2.2 Audio modality(305M USM 编码器) | 简述 | 第 4.2 节引用配置 | §2.2 |
+| §2.3 Encoder-free architecture(12B 投影层路线、pp-RoPE) | 精讲 | 第 3.2、4.3 节,机制卡 3 | §2.3 |
+| §2.4 Pre-training(数据、算力、弹性) | 简述 | 第 5.1-5.2 节引用关键设置 | §2.4 |
+| §2.5 Quantization-Aware Training(E2B 0.8GB) | 精讲 | 第 5.4 节,含量化账本 | §2.5 |
+| §2.6 Multi-Token Prediction Drafter(MTP 投机解码草稿头) | 简述 | 第 3.4 节引用结论 | §2.6 |
+| §3 Instruction Tuning(thinking 模式、数据策略) | 简述 | 第 5.3 节合并叙述 | §3 |
+| §4 Evaluation(4.1 人类盲评 1451 Elo、4.2 静态基准) | 精讲(数字表) | 第 6 节,口径与快照日期集中呈现 | §4.1;§4.2;Table 5 |
+| §5 Responsibility/Safety、§6 Discussion | 不展开 | 与机制承诺无关,一句话带过 | §5-6 |
+
+📌 **本文承诺**：读完后，你应该能说清 31B 的 1451 Elo 是什么口径（Arena Text 人类盲评、2026-06-19 快照），解释 12B 用 35M 投影层取代 550M 视觉编码器的取舍，并复述全局 KV Cache 削减 37.5% 的三种手段。
 
 ## 1. Gemma 是谁：开源家族的定位
 
