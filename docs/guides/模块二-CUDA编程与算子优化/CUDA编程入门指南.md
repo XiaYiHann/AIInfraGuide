@@ -1121,6 +1121,14 @@ cuobjdump -sass kernel
 
 ---
 
+## 📝 总结
+
+1. **环境与语法**：nvcc 编译、Grid/Block/Thread 三层线程层级、`__global__` 核函数与 `<<<grid, block>>>` 启动语法，是写一切 CUDA 程序的基础。
+2. **内存模型**：寄存器 → 共享内存 → 全局内存三级层次，带宽逐级下降、容量逐级上升；Shared Memory 用得好不好直接决定 Kernel 快不快。
+3. **三个关键概念**：Warp（32 线程的调度单位）、Bank Conflict（共享内存访问串行化）、Occupancy（资源占用与并行度的权衡）——性能优化的第一课。
+4. **经典算子路线**：Reduce（多级归约 + Warp Shuffle）、GEMM（分块 + 向量化）、Softmax（Online 算法融合），再到 FlashAttention 系列与 AI 编译器（Triton / torch.compile）。
+5. **性能分析方法**：Nsight Compute 看 Kernel 内部 stall 与吞吐，Nsight Systems 看整体时间线——“先测再改”是性能优化唯一可靠的方法论。
+
 ## 10. 自我检验清单
 
 完成本文学习后，你应该能够：

@@ -755,6 +755,13 @@ KV Cache 将 QKV 投影的总计算量从 $O(N^2 \cdot d^2)$ 降到了 $O(N \cdo
 
 ---
 
+## ⚠️ 常见错误做法
+
+- ❌ **把 Encoder 结构直接当 Decoder 用**：以为“都是 Transformer 块”。为什么错：Decoder 有因果掩码（只能看过去），还有 Cross-Attention（Q 来自 Decoder、K/V 来自 Encoder）；生成任务里漏掉掩码等于作弊。正确做法：先分清三种架构（Encoder-only / Decoder-only / Encoder-Decoder）各自的注意力形态。
+- ❌ **维度对不上就硬调代码**：`(batch, seq, hidden)` 与 `(batch, hidden, seq)` 混用。为什么错：注意力里 Q@K^T 的转置方向错了，矩阵乘根本算不出来或结果错误。正确做法：像本文一样每一步标注 shape，跟踪每个张量。
+- ❌ **把 softmax 的输入直接当概率**：用 $QK^T$ 的原始分数做加权。为什么错：分数不是概率，不缩放不归一化，加权和会漂移。正确做法：除以 $\sqrt{d_k}$ 后 softmax，再与 V 加权。
+- ❌ **跳过代码实现只看图**：架构图“看懂了”就结束。为什么错：残差、LayerNorm、多头拼接这些细节只有写代码才会暴露理解漏洞。正确做法：照本文的 PyTorch 实现完整 forward 一遍。
+
 ## 🎯 自我检验清单
 
 完成本文学习后，检验自己是否真正理解了 Transformer 架构：

@@ -3,8 +3,7 @@ title: "第3章：AI Infra工程师学Transformer"
 description: "深入理解 Transformer 的每一个组件：Self-Attention、FFN、位置编码、归一化层，以及从 MHA 到 GQA/MLA、从 FFN 到 MoE 的架构演进"
 pubDate: 2026-04-16
 category: "prerequisites"
-order: 301
-chapter: 3
+order: 3
 tags: ["Transformer", "Attention", "RoPE", "MoE", "模型架构"]
 ---
 
