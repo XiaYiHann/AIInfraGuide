@@ -1,6 +1,6 @@
 ---
 title: "DSpark 精读：用半自回归草稿和置信度调度重画推理 Pareto 前沿"
-description: "拆解 DeepSeek 与北大提出的 DSpark:并行骨干加轻量 Markov Head 如何缓解草稿后缀衰减，置信度与硬件吞吐曲线如何按请求分配验证预算，以及 DeepSeek-V4 线上匹配吞吐下单用户生成速度提升 60%–85% 的真实口径。"
+description: "拆解 DeepSeek 与北大提出的 DSpark：并行骨干加轻量 Markov Head 如何缓解草稿后缀衰减，置信度与硬件吞吐曲线如何按请求分配验证预算，以及 DeepSeek-V4 线上匹配吞吐下单用户生成速度提升 60%–85% 的真实口径。"
 pubDate: 2026-08-11
 originalUrl: "https://arxiv.org/abs/2607.05147"
 sourceType: "paper"
@@ -8,7 +8,7 @@ originalAuthor: "Xin Cheng et al. (Peking University & DeepSeek-AI)"
 tags: ["DSpark", "Speculative Decoding", "DeepSeek-V4", "SGLang", "推理调度", "LLM Serving"]
 ---
 
-> 原文：[DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147)(Xin Cheng et al.,北京大学与 DeepSeek-AI,arXiv 2607.05147 v1,2026-07);本文访问日期 2026-08-15
+> 原文：[DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147)（Xin Cheng et al.,北京大学与 DeepSeek-AI,arXiv 2607.05147 v1,2026-07）；本文访问日期 2026-08-15
 
 投机解码过去常被概括成“让小模型先猜、大模型再验”，DSpark 把这个故事向前推进了两步：**草稿不能只追求一次猜得多，还要让长草稿前后连贯；验证也不能固定长度，而要把有限的 GPU 批容量分给最可能被接受的 token。** 论文在 Qwen3-4B/8B/14B 的离线实验中，相对 DFlash 将宏平均接受长度提高 **16.3%/18.4%/18.3%**；部署到 DeepSeek-V4 线上流量后，在匹配系统吞吐的口径下，V4-Flash 单用户生成速度提高 **60%–85%**，V4-Pro 提高 **57%–78%**。但这不是“所有模型无条件快 85%”：收益取决于草稿质量、请求类型、并发负载、硬件吞吐曲线和服务引擎能否真正执行变长验证。
 
@@ -54,7 +54,7 @@ tags: ["DSpark", "Speculative Decoding", "DeepSeek-V4", "SGLang", "推理调度"
 
 ## 0. 读前 3 分钟：先把三笔账算清
 
-> 🔗 **来源锚点**：本节三笔账为本文自设的教学算例；投机解码省什么的公式对应论文 §2.1，接受长度与加速比的关系对应论文 §2.1 与 §4.3(实验分析)。
+> 🔗 **来源锚点**：本节三笔账为本文自设的教学算例；投机解码省什么的公式对应论文 §2.1，接受长度与加速比的关系对应论文 §2.1 与 §4.3（实验分析）。
 
 ### 0.1 投机解码到底省了什么
 
@@ -107,7 +107,7 @@ Eagle3 一类自回归 drafter 主要追求第二点；DFlash 一类并行 draft
 
 ## 1. DSpark 要解决的两个失败模式
 
-> 🔗 **来源锚点**：半自回归动机(草稿串台)对应论文 §3.1，"草稿长不等于值得验证"对应论文 §3.2(置信度调度)的动机。
+> 🔗 **来源锚点**：半自回归动机（草稿串台）对应论文 §3.1，“草稿长不等于值得验证”对应论文 §3.2（置信度调度）的动机。
 
 ### 1.1 并行草稿猜得快，却容易“串台”
 
@@ -140,7 +140,7 @@ DFlash 的优势是草稿 backbone 只跑一次，$T_{\text{draft}}$ 几乎不�
 
 ## 2. 总体架构：起草、排预算、再验证
 
-> 🔗 **来源锚点**：总体架构对应论文 §3 Architecture(3.1 半自回归生成、3.2 置信度调度验证、3.3 训练)。
+> 🔗 **来源锚点**：总体架构对应论文 §3 Architecture（3.1 半自回归生成、3.2 置信度调度验证、3.3 训练）。
 
 <img src="/AIInfraGuide/images/dspark-fig1-architecture.png" alt="DSpark 一轮解码流程：目标模型生成锚点 D，并行骨干与轻量串行头起草 EFGH 及置信度，硬件感知前缀调度丢弃低置信 H，目标模型并行校验并接受 EF、拒绝 G 后产出纠正 token G 星" style="max-width: 88%; display: block; margin: 0 auto;" />
 
@@ -197,7 +197,7 @@ $$
 
 否则为了补顺序依赖又串行跑一个大模型，就退回了自回归 drafter 的老问题。
 
-### 3.2 Markov Head:只看上一个 token，就能挡住大量串台
+### 3.2 Markov Head：只看上一个 token，就能挡住大量串台
 
 默认方案把偏置限制为一阶转移，只看前一个 token：
 
@@ -475,7 +475,7 @@ $$
 
 ## 8. 线上部署：真正改变的是吞吐与交互性的前沿
 
-> 🔗 **来源锚点**：本节对应论文 §5 Real-World Deployment(5.3 高吞吐低延迟推理、5.4 真实用户流量下的表现)。
+> 🔗 **来源锚点**：本节对应论文 §5 Real-World Deployment（5.3 高吞吐低延迟推理、5.4 真实用户流量下的表现）。
 
 ### 8.1 V4 生产版与开源实验不是同一配置
 
@@ -564,7 +564,7 @@ SGLang 把 GSM8K、Arena-Hard、Poetry 混在一个服务流量里，示例平�
 
 ## 10. 权衡、局限与选型边界
 
-> 🔗 **来源锚点**：本节对应论文 §6 Related Work 与 §7 Conclusion；"本文未验证"的判断均已标注。
+> 🔗 **来源锚点**：本节对应论文 §6 Related Work 与 §7 Conclusion；“本文未验证”的判断均已标注。
 
 ### 10.1 DSpark 牺牲了什么
 
@@ -629,14 +629,14 @@ SGLang 把 GSM8K、Arena-Hard、Poetry 混在一个服务流量里，示例平�
 
 ## 📚 参考资料
 
-- 论文与代码:
+- 论文与代码：
   - [DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147)：本文精读对象，算法、离线实验、V4 线上部署与 Appendix A 无偏性反例的原始来源。
-  - [DeepSpec — DeepSeek-AI](https://github.com/deepseek-ai/DeepSpec):DSpark、DFlash、Eagle3 的训练/评估代码和公开 checkpoint；本文核对 commit `005e03b`。
+  - [DeepSpec — DeepSeek-AI](https://github.com/deepseek-ai/DeepSpec)：DSpark、DFlash、Eagle3 的训练/评估代码和公开 checkpoint；本文核对 commit `005e03b`。
   - [DeepSpec checkpoints](https://huggingface.co/collections/deepseek-ai/deepspec)：论文 Table 1 对应的 Qwen3 与 Gemma4 草稿模型集合。
-- 当前工程:
-  - [DSpark in SGLang](https://www.lmsys.org/blog/2026-07-06-dspark-sglang/):Ragged verify、CUDA Graph、三种 verify mode、cost table 和复现命令；本文核对其公开 commit `692c5f7d`。
+- 当前工程：
+  - [DSpark in SGLang](https://www.lmsys.org/blog/2026-07-06-dspark-sglang/)：Ragged verify、CUDA Graph、三种 verify mode、cost table 和复现命令；本文核对其公开 commit `692c5f7d`。
   - [NVIDIA NeMo AutoModel DSpark Recipe](https://docs.nvidia.com/nemo/automodel/recipes-e2e-examples/dspark-speculative-decoding)：另一条当前训练路径，说明三项 loss、FSDP2 和 Qwen3/Gemma4 配置面。
-- 站内相关:
+- 站内相关：
   - [5.1 投机解码与 Rejection Sampling](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/51-核心原理与rejection-sampling)：补齐标准 speculative sampling 的无偏性推导。
   - [5.2 Draft 模型与 N-gram 方案](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/52-draft模型与n-gram方案)：理解 target-dependent drafter、草稿成本和接受率权衡。
   - [5.3 Medusa 与 EAGLE](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/53-self-draft方案-medusa与eagle)：对比多头、自回归特征 drafter 与 DSpark 的并行—半自回归路线。
