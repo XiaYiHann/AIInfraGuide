@@ -11,6 +11,14 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-18
 
+### 模块四第5章补全：MTP / DFlash / DSpark 三篇生产级投机解码
+
+第 5 章从 5 篇扩充到 8 篇，把 2024-2026 年的三代生产级投机解码补进推理章节（数字全部对照 arXiv 一手源核验，论文原图 6 张入站）：
+
+- **文章：** [5.6 MTP：模型原生的多 Token 预测](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/56-mtp-模型原生的多token预测) | DeepSeek 内置草稿器：MTP 模块结构与训练损失逐项拆解、Vanilla/Eagle 双路径、KV 回滚与宽松接受（R1-FP4 8 卡实测 2.16×~2.33×）与 V4 生产 MTP-1 现状
+- **文章：** [5.7 DFlash：块扩散并行起草](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/57-dflash-块扩散并行起草) | ICML 2026 块扩散草稿器：T_draft=γ·t_step 天花板、KV 注入目标特征、随机锚点与位置衰减训练（Qwen3-8B greedy MATH-500 6.08×、SGLang B200 serving 5.1×）
+- **文章：** [5.8 DSpark：置信度调度的生产级投机解码](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/58-dspark-置信度调度的生产级投机解码) | DeepSeek 生产方案：后缀衰减机制、Markov 头（0.2%~1.3% 延迟换 30% 接受长度）、置信度头+STS 校准+硬件感知调度器（V4 线上匹配吞吐单用户 +60%~85%，+661% 口径的正确读法）与 DeepSpec 落地
+
 ### Paper 精读新增
 
 - **文章：** [Cross-Model KV Transfer 解读](https://xiayihann.github.io/AIInfraGuide/papers/cross-model-kv-transfer-notes) | 模型切换不再重读上下文：跨模型 KV 的线性结构（单源层 56%/32% 方差→多层 79%/65%）、closed-form per-head ridge mapper 三步（top-k 源层/去 RoPE/500 条校准）、6 对模型 4 对保留 73-98% 且 prefill 提速 2.7-25×、误差落点诊断（attention-output cosine r=+0.57）
