@@ -9,6 +9,14 @@ tags: ["公告", "更新日志"]
 
 ---
 
+## 2026-08-18
+
+### Paper 精读新增
+
+- **文章：** [Cross-Model KV Transfer 解读](https://xiayihann.github.io/AIInfraGuide/papers/cross-model-kv-transfer-notes) | 模型切换不再重读上下文：跨模型 KV 的线性结构（单源层 56%/32% 方差→多层 79%/65%）、closed-form per-head ridge mapper 三步（top-k 源层/去 RoPE/500 条校准）、6 对模型 4 对保留 73-98% 且 prefill 提速 2.7-25×、误差落点诊断（attention-output cosine r=+0.57）
+
+---
+
 ## 2026-08-12
 
 ### 模块一第 6 章补全：集合通信基础
