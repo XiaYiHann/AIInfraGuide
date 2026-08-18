@@ -15,7 +15,7 @@ difficulty: 2
 
 > 原文：[Orca: A Distributed Serving System for Transformer-Based Generative Models](https://www.usenix.org/conference/osdi22/presentation/yu)(Gyeong-In Yu, Joo Seong Jeong, Geon-Woo Kim, Soojeong Kim, Byung-Gon Chun,Seoul National University & FriendliAI,OSDI '22,pp. 521–538)
 
-LLM 服务系统里最隐蔽的浪费，藏在调度粒度里。Orca(OSDI 2022)把调度从请求级降到迭代级：每跑完一次 Transformer 前向，调度器就重新决定“下一轮跑谁”——提前完成的请求立刻出批返回，新到的请求最快下一个迭代就能上车。配套的 selective batching 只对没有参数复用损失的算子做批量计算，其余逐请求执行。这套组合在 GPT-3 175B 上做到**同延迟水平**下吞吐是 FasterTransformer 的 **36.9×**（median 归一化延迟 190ms 时 6.81 req/s vs 0.185 req/s），引擎微基准下最多快 **47%**，论文总结为“一个数量级”的吞吐提升。今天 vLLM 的 continuous batching、chunked prefill 都从这棵树上长出来——但注意，论文原文并不使用这些词，它说的是 iteration-level scheduling 与 initiation/increment phase。本文先把直觉建立起来，再拆机制、算账、对照 2026 年的工程现状。
+LLM 服务系统里最隐蔽的浪费，藏在调度粒度里。Orca(OSDI 2022)把调度从请求级降到迭代级：每跑完一次 Transformer 前向，调度器就重新决定“下一轮跑谁”——提前完成的请求立刻出批返回，新到的请求最快下一个迭代就能上车。配套的 selective batching 只对没有参数复用损失的算子做批量计算，其余逐请求执行。这套组合在 GPT-3 175B 上做到**同延迟水平**下吞吐是 FasterTransformer 的 36.9×（median 归一化延迟 190ms 时 6.81 req/s vs 0.185 req/s），引擎微基准下最多快 47%，论文总结为“一个数量级”的吞吐提升。今天 vLLM 的 continuous batching、chunked prefill 都从这棵树上长出来——但注意，论文原文并不使用这些词，它说的是 iteration-level scheduling 与 initiation/increment phase。本文先把直觉建立起来，再拆机制、算账、对照 2026 年的工程现状。
 
 <!-- more -->
 
@@ -39,7 +39,7 @@ LLM 服务系统里最隐蔽的浪费，藏在调度粒度里。Orca(OSDI 2022)�
 
 这篇论文同时讲调度算法、批处理策略和分布式系统架构，三块各对应一个核心机制。本文选择性精讲如下，避免把一篇中文解读误当成原文逐段翻译。
 
-**页码约定**：锚点使用论文印刷页码(pp. 521–538)，换算关系为**印刷页码 = PDF 页码 + 519**（如 PDF 第 13 页 = p.532）。
+**页码约定**：锚点使用论文印刷页码(pp. 521–538)，换算关系为印刷页码 = PDF 页码 + 519（如 PDF 第 13 页 = p.532）。
 
 | 原文单元 | 处理深度 | 本文位置与理由 | 来源锚点 |
 | --- | --- | --- | --- |
@@ -64,14 +64,14 @@ LLM 服务系统里最隐蔽的浪费，藏在调度粒度里。Orca(OSDI 2022)�
 
 一个生成式请求在引擎里的生命周期，论文把它切成两个阶段(§2,p.522–523;Figure 1)：
 
-- **initiation phase（起算阶段）**：一次迭代并行处理全部输入 token,产出**第一个**输出 token;
+- **initiation phase（起算阶段）**：一次迭代并行处理全部输入 token,产出第一个输出 token;
 - **increment phase（增量阶段）**：之后每次迭代只吃一个 token,生成下一个 token,同时复用历史 key/value（论文用 fairseq 式 incremental decoding,§3,p.525）。
 
 所以“生成 100 个 token”在引擎眼里是 1 次 initiation + 99 次 increment,一共 100 次迭代。每次迭代都是一次完整的 Transformer 前向，只是输入形状不同：initiation 吃 `[输入长度, H]`,increment 吃 `[1, H]`。**每个请求在引擎里待的时间天然长短不一**——这是全文所有问题的物理根源。
 
 > 打个比方：initiation 像老师先把整段题目读一遍，增量阶段像每读一个字就写一个字。不同学生（请求）的题目长短不同、写字速度不同，有的两分钟交卷，有的要写十分钟。
 
-**术语对账表（先记下来，后面不重复解释）**：论文原文只使用 inititation/increment phase 两个词，不使用 "prefill/decode";只使用 iteration-level scheduling,不使用 "continuous batching"。下面这些是**后续系统（vLLM 等）的术语**，不是论文原话，精读时不要倒灌：
+**术语对账表（先记下来，后面不重复解释）**：论文原文只使用 inititation/increment phase 两个词，不使用 "prefill/decode";只使用 iteration-level scheduling,不使用 "continuous batching"。下面这些是后续系统（vLLM 等）的术语，不是论文原话，精读时不要倒灌：
 
 | 论文原文术语 | 后续系统术语 | 首次出现处 |
 | --- | --- | --- |
@@ -81,7 +81,7 @@ LLM 服务系统里最隐蔽的浪费，藏在调度粒度里。Orca(OSDI 2022)�
 
 ### 0.2 直觉二：调度粒度决定 GPU 的“忙碌质量”
 
-同样一张 GPU,调度粒度不同，干的活差很多。请求级调度(request-level scheduling)像**包车一日游**：一车人起点出发，必须陪最慢的乘客走完全程，提前到站的人也得在车上耗着，中途不能上客。迭代级调度像**地铁**：每站（每次迭代）到点，到站的乘客（完成请求）下车，站台上等的人（新请求）立刻上车——**下一站跑谁，重新决定**。
+同样一张 GPU,调度粒度不同，干的活差很多。请求级调度(request-level scheduling)像**包车一日游**：一车人起点出发，必须陪最慢的乘客走完全程，提前到站的人也得在车上耗着，中途不能上客。迭代级调度像地铁：每站（每次迭代）到点，到站的乘客（完成请求）下车，站台上等的人（新请求）立刻上车——下一站跑谁，重新决定。
 
 论文的关键表述是：迭代级调度下，“每次迭代，调度器完全控制跑哪些请求、跑几个”(§3,p.525)。这一句就是 Orca 的全部灵魂。
 
@@ -102,8 +102,8 @@ LLM 服务系统里最隐蔽的浪费，藏在调度粒度里。Orca(OSDI 2022)�
 论文 Figure 3 给了个具体例子(§3,p.524–525)：两个请求 x1("I think")、x2("I love") 输入长度相同（各 2 个 token），组成一个 batch：
 
 - **iter 1**：两请求的 initiation,各并行处理 2 个输入 token;
-- **iter 2**：x1 生成 "this",x2 生成 "you"——**x2 在此刻已经完成**（它只差一个输出 token）；
-- **iter 3、iter 4**：x1 继续生成 "is"、"great",但引擎仍为 x2 执行计算——x2 的输入和输出都是 “−”，论文标注为**额外计算(extra computation)**。
+- **iter 2**：x1 生成 "this",x2 生成 "you"——x2 在此刻已经完成（它只差一个输出 token）；
+- **iter 3、iter 4**：x1 继续生成 "is"、"great",但引擎仍为 x2 执行计算——x2 的输入和输出都是 “−”，论文标注为额外计算(extra computation)。
 
 <img src="/AIInfraGuide/images/orca-fig3-iteration-vs-request-scheduling.png" alt="请求级调度下两个请求 x1、x2 从 iter 1 到 iter 4 的 token 流：x1 生成 this is great,x2 在 iter 2 已生成 you 完成，但 iter 3、4 仍被计算，格子标记为 - 表示额外计算" style="max-width: 95%; display: block; margin: 0 auto;" />
 
@@ -137,7 +137,7 @@ LLM 服务系统里最隐蔽的浪费，藏在调度粒度里。Orca(OSDI 2022)�
 ORCA 把 serving 系统与引擎的交互从“批粒度”降到“迭代粒度”(§3,p.524–525;Figure 4)。每个迭代循环做三件事：
 
 1. **选**：调度器从请求池中选择本轮要跑的请求；
-2. **跑**：引擎对这批请求只执行**一次**模型迭代；
+2. **跑**：引擎对这批请求只执行一次模型迭代；
 3. **收**：调度器收回该迭代产出的输出 token。
 
 完成请求被请求池移除、端点立刻发响应；新请求在下一迭代即可被选中。调度器从“发号施令后不管”变成“每步都在场”。
@@ -195,7 +195,7 @@ def Select(pool, n_rsrv):
 
 1. **iteration-level FCFS**：按到达时间排序，防止饥饿，与后来 vLLM 的默认 `--scheduling-policy fcfs` 同一选择；
 2. **K/V 槽位预留**：INITIATION 请求按 `max_tokens`（每请求属性，论文脚注 6）预占槽位，一个槽位 = 单个 token 的 Attention key+value 内存；预留不足 n_slots 才入批——这是内存约束的直接表达；
-3. **n_slots vs max_bs 的分工**：n_slots 由运维配置为内存允许的最大值，**不需要实验调参**；而 max_bs 需要按硬件/模型/负载权衡（§4.2,p.528;§6.2,p.532 的实验都遍历了 max_bs）。
+3. **n_slots vs max_bs 的分工**：n_slots 由运维配置为内存允许的最大值，不需要实验调参；而 max_bs 需要按硬件/模型/负载权衡（§4.2,p.528;§6.2,p.532 的实验都遍历了 max_bs）。
 
 ### 2.3 K/V 预留：比“按最大长度预分配”省在哪
 
@@ -224,7 +224,7 @@ def Select(pool, n_rsrv):
 
 迭代级调度让引擎每轮面对的形状更乱：同批请求可能跨阶段、不同 token index,整批无法合并成一个大张量跑统一 kernel(§3,p.525–526)。ORCA 的答案是：**只对一部分算子做 batching**(§3 S2,p.526–527)：
 
-- **非 Attention 算子（Linear、LayerNorm、Add、GeLU）**：把输入展平成 2 维 `[ΣL, H]`（例如两个请求的 `[2,H]` 和 `[3,H]` 拼成 `[5,H]`），按 **token 级**批处理——这些算子不区分张量元素属于哪个请求；
+- **非 Attention 算子（Linear、LayerNorm、Add、GeLU）**：把输入展平成 2 维 `[ΣL, H]`（例如两个请求的 `[2,H]` 和 `[3,H]` 拼成 `[5,H]`），按 token 级批处理——这些算子不区分张量元素属于哪个请求；
 - **Attention 算子**：需要请求边界（batch 维），逐请求单独执行，前后各插一个 Split/Merge 算子衔接(Figure 5)。
 
 <img src="/AIInfraGuide/images/orca-fig5-selective-batching.png" alt="selective batching 执行示意：QKV Linear 接收 [7,H] 展平张量输出 [7,3H],Split 拆成各请求的 QKV,逐请求执行 Attention(Attn x1 到 x4,K/V 来自 Attention K/V Manager),Merge 合并后进入 Attn Out Linear" style="max-width: 95%; display: block; margin: 0 auto;" />
@@ -235,7 +235,7 @@ def Select(pool, n_rsrv):
 
 ### 3.2 为什么敢不批 Attention：参数复用论
 
-批处理最大的收益之一是**参数复用**：同一组权重一次加载、服务更多数据，摊薄内存带宽成本。但 Attention 恰恰是 Transformer 里**唯一没有可学习参数**的算子（权重都来自 QKV/输出投影）——不批它，不损失任何参数复用收益（§1,p.522;§6.1,p.530 重申）。这是 selective batching 的经济学依据：batch 的形状约束是 Attention 强加的，而 Attention 恰好是最不值得为批处理妥协的算子，于是把它踢出 batch。
+批处理最大的收益之一是**参数复用**：同一组权重一次加载、服务更多数据，摊薄内存带宽成本。但 Attention 恰恰是 Transformer 里唯一没有可学习参数的算子（权重都来自 QKV/输出投影）——不批它，不损失任何参数复用收益（§1,p.522;§6.1,p.530 重申）。这是 selective batching 的经济学依据：batch 的形状约束是 Attention 强加的，而 Attention 恰好是最不值得为批处理妥协的算子，于是把它踢出 batch。
 
 实现上还有个工程细节：多个 split 出来的 Attention kernel 的 thread block 被拼接成**单一 kernel** 以减少 launch 开销(§5,p.529)。
 
@@ -260,16 +260,16 @@ ORCA 的分布式执行沿两个维度切分模型(§4.1,p.526–528;Figure 6)�
 - **intra-layer parallelism**：把矩阵乘(Linear/Attention)及其参数按 GPU 切分——训练系统的老手艺（论文引用 [55,58]）；
 - **inter-layer parallelism**：按层切分，每张 GPU 分到等量层。
 
-一个 **worker** = 一个 inter-layer partition,可以横跨多台机器；每个 worker 的 controller 管理多个 CPU 线程驱动 GPU(§4.1,p.527)。论文实验里：175B = 2 inter × 8 intra = **16 GPU**,341B = 4 × 8 = **32 GPU**(Table 1 + §6,p.529–530;Table 1 同时给出 13B/101B/175B/341B 的层数 40/80/96/120 与 hidden 5120/10240/12288/15360)。
+一个 **worker** = 一个 inter-layer partition,可以横跨多台机器；每个 worker 的 controller 管理多个 CPU 线程驱动 GPU(§4.1,p.527)。论文实验里：175B = 2 inter × 8 intra = 16 GPU,341B = 4 × 8 = 32 GPU(Table 1 + §6,p.529–530;Table 1 同时给出 13B/101B/175B/341B 的层数 40/80/96/120 与 hidden 5120/10240/12288/15360)。
 
 ### 4.2 控制面走 gRPC,数据面走 NCCL
 
 这是 Orca 最容易被低估的工程贡献(§4.1,p.527–528;§5,p.529)：
 
-- **控制消息**（request id、token index、输入长度等）走 **gRPC**：不经过 NCCL、不触发 CPU-GPU 同步；
-- **tensor 数据**走 **NCCL**。
+- **控制消息**（request id、token index、输入长度等）走 gRPC：不经过 NCCL、不触发 CPU-GPU 同步；
+- **tensor 数据**走 NCCL。
 
-对比 FasterTransformer/Megatron：每次收到控制消息都要做 CPU-GPU 同步，控制流量直接卡在 GPU pipeline 上。ORCA 把“决策信息”和“数据”拆到两条管道，调度器每迭代发控制消息不再打扰 GPU 执行。引擎微基准里 ORCA engine 最多比 FasterTransformer 快 **47%**（175B/16 GPU、两系统均关闭 pipeline 时），论文把优势归因于 control/data plane 分离(§6.1,p.531)。整个系统约 **13K 行 C++**，基于 CUDA 生态(§5,p.529)。
+对比 FasterTransformer/Megatron：每次收到控制消息都要做 CPU-GPU 同步，控制流量直接卡在 GPU pipeline 上。ORCA 把“决策信息”和“数据”拆到两条管道，调度器每迭代发控制消息不再打扰 GPU 执行。引擎微基准里 ORCA engine 最多比 FasterTransformer 快 **47%**（175B/16 GPU、两系统均关闭 pipeline 时），论文把优势归因于 control/data plane 分离(§6.1,p.531)。整个系统约 13K 行 C++，基于 CUDA 生态(§5,p.529)。
 
 ### 4.3 Pipeline：让 n_workers 个 batch 同时流水
 
@@ -341,14 +341,14 @@ $$
 
 ### 6.1 官方实现：未开源
 
-论文 ORCA（13K 行 C++）**没有公开开源**。GitHub 上存在 github.com/microsoft/Orca,但它是 2015 年创建的 Java "orchestration engine"（Spinnaker 系），2023-06-13 后已 archived,**与论文无关**（访问日期 2026-08-11）。所以“读源码验证实现细节”这条路走不通，这也是后来 vLLM 论文里 Orca baseline 只能由作者自实现的原因。
+论文 ORCA（13K 行 C++）**没有公开开源**。GitHub 上存在 github.com/microsoft/Orca,但它是 2015 年创建的 Java "orchestration engine"（Spinnaker 系），2023-06-13 后已 archived,与论文无关（访问日期 2026-08-11）。所以“读源码验证实现细节”这条路走不通，这也是后来 vLLM 论文里 Orca baseline 只能由作者自实现的原因。
 
 ### 6.2 vLLM：同一思想的“标准化封装”
 
 vLLM(2023)把 Orca 的 iteration-level scheduling 以 **continuous batching** 的名字工程化（官方博客 "vLLM: Easy, Fast, and Cheap LLM Serving with PagedAttention" 与 vLLM 论文 arXiv:2309.06180;访问日期 2026-08-11)：调度器以迭代粒度调度、新请求即刻入批、完成请求即刻出批——与 Orca 的机制同源。vLLM 做对的两件事是：
 
 1. **接上 PagedAttention**：Orca 的 K/V 预留仍是“每请求一段连续槽位”（n_slots 池），vLLM 改成按固定 token 数分块、block table 映射、按需分配，把显存碎片降到 <4%（对比传统预留 60%–80% 浪费）——这补上了 Orca 留下的内存管理短板；
-2. **暴露调度参数**：`--max-num-batched-tokens`（单次迭代最多 token 数）、`--max-num-seqs`（单次迭代最多序列数）、`--scheduling-policy`（默认 fcfs,与 Orca 的 iteration-level FCFS 一致）、`--watermark`（KV 空闲块水位，防抖动），以及 **`--enable-chunked-prefill`**——把长 initiation(prefill)拆块与 increment(decode)混排，这是 Orca 没有的机制（vLLM 官方文档，访问日期 2026-08-11）。
+2. **暴露调度参数**：`--max-num-batched-tokens`（单次迭代最多 token 数）、`--max-num-seqs`（单次迭代最多序列数）、`--scheduling-policy`（默认 fcfs,与 Orca 的 iteration-level FCFS 一致）、`--watermark`（KV 空闲块水位，防抖动），以及 `--enable-chunked-prefill`——把长 initiation(prefill)拆块与 increment(decode)混排，这是 Orca 没有的机制（vLLM 官方文档，访问日期 2026-08-11）。
 
 ### 6.3 SGLang：调度之上的前缀复用与扩展
 
@@ -387,7 +387,7 @@ SGLang 的调度同样属于 continuous batching 系（迭代级），核心差�
 | Attention 不批换来的实现简洁与可拼装 kernel(§5,p.529) | 引擎单独执行时 Attention 无批处理优势，微基准与 FT 相当或略差(§6.1,p.530) |
 | 多 batch 流水消除批间空窗(§4.2,p.529) | 引擎内同时跑 n_workers 个 batch,显存占用更高，需要 n_slots 运维配置 |
 
-**一句话选型规则**：如果你在做在线 LLM serving、负载天然长短不一（聊天、代码补全），iteration-level scheduling 不是“可选项”而是“及格线”——现代引擎(vLLM/SGLang)已把它做成默认；如果你要在它之上继续优化，论文留下的两个开放点正好是后来者的入场券：**K/V 内存管理（PagedAttention 的领域）** 与 **长 initiation 的切块（chunked prefill 的领域）**。
+**一句话选型规则**：如果你在做在线 LLM serving、负载天然长短不一（聊天、代码补全），iteration-level scheduling 不是“可选项”而是“及格线”——现代引擎(vLLM/SGLang)已把它做成默认；如果你要在它之上继续优化，论文留下的两个开放点正好是后来者的入场券：K/V 内存管理（PagedAttention 的领域） 与 长 initiation 的切块（chunked prefill 的领域）。
 
 ## 8. 面试官视角：三问三答
 

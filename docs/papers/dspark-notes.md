@@ -10,7 +10,7 @@ tags: ["DSpark", "Speculative Decoding", "DeepSeek-V4", "SGLang", "推理调度"
 
 > 原文：[DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147)（Xin Cheng et al.,北京大学与 DeepSeek-AI,arXiv 2607.05147 v1,2026-07）；本文访问日期 2026-08-15
 
-投机解码过去常被概括成“让小模型先猜、大模型再验”，DSpark 把这个故事向前推进了两步：**草稿不能只追求一次猜得多，还要让长草稿前后连贯；验证也不能固定长度，而要把有限的 GPU 批容量分给最可能被接受的 token。** 论文在 Qwen3-4B/8B/14B 的离线实验中，相对 DFlash 将宏平均接受长度提高 **16.3%/18.4%/18.3%**；部署到 DeepSeek-V4 线上流量后，在匹配系统吞吐的口径下，V4-Flash 单用户生成速度提高 **60%–85%**，V4-Pro 提高 **57%–78%**。但这不是“所有模型无条件快 85%”：收益取决于草稿质量、请求类型、并发负载、硬件吞吐曲线和服务引擎能否真正执行变长验证。
+投机解码过去常被概括成“让小模型先猜、大模型再验”，DSpark 把这个故事向前推进了两步：**草稿不能只追求一次猜得多，还要让长草稿前后连贯；验证也不能固定长度，而要把有限的 GPU 批容量分给最可能被接受的 token。** 论文在 Qwen3-4B/8B/14B 的离线实验中，相对 DFlash 将宏平均接受长度提高 16.3%/18.4%/18.3%；部署到 DeepSeek-V4 线上流量后，在匹配系统吞吐的口径下，V4-Flash 单用户生成速度提高 60%–85%，V4-Pro 提高 57%–78%。但这不是“所有模型无条件快 85%”：收益取决于草稿质量、请求类型、并发负载、硬件吞吐曲线和服务引擎能否真正执行变长验证。
 
 <!-- more -->
 
@@ -233,7 +233,7 @@ Figure 2 不是普通的“前缀存活率”，而是**位置条件接受率**�
 
 *图源：DSpark 论文 Figure 4(arXiv:2607.05147)*
 
-当 proposal length 从 $\gamma=7$ 增至 $15$ 时，DSpark 相对 DFlash 的接受长度提升从 Math/Code/Chat 的 **16%/15%/18%** 扩大到 **30%/26%/22%**。与此同时，在 batch size 128、上下文长度取 512/1024/2048/4096 平均的实验里，把总 draft 长度从 4 拉到 16，相对 DFlash 的整轮时延只增加 **0.2%–1.3%**。
+当 proposal length 从 $\gamma=7$ 增至 $15$ 时，DSpark 相对 DFlash 的接受长度提升从 Math/Code/Chat 的 **16%/15%/18%** 扩大到 30%/26%/22%。与此同时，在 batch size 128、上下文长度取 512/1024/2048/4096 平均的实验里，把总 draft 长度从 4 拉到 16，相对 DFlash 的整轮时延只增加 0.2%–1.3%。
 
 ⚠️ **注意口径**：这里的“串行开销很小”发生在论文给定的 batch、目标模型和引擎设置中，且目标模型验证占主导。不能据此断言任意小模型、batch=1 或任意 kernel 下 Markov loop 都可忽略。
 
@@ -291,7 +291,7 @@ $$
 
 *图源：DSpark 论文 Figure 5(arXiv:2607.05147)*
 
-Figure 5 是离线静态阈值诊断，不是最终硬件调度器。阈值提高后，Chat 接受率从 **45.7%** 升到 **95.7%**，Math 从 **76.9%** 升到 **92.5%**，Code 从 **67.6%** 升到 **92.0%**。接受率升高的同时，每步保留 token 数也在下降——**高接受率本身不是免费收益，它来自主动少验一些 token。** 最终要不要剪，仍要交给下一节的系统吞吐目标判断。
+Figure 5 是离线静态阈值诊断，不是最终硬件调度器。阈值提高后，Chat 接受率从 **45.7%** 升到 95.7%，Math 从 76.9% 升到 92.5%，Code 从 67.6% 升到 92.0%。接受率升高的同时，每步保留 token 数也在下降——高接受率本身不是免费收益，它来自主动少验一些 token。 最终要不要剪，仍要交给下一节的系统吞吐目标判断。
 
 ## 5. 硬件感知前缀调度：把验证预算花在刀刃上
 
@@ -432,7 +432,7 @@ $$
 - 数据准备 → target cache → drafter training → acceptance evaluation 全流程；
 - Qwen3-4B 当前配置中的 5 层 backbone、block size 7、Markov rank 256、global batch 512、BF16 和 10 epochs。
 
-但“开源”不等于“轻量复现”：README 明确警告，默认 Qwen3-4B 数据设置的 target cache 约 **38 TB**，默认脚本按**单机 8 卡**设计。仓库还要求按相同训练设置比较，否则结果没有意义；目标模型若运行 thinking mode 或进入特定领域，建议重新微调 drafter。
+但“开源”不等于“轻量复现”：README 明确警告，默认 Qwen3-4B 数据设置的 target cache 约 **38 TB**，默认脚本按单机 8 卡设计。仓库还要求按相同训练设置比较，否则结果没有意义；目标模型若运行 thinking mode 或进入特定领域，建议重新微调 drafter。
 
 ⚠️ **不要把 Table 1 的 checkpoint 直接外推到任意模型。** Target-dependent drafter 学的是“怎样贴近这一份 target 分布”，模型、推理模式、领域和 tokenizer 变化都可能降低接受率。
 
@@ -527,7 +527,7 @@ DeepSeek-V4 内部部署使用 DSpark-5，最大 draft length $\gamma=5$，默�
 
 > 🔗 **来源锚点**：硬件感知前缀调度对应论文 §5.2(Hardware-Aware Prefix Scheduler in Practice)；SGLang 落地为当前工程描述，访问日期见文首。
 
-论文发布后，SGLang 在 2026-07-06 的官方工程文章中公开了 DSpark 集成。**以下均是 SGLang 的后续工程实现，不是 DSpark 论文的实验栈。** 本文核对的是文章给出的复现 commit [`692c5f7d`](https://github.com/sgl-project/sglang/commit/692c5f7d532f129424b57961c262bbd253b411dc)。SGLang 明确声明：硬件、引擎和流量都与论文不同，因此复现的是**机制和曲线形状**，不是逐位复制论文数字。
+论文发布后，SGLang 在 2026-07-06 的官方工程文章中公开了 DSpark 集成。**以下均是 SGLang 的后续工程实现，不是 DSpark 论文的实验栈。** 本文核对的是文章给出的复现 commit [`692c5f7d`](https://github.com/sgl-project/sglang/commit/692c5f7d532f129424b57961c262bbd253b411dc)。SGLang 明确声明：硬件、引擎和流量都与论文不同，因此复现的是机制和曲线形状，不是逐位复制论文数字。
 
 ### 9.1 三种 verify mode 分开正确性与观测
 
@@ -558,7 +558,7 @@ $$
 
 ### 9.4 混合流量才是 per-request 调度的主场
 
-SGLang 把 GSM8K、Arena-Hard、Poetry 混在一个服务流量里，示例平均验证窗口分别为 **5.24、3.78、2.91**，相对不剪枝接受 ceiling 的利用率仍保持 **0.88–0.97**。这比单一数据集曲线更能说明价值：同一个 batch 内，容易猜的数学请求拿更长窗口，开放诗歌请求拿更短窗口。
+SGLang 把 GSM8K、Arena-Hard、Poetry 混在一个服务流量里，示例平均验证窗口分别为 **5.24、3.78、2.91**，相对不剪枝接受 ceiling 的利用率仍保持 0.88–0.97。这比单一数据集曲线更能说明价值：同一个 batch 内，容易猜的数学请求拿更长窗口，开放诗歌请求拿更短窗口。
 
 ⚠️ **原文时代 vs 当前工程**：DSpark 论文给出算法、内部 V4 生产实现和开源 DeepSpec；SGLang 随后公开了 ragged CUDA Graph、三种 verify mode、cost profiler 与复现命令。后者可以帮助理解“怎样落地”，但不能倒写成论文作者当时所有实验都使用了这些具体实现。
 

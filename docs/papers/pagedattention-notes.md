@@ -15,7 +15,7 @@ difficulty: 2
 
 > 原文：[Efficient Memory Management for Large Language Model Serving with PagedAttention](https://arxiv.org/abs/2309.06180)(Woosuk Kwon, Zhuohan Li et al.,UC Berkeley 等，SOSP '23,arXiv:2309.06180 v1,2023-09)
 
-KV cache 是 LLM serving 的“不可压缩的内存税”：OPT-13B 每生成一个 token 就要多占 **800 KB** 显存，一个最长 2048 token 的请求上限 **1.6 GB**。传统系统按最大长度给每个请求预留一整块连续显存，结果 token states（真正有用的 K/V 数据）只占 **20.4%–38.2%**，其余全被预留、内部碎片和外部碎片吃掉。PagedAttention 的答案一句话：像操作系统管物理内存一样管 KV cache——切成固定大小的块，逻辑连续、物理随意，按需分配、写时拷贝。论文（即 vLLM 引擎）靠这个把 token states 占比提到 **96.3%**，在同等延迟下把吞吐提升 **2-4×**,ShareGPT 负载上峰值达 FasterTransformer 的 **22×**。但请注意，这 2-4× 不是 attention kernel 算得更快——kernel 反而比 FasterTransformer 慢 **20-26%**——而是显存利用率换来的批处理收益。本文先把这笔账算清，再拆机制，最后对照 2026 年的 vLLM V1 引擎看哪些想法活了下来、哪些被工程化了。
+KV cache 是 LLM serving 的“不可压缩的内存税”：OPT-13B 每生成一个 token 就要多占 **800 KB** 显存，一个最长 2048 token 的请求上限 1.6 GB。传统系统按最大长度给每个请求预留一整块连续显存，结果 token states（真正有用的 K/V 数据）只占 20.4%–38.2%，其余全被预留、内部碎片和外部碎片吃掉。PagedAttention 的答案一句话：像操作系统管物理内存一样管 KV cache——切成固定大小的块，逻辑连续、物理随意，按需分配、写时拷贝。论文（即 vLLM 引擎）靠这个把 token states 占比提到 96.3%，在同等延迟下把吞吐提升 2-4×,ShareGPT 负载上峰值达 FasterTransformer 的 22×。但请注意，这 2-4× 不是 attention kernel 算得更快——kernel 反而比 FasterTransformer 慢 20-26%——而是显存利用率换来的批处理收益。本文先把这笔账算清，再拆机制，最后对照 2026 年的 vLLM V1 引擎看哪些想法活了下来、哪些被工程化了。
 
 <!-- more -->
 
@@ -57,7 +57,7 @@ KV cache 是 LLM serving 的“不可压缩的内存税”：OPT-13B 每生成�
 | §7 Ablation（kernel 开销、block size、swap vs recompute） | 简述 | 第 3、6、7 节引用结论，不逐面板展开 | §7;Fig.18-19;PAGE 12-13 |
 | §8 Discussion（适用边界） | 精讲（局限） | 第 9 节，选型边界全部来自这里 | §8;PAGE 13 |
 | §9 Related Work（Orca、FlashAttention 定位） | 简述 | 第 10 节回答“与 FlashAttention 的关系” | §9;PAGE 13-14 |
-| §10 Conclusion | 不展开 | 一句话总结，并入本文 📝 总结 | §10;PAGE 14 |
+| §10 Conclusion | 不展开 | 结论并入本文 📝 总结 | §10;PAGE 14 |
 
 📌 **本文承诺**：读完后，你应该能手算 OPT-13B 一个 token 的 KV cache 大小(800 KB)和单请求上限(1.6 GB)，画出逻辑块→物理块的 block table 翻译过程，解释为什么 CoW 能让 beam search 省 37.6%–55.2% 的内存，并说清“kernel 慢了 20-26%,端到端却快 2-4×”这句话为什么不自相矛盾。
 
@@ -71,7 +71,7 @@ $$
 P(x)=P(x_1)\cdot P(x_2\mid x_1)\cdots P(x_n\mid x_1,\dots,x_{n-1})
 $$
 
-其中 $x=(x_1,\dots,x_n)$ 是 token 序列，$P$ 是语言模型给出的联合概率(§2.1,PAGE 3)。如果每步都重新算前面所有位置的 K/V,复杂度随序列长度平方增长，谁都扛不住。所以 serving 系统把每个位置算好的 key、value 向量缓存下来——这就是 KV cache。它是**按 token 线性增长的“内存税”**：序列越长，税越重，而且**每个并发请求各交各的**。
+其中 $x=(x_1,\dots,x_n)$ 是 token 序列，$P$ 是语言模型给出的联合概率(§2.1,PAGE 3)。如果每步都重新算前面所有位置的 K/V,复杂度随序列长度平方增长，谁都扛不住。所以 serving 系统把每个位置算好的 key、value 向量缓存下来——这就是 KV cache。它是**按 token 线性增长的“内存税”**：序列越长，税越重，而且每个并发请求各交各的。
 
 > 打个比方：KV cache 像餐厅后厨为每桌客人提前备好的配菜。客人还没点完菜，配菜就得备着，而且一桌一桌独立备——来了 100 桌，就得备 100 份。问题不在“备菜”本身，而在“备菜间”怎么规划：是给每桌按最大可能人数预留一整面墙，还是客人真坐下、真加菜时再一格一格取？
 
@@ -114,7 +114,7 @@ $$
 2. **Internal fragmentation（内部碎片）**：预留区域里实际只用了开头一小段，剩余槽位永远空着；
 3. **External fragmentation（外部碎片）**：请求长度不同，预留区域参差不齐，中间产生无法利用的缝隙。
 
-论文的实测数字(Fig.2,PAGE 2)：现有系统里真正存储 token states 的比例只有 **20.4%–38.2%**，最低的是 Orca (Max) 的 20.4%;而 vLLM 高达 **96.3%**。换句话说，**现有系统每买 5 块钱显存，只有 1 块钱在干正事**。
+论文的实测数字(Fig.2,PAGE 2)：现有系统里真正存储 token states 的比例只有 **20.4%–38.2%**，最低的是 Orca (Max) 的 20.4%;而 vLLM 高达 96.3%。换句话说，现有系统每买 5 块钱显存，只有 1 块钱在干正事。
 
 **PagedAttention 的思路就是把这三笔浪费全部消掉：不预留（按需分配）、碎片收敛到一个块内（块粒度）、缝隙消失（全等大块）。** 下一节开始拆机制。
 
@@ -128,7 +128,7 @@ $$
 - **超过 30%**：KV cache,随请求动态分配；
 - 其余：activation 等临时张量。
 
-注意 KV cache 的比例是“**超过 30%**”——它随并发请求数和序列长度增长，是 serving 系统里唯一可以靠调度和管理“省出来”的部分。参数没法省（除非量化），activation 是瞬时的，只有 KV cache 是长期、按请求线性占用的。这也是为什么一个 LLM 请求比传统 keyword query 贵约 **10×**（§1,PAGE 1,论文引用 Reuters 报道 [43]）。
+注意 KV cache 的比例是“**超过 30%**”——它随并发请求数和序列长度增长，是 serving 系统里唯一可以靠调度和管理“省出来”的部分。参数没法省（除非量化），activation 是瞬时的，只有 KV cache 是长期、按请求线性占用的。这也是为什么一个 LLM 请求比传统 keyword query 贵约 10×（§1,PAGE 1,论文引用 Reuters 报道 [43]）。
 
 ### 1.2 三类浪费：一张堆叠柱状图看穿
 
@@ -145,26 +145,26 @@ $$
 
 *图源：PagedAttention 论文 Figure 2(SOSP '23,arXiv:2309.06180)*
 
-⚠️ **注意口径**：Orca (Oracle) 是论文自实现的一种“上帝视角” baseline——它假设系统**提前知道每个请求的真实输出长度**，因此不用预留（见第 7 节）。即便这样，它的 token states 也只有 38.2%,内部碎片仍占 36.6%,因为它依然需要连续内存块。vLLM 的 96.3% 柱子里，其余约 3.7% 图中未细分（账本 §8：原文未提供）——这就是“近零浪费”的含义。**在显存墙面前，省出 3-4 倍的有效空间，直接兑换成 2-4× 的吞吐，这是全文最核心的因果链。**
+⚠️ **注意口径**：Orca (Oracle) 是论文自实现的一种“上帝视角” baseline——它假设系统提前知道每个请求的真实输出长度，因此不用预留（见第 7 节）。即便这样，它的 token states 也只有 38.2%,内部碎片仍占 36.6%,因为它依然需要连续内存块。vLLM 的 96.3% 柱子里，其余约 3.7% 图中未细分（账本 §8：原文未提供）——这就是“近零浪费”的含义。在显存墙面前，省出 3-4 倍的有效空间，直接兑换成 2-4× 的吞吐，这是全文最核心的因果链。
 
 ### 1.3 浪费从哪来：一张“按最大长度预留”的示意图
 
 Fig.3 用两个请求把浪费画成了具体的槽位(PAGE 4)：
 
-- **请求 A**：max 2048 token。实际 prompt 7 槽 + 已生成 1 槽 = 用了 8 槽；预留 2 槽；**内部碎片 2038 槽永未使用**;
-- **请求 B**：max 512 token。实际 3 + 1 = 4 槽；预留 1 槽；**内部碎片 507 槽**。
+- **请求 A**：max 2048 token。实际 prompt 7 槽 + 已生成 1 槽 = 用了 8 槽；预留 2 槽；内部碎片 2038 槽永未使用;
+- **请求 B**：max 512 token。实际 3 + 1 = 4 槽；预留 1 槽；内部碎片 507 槽。
 
 <img src="/AIInfraGuide/images/pagedattention-fig2-memory-waste-sources.png" alt="SOSP 23 原文 Fig.3:现有系统按最大长度预留连续内存的三类浪费示意，请求 A max 2048 有 2038 个内部碎片槽，请求 B max 512 有 507 个，另有外部碎片" style="max-width: 88%; display: block; margin: 0 auto;" />
 
 *图源：PagedAttention 论文 Figure 3(SOSP '23,arXiv:2309.06180)*
 
-请求 A 的账很好算：2048(max)− 7(prompt)− 1(generated)− 2(reserved)= **2038 个槽**，从头到尾只服务了“确认存在”这个动作。为什么系统要这么干？因为解码阶段输出长度未知，而深度学习框架要求 KV cache 是**连续张量**，一次申请必须够用；长度超了就崩。**PagedAttention 的全部设计，就是绕开“连续张量”这个约束。**
+请求 A 的账很好算：2048(max)− 7(prompt)− 1(generated)− 2(reserved)= **2038 个槽**，从头到尾只服务了“确认存在”这个动作。为什么系统要这么干？因为解码阶段输出长度未知，而深度学习框架要求 KV cache 是连续张量，一次申请必须够用；长度超了就崩。PagedAttention 的全部设计，就是绕开“连续张量”这个约束。
 
 ## 2. 核心思想：把 KV cache 当成虚拟内存来管
 
 ### 2.1 逻辑块与物理块
 
-PagedAttention 的灵感直接来自操作系统的分页(paging)：把每个序列的 KV cache 切成固定大小的 **KV block**，每块容纳固定数量 $B$ 个 token 的 key/value 向量；块的**物理地址不必连续**(§4.1,PAGE 5)。
+PagedAttention 的灵感直接来自操作系统的分页(paging)：把每个序列的 KV cache 切成固定大小的 **KV block**，每块容纳固定数量 $B$ 个 token 的 key/value 向量；块的物理地址不必连续(§4.1,PAGE 5)。
 
 - **逻辑块**：序列视角，第 1、2、3… 块，天然连续；
 - **物理块**：显存视角，散落在显存各处，由 block table 记录映射。
@@ -245,7 +245,7 @@ $$
 | 最小例子 | 位置 $i=20$、$B=16$：需要 $\lceil 20/16\rceil=2$ 个块，分别从两个物理地址取 K/V,算完相加 |
 | 边界与来源 | kernel 比 FasterTransformer 的 attention kernel 慢 **20-26%**(§7.1,Fig.18a,PAGE 12)，靠批处理收益与其余算子不受影响弥补；间接寻址有开销，计算受限场景不划算(§8,PAGE 13) |
 
-⚠️ **一个常被误解的点**：论文并不宣称“我的 attention kernel 更快”。恰恰相反，它承认 PagedAttention kernel 比 FasterTransformer 的 kernel 慢 20-26%(§7.1,PAGE 12)。**vLLM 赢在“同样一块 GPU 能塞下 3-4 倍的请求”，batch 变大带来的吞吐收益远大于 kernel 的常数开销**。这也是读这篇论文最要紧的口径：别把 2-4× 记到 kernel 头上。
+⚠️ **一个常被误解的点**：论文并不宣称“我的 attention kernel 更快”。恰恰相反，它承认 PagedAttention kernel 比 FasterTransformer 的 kernel 慢 20-26%(§7.1,PAGE 12)。vLLM 赢在“同样一块 GPU 能塞下 3-4 倍的请求”，batch 变大带来的吞吐收益远大于 kernel 的常数开销。这也是读这篇论文最要紧的口径：别把 2-4× 记到 kernel 头上。
 
 ## 4. 解码走查：按需分配，一个块都不多给
 
@@ -253,7 +253,7 @@ $$
 
 §4.3 用 Fig.6-7 演示了一个请求从 prefill 到 decode 的完整生命周期(PAGE 6-7)：
 
-1. **Prefill（prompt 阶段）**：按 prompt 实际长度分配**最少**的物理块。论文 Fig.6 的示例按块容量 $B=4$ 演示：7 个 prompt token 映射到前 2 个逻辑块（0 和 1），分别对应物理块 7 和 1;prefill 把前 4 个 token 的 KV 存进逻辑块 0、后 3 个 token 存进逻辑块 1,剩余槽留给自回归生成(§4.3,PAGE 6)——绝不按最大长度 2048 预留；
+1. **Prefill（prompt 阶段）**：按 prompt 实际长度分配最少的物理块。论文 Fig.6 的示例按块容量 $B=4$ 演示：7 个 prompt token 映射到前 2 个逻辑块（0 和 1），分别对应物理块 7 和 1;prefill 把前 4 个 token 的 KV 存进逻辑块 0、后 3 个 token 存进逻辑块 1,剩余槽留给自回归生成(§4.3,PAGE 6)——绝不按最大长度 2048 预留；
 2. **Decode（生成阶段）**：每生成一个 token 填进当前块，`#filled` 加 1;当前块填满($=B$)再向 manager 要新块；
 3. **释放**：请求结束，块归还空闲池，其他请求立刻复用。
 
@@ -279,7 +279,7 @@ $$
 - 继续生成 10 个 token：第 1 块填满(7+9=16)，第 10 个 token 落在新分配的块 2 里，`#filled=1`;
 - 此刻整请求浪费 = 块 2 的 15 个空槽，**上限就是 15 个槽**——因为只有最后一块可能不满。
 
-对照 Fig.3 的老方案：同样的请求（实际 7+1 个 token、max 2048）要预留 2048 槽，其中 **2038 个槽从头到尾是死的**(Fig.3,PAGE 4)。**2038 vs ≤15,这就是“按需分配 + 块粒度”的量化差距。**
+对照 Fig.3 的老方案：同样的请求（实际 7+1 个 token、max 2048）要预留 2048 槽，其中 **2038 个槽从头到尾是死的**(Fig.3,PAGE 4)。2038 vs ≤15,这就是“按需分配 + 块粒度”的量化差距。
 
 ## 5. Copy-on-Write：让并行采样和 beam search 共享 KV
 
@@ -300,7 +300,7 @@ beam search 里共享关系随解码动态演化，像 OS 的进程树(§4.4,Fig
 
 ### 5.2 共享前缀与缓存
 
-更进一步的场景是**跨请求共享前缀**：同一服务下大量请求以相同系统提示词开头。论文设想服务商预先缓存前缀块，新请求的 block table 直接映射到缓存块，只有需要写入的末块标记 CoW(§4.4,Fig.10,PAGE 8)。注意 §4.4 这里只给了机制和一张示意图；跨请求共享前缀的实测收益，原文仅在 §6.4 的合成翻译负载（LLaMA-13B + WMT16,共享 1-shot 80 token / 5-shot 341 token 前缀）中给出（相对 Orca (Oracle) **1.67× / 3.58×**,Fig.16,PAGE 12),**真实多租户/系统提示词流量下的实测原文没有做**（账本 §8）。这个场景后来由 vLLM 的自动 prefix cache 默认开启（见第 8 节）——那是把 §4.4 的手动预留演进成 hash 命中即共享的工程演进，不是填补论文没做的实验。
+更进一步的场景是**跨请求共享前缀**：同一服务下大量请求以相同系统提示词开头。论文设想服务商预先缓存前缀块，新请求的 block table 直接映射到缓存块，只有需要写入的末块标记 CoW(§4.4,Fig.10,PAGE 8)。注意 §4.4 这里只给了机制和一张示意图；跨请求共享前缀的实测收益，原文仅在 §6.4 的合成翻译负载（LLaMA-13B + WMT16,共享 1-shot 80 token / 5-shot 341 token 前缀）中给出（相对 Orca (Oracle) 1.67× / 3.58×,Fig.16,PAGE 12),真实多租户/系统提示词流量下的实测原文没有做（账本 §8）。这个场景后来由 vLLM 的自动 prefix cache 默认开启（见第 8 节）——那是把 §4.4 的手动预留演进成 hash 命中即共享的工程演进，不是填补论文没做的实验。
 
 ### 5.3 数字例子：beam search 省了多少
 
@@ -329,18 +329,18 @@ beam search 里共享关系随解码动态演化，像 OS 的进程树(§4.4,Fig
 
 显存是稀缺资源，请求多到放不下时必须有抢占策略。论文的选择(§4.5,PAGE 8)：
 
-- **调度**：FCFS(first-come-first-serve)，保证公平、防止饥饿；资源不足时，**最后到达的请求先被抢占**;
+- **调度**：FCFS(first-come-first-serve)，保证公平、防止饥饿；资源不足时，最后到达的请求先被抢占;
 - **驱逐粒度**：all-or-nothing——一个序列的所有块要么全驱逐、要么全保留。因为处理一个请求需要它的全部 token state,只抢一半无法继续；
-- **调度单位**：同一请求内的多个序列（如 beam 候选）组成 **sequence group**，整体调度。
+- **调度单位**：同一请求内的多个序列（如 beam 候选）组成 sequence group，整体调度。
 
 ### 6.2 两条恢复路径与一条 20% 经验线
 
 被抢占的请求怎么恢复？两条路(§4.5,PAGE 8)：
 
 1. **Swapping（换出）**：把块拷贝到 CPU RAM 的 swap 空间。swap 空间上限受限于 GPU KV cache 总量（没法凭空变多）；
-2. **Recomputation（重算）**：把 KV cache 重新算一遍。关键洞察：被抢占请求已经解码出的 token 可以拼回原 prompt,**一次 prefill 全部算完**，所以重算延迟显著低于当初的逐 token 解码延迟。
+2. **Recomputation（重算）**：把 KV cache 重新算一遍。关键洞察：被抢占请求已经解码出的 token 可以拼回原 prompt,一次 prefill 全部算完，所以重算延迟显著低于当初的逐 token 解码延迟。
 
-选哪条？取决于 **CPU-GPU 带宽 vs GPU 算力**的相对成本(§4.5,PAGE 8)。论文实测给出一条可迁移的工程经验(§7.3,PAGE 13)：**recompute 的开销不超过 swap 延迟的 20%**——当 block size 小的时候尤其如此，因为 swap 被切成大量小传输，效率很低；block size 16–64 时两者端到端相当。微基准 Fig.19a 显示 swap 成本随 block size(1–256)变化，而 recompute 与 block size 无关(PAGE 13)。工程含义：**机器间带宽好、算力富余时，recompute 往往更省事**；这也是后来许多推理引擎的默认倾向。
+选哪条？取决于 **CPU-GPU 带宽 vs GPU 算力**的相对成本(§4.5,PAGE 8)。论文实测给出一条可迁移的工程经验(§7.3,PAGE 13)：recompute 的开销不超过 swap 延迟的 20%——当 block size 小的时候尤其如此，因为 swap 被切成大量小传输，效率很低；block size 16–64 时两者端到端相当。微基准 Fig.19a 显示 swap 成本随 block size(1–256)变化，而 recompute 与 block size 无关(PAGE 13)。工程含义：机器间带宽好、算力富余时，recompute 往往更省事；这也是后来许多推理引擎的默认倾向。
 
 **机制卡 5：抢占与恢复**
 
@@ -364,7 +364,7 @@ beam search 里共享关系随解码动态演化，像 OS 的进程树(§4.4,Fig
 - **Orca (Pow2)**：按 2 的幂预留，最多 2× 过预留（如 25 → 32）；
 - **Orca (Oracle)**：假设预知真实输出长度——论文自己承认这是实践不可行的上界(§6.1,PAGE 10)。
 
-负载：ShareGPT（input 均值 161.31 / output 均值 337.99 token）与 Alpaca(input 19.31 / output 58.45)(Fig.11,PAGE 9);ShareGPT 输入平均是 Alpaca 的 **8.4×**、输出 **5.8×**(§6.1,PAGE 10)。大部分实验用 1 小时 traces,OPT-175B 因成本只跑 15 分钟(§6.1,PAGE 10)。
+负载：ShareGPT（input 均值 161.31 / output 均值 337.99 token）与 Alpaca(input 19.31 / output 58.45)(Fig.11,PAGE 9);ShareGPT 输入平均是 Alpaca 的 **8.4×**、输出 5.8×(§6.1,PAGE 10)。大部分实验用 1 小时 traces,OPT-175B 因成本只跑 15 分钟(§6.1,PAGE 10)。
 
 ### 7.2 吞吐主结果：一组值得背的数字
 
@@ -378,7 +378,7 @@ beam search 里共享关系随解码动态演化，像 OS 的进程树(§4.4,Fig
 | 同时处理请求数 vs Orca (Oracle) | 2.2× | §6.2;Fig.13a;PAGE 10-11 |
 | 同时处理请求数 vs Orca (Max) | 4.3× | §6.2;Fig.13a;PAGE 10-11 |
 
-平均批处理请求数最能说明“显存利用率 → 并发”的因果链(Fig.13,PAGE 10)：ShareGPT（2 req/s 到达率）下 Orca (Max)/Pow2/Oracle/vLLM 分别是 **7.00 / 9.81 / 13.62 / 30.42**;Alpaca(30 req/s)下是 **7.00 / 43.24 / 72.75 / 132.44**。vLLM 在同一张卡上同时服务 132 个请求而别人只能服务 43 个——**批越大，GPU 利用率越高，端到端吞吐自然越高**。
+平均批处理请求数最能说明“显存利用率 → 并发”的因果链(Fig.13,PAGE 10)：ShareGPT（2 req/s 到达率）下 Orca (Max)/Pow2/Oracle/vLLM 分别是 **7.00 / 9.81 / 13.62 / 30.42**;Alpaca(30 req/s)下是 7.00 / 43.24 / 72.75 / 132.44。vLLM 在同一张卡上同时服务 132 个请求而别人只能服务 43 个——批越大，GPU 利用率越高，端到端吞吐自然越高。
 
 <img src="/AIInfraGuide/images/pagedattention-fig4-throughput-comparison.png" alt="SOSP 23 原文 Fig.12:OPT-13B/66B/175B 与 ShareGPT/Alpaca 六面板，normalized latency 随 request rate 变化的吞吐对比，vLLM 在更高请求率下仍保持低延迟" style="max-width: 98%; display: block; margin: 0 auto;" />
 
@@ -388,9 +388,9 @@ Fig.12（上图）是 2-4× 的直观来源：横轴 request rate 推到很高�
 
 其他负载的补充数字：
 
-- **Chatbot**：vLLM 相对三个 Orca baseline 可维持 **2×** 请求率（§6.5,Fig.17,PAGE 12;该实验上下文截断到最近 1024 token,最多输出 1024）；
-- **翻译（共享前缀）**：LLaMA-13B + WMT16,共享 1-shot(80 token)/ 5-shot(341 token)前缀时，相对 Orca (Oracle) 吞吐提升 **1.67× / 3.58×**(§6.4,Fig.16,PAGE 12)——共享前缀场景是 CoW + 缓存的直接受益者；
-- **beam search 增幅**：OPT-13B + Alpaca,从基础采样到 beam width=6,vLLM 相对 Orca (Oracle) 的改善从 1.3× 升到 **2.3×**(§6.3,PAGE 11)——beam 越宽，共享收益越大（呼应 5.3 节的 55% 内存节省）。
+- **Chatbot**：vLLM 相对三个 Orca baseline 可维持 2× 请求率（§6.5,Fig.17,PAGE 12;该实验上下文截断到最近 1024 token,最多输出 1024）；
+- **翻译（共享前缀）**：LLaMA-13B + WMT16,共享 1-shot(80 token)/ 5-shot(341 token)前缀时，相对 Orca (Oracle) 吞吐提升 1.67× / 3.58×(§6.4,Fig.16,PAGE 12)——共享前缀场景是 CoW + 缓存的直接受益者；
+- **beam search 增幅**：OPT-13B + Alpaca,从基础采样到 beam width=6,vLLM 相对 Orca (Oracle) 的改善从 1.3× 升到 2.3×(§6.3,PAGE 11)——beam 越宽，共享收益越大（呼应 5.3 节的 55% 内存节省）。
 
 ### 7.3 一个诚实的边界
 
@@ -402,15 +402,15 @@ Fig.12（上图）是 2-4× 的直观来源：横轴 request rate 推到很高�
 
 ### 8.1 论文时代 vs V1 引擎
 
-论文(2023)的 vLLM 是 **V0 引擎**：scheduler + block manager 用 Python 实现，单一大 block table,自研 PagedAttention CUDA kernel,代码规模 8.5K 行 Python + 2K 行 C++/CUDA(§5,PAGE 9)。到今天，当前架构是 **V1 引擎**（`vllm/v1/core/kv_cache_manager.py`、`vllm/v1/core/sched/scheduler.py`、`vllm/v1/core/block_pool.py` 为主路径），V0 已移除。**论文的三件核心遗产——分块存储、ref count + CoW、抢占——在 V1 里都活着**：`KVCacheBlock` 仍带引用计数与 block copy 原语（`vllm/v1/core/kv_cache_utils.py` L118、L179），调度器仍有 `_preempt_request`。
+论文(2023)的 vLLM 是 **V0 引擎**：scheduler + block manager 用 Python 实现，单一大 block table,自研 PagedAttention CUDA kernel,代码规模 8.5K 行 Python + 2K 行 C++/CUDA(§5,PAGE 9)。到今天，当前架构是 V1 引擎（`vllm/v1/core/kv_cache_manager.py`、`vllm/v1/core/sched/scheduler.py`、`vllm/v1/core/block_pool.py` 为主路径），V0 已移除。论文的三件核心遗产——分块存储、ref count + CoW、抢占——在 V1 里都活着：`KVCacheBlock` 仍带引用计数与 block copy 原语（`vllm/v1/core/kv_cache_utils.py` L118、L179），调度器仍有 `_preempt_request`。
 
 ### 8.2 三个关键演进
 
-1. **Block size 仍是 16**：论文消融说默认 16 最优——“够大以利用 GPU 并行，够小以避免内部碎片”，ShareGPT 上 16–128 都好，Alpaca 上 16/32 好(§7.2,Fig.18b,PAGE 12)。V1 的 `DEFAULT_BLOCK_SIZE = 16`(`vllm/config/cache.py` L48)一字未改；个别后端偏好更大倍数(flash_attn 后端的 `get_preferred_block_size` 在 XPU 上返回 max（默认， 64），CUDA 上沿用默认 16,且要求 block_size % 16 == 0)。**16 这个数字从论文活到今天，是“碎片 vs 并行度”权衡的实证沉淀。**
+1. **Block size 仍是 16**：论文消融说默认 16 最优——“够大以利用 GPU 并行，够小以避免内部碎片”，ShareGPT 上 16–128 都好，Alpaca 上 16/32 好(§7.2,Fig.18b,PAGE 12)。V1 的 `DEFAULT_BLOCK_SIZE = 16`(`vllm/config/cache.py` L48)一字未改；个别后端偏好更大倍数(flash_attn 后端的 `get_preferred_block_size` 在 XPU 上返回 max（默认， 64），CUDA 上沿用默认 16,且要求 block_size % 16 == 0)。16 这个数字从论文活到今天，是“碎片 vs 并行度”权衡的实证沉淀。
 
-2. **前缀缓存从手动变自动**：论文时代共享前缀靠手动预留缓存块(§4.4,Fig.10);V1 实现**自动前缀缓存**——用 block hash 驱动的 `BlockHashToBlockMap`(`vllm/v1/core/block_pool.py`)，同一前缀 hash 命中即共享物理块。论文只在 §6.4 的合成翻译负载下实测过共享前缀(1.67×/3.58×)，未做真实多租户/系统提示词流量下的实测（账本 §8）；自动 prefix cache 是工程演进——把手动预留变为默认开启的自动命中，而不是填补论文没做的实验。
+2. **前缀缓存从手动变自动**：论文时代共享前缀靠手动预留缓存块(§4.4,Fig.10);V1 实现自动前缀缓存——用 block hash 驱动的 `BlockHashToBlockMap`(`vllm/v1/core/block_pool.py`)，同一前缀 hash 命中即共享物理块。论文只在 §6.4 的合成翻译负载下实测过共享前缀(1.67×/3.58×)，未做真实多租户/系统提示词流量下的实测（账本 §8）；自动 prefix cache 是工程演进——把手动预留变为默认开启的自动命中，而不是填补论文没做的实验。
 
-3. **Chunked prefill（论文未提出）**：V1 scheduler 原生支持把长 prefill 切块调度（`scheduler.py` 含 prefill chunk limit 与 mamba 状态对齐切分），论文时代没有这个概念。另外注意力后端从“自研 kernel”走向多元化：`flash_attn`、`flashinfer`、`triton_attn`（vLLM 自研 paged attention kernel）、`flex_attention`、`mla`（DeepSeek 类）、`diffkv`、`gdn_attn`、`mamba`/`linear_attn` 等(`vllm/v1/attention/backends/`,2026-08-11)——**PagedAttention 的思想变成了引擎的默认内存层，而 kernel 层百花齐放**。
+3. **Chunked prefill（论文未提出）**：V1 scheduler 原生支持把长 prefill 切块调度（`scheduler.py` 含 prefill chunk limit 与 mamba 状态对齐切分），论文时代没有这个概念。另外注意力后端从“自研 kernel”走向多元化：`flash_attn`、`flashinfer`、`triton_attn`（vLLM 自研 paged attention kernel）、`flex_attention`、`mla`（DeepSeek 类）、`diffkv`、`gdn_attn`、`mamba`/`linear_attn` 等(`vllm/v1/attention/backends/`,2026-08-11)——PagedAttention 的思想变成了引擎的默认内存层，而 kernel 层百花齐放。
 
 未核实项如实说明：V1 调度策略与论文 FCFS 描述的精确差异、CPU offload 默认开关，当前只以上述源码锚点为据，未做运行时验证。
 
@@ -420,7 +420,7 @@ Fig.12（上图）是 2-4× 的直观来源：横轴 request rate 推到很高�
 
 论文 §8 Discussion(PAGE 13)把适用边界写得很清楚：
 
-1. **只对“输出长度先验未知 + 性能受显存容量约束”的负载有效**。DNN 训练张量形状静态、非 LLM serving 多为计算受限，强行套分页会因内存间接寻址与非连续块开销**降性能**;
+1. **只对“输出长度先验未知 + 性能受显存容量约束”的负载有效**。DNN 训练张量形状静态、非 LLM serving 多为计算受限，强行套分页会因内存间接寻址与非连续块开销降性能;
 2. **三个 LLM 特化增强**是它区别于 OS 分页的地方：all-or-nothing swap-out（处理请求需要全部 token state）、recompute 恢复（OS 里不可行）、kernel fusion 缓解间接寻址；
 3. **kernel 慢 20-26%**(§7.1)，靠其余算子不受影响与批处理收益弥补；
 4. **block size 是权衡**：过大→内部碎片增加、共享概率下降(§7.2);
