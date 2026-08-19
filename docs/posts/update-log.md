@@ -9,6 +9,12 @@ tags: ["公告", "更新日志"]
 
 ---
 
+## 2026-08-19
+
+### 5.7 DFlash 补充：DFlash 2（Inco AI 博客，2026-08）
+
+- **文章：** [5.7 DFlash：块扩散并行起草](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/57-dflash-块扩散并行起草) | 新增第 7 节"并行起草留下的两个缺口：DFlash 2 的答案"——路径选择器（top-16 候选成对打分，+2M 参数/+0.6% 延迟）与二抽头局部卷积（+16.5M/+0.7%）分别修复选择头空间与后缀衰减，合计比 DFlash 接受长度 +21% 只花 1.3% 循环延迟（博客自测）；同步更新生态采用面（NVIDIA Blackwell 15×、Google TPU 3×、CoreWeave 生产默认、HF 下载 350 万+）；5.8 DSpark 加了一条路线对照注
+
 ## 2026-08-18
 
 ### 模块四第5章补全：MTP / DFlash / DSpark 三篇生产级投机解码
