@@ -11,6 +11,10 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-19
 
+### 3.3 vLLM 整体架构（新增）
+
+- **文章：** [3.3 vLLM 整体架构：一次请求如何穿过 LLMEngine、EngineCore 和 Worker](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm/33-vllm-整体架构) | 以 vLLM 0.26.0 真实源码为对象拆解 V1 引擎三层进程架构：LLM/AsyncLLM 前端与 EngineCore 进程之间的 ZMQ 边界、`run_busy_loop` 主循环与 `step()` 心脏五步、调度器"无 prefill/decode 阶段"的统一分配与抢占=重算、KV 池启动时预分配与 prefix cache 零开销命中（实测 68-token prompt 第二轮命中 64 token）、Model Runner V1/V2 版本差异；附 2×RTX 6000D 最小复现（进程树 `VLLM::EngineCore`、GPU KV cache 1,012,240 tokens、默认参数 16,384/1,024/16）
+
 ### 5.7 DFlash 补充：DFlash 2（Inco AI 博客，2026-08）
 
 - **文章：** [5.7 DFlash：块扩散并行起草](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/57-dflash-块扩散并行起草) | 新增第 7 节"并行起草留下的两个缺口：DFlash 2 的答案"——路径选择器（top-16 候选成对打分，+2M 参数/+0.6% 延迟）与二抽头局部卷积（+16.5M/+0.7%）分别修复选择头空间与后缀衰减，合计比 DFlash 接受长度 +21% 只花 1.3% 循环延迟（博客自测）；同步更新生态采用面（NVIDIA Blackwell 15×、Google TPU 3×、CoreWeave 生产默认、HF 下载 350 万+）；5.8 DSpark 加了一条路线对照注
