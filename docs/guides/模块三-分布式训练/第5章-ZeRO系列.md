@@ -23,11 +23,12 @@ ZeRO（Zero Redundancy Optimizer）是 DeepSpeed 的核心技术。本章从“�
 
 ### 2. ZeRO-1：切分优化器状态
 
-- **切分内容**：Adam 的 FP32 参数副本 + 一阶动量 + 二阶动量（共 $12\Psi$ Bytes）
+- **切分内容**：Adam 的 FP32 参数副本 + 一阶动量 + 二阶动量（共 $12\Psi$ Bytes） Shape守恒：$[\Psi]\rightarrow$每卡$[\Psi/N]$（如 $\Psi$=7B, N=8→0.875B/卡≈10.5GB FP32状态/卡）
 - **通信模式**：梯度仍需 AllReduce（与 DDP 相同），参数更新后需 AllGather 同步参数
 - **显存节省**：每卡从 $16\Psi$ 降至 $4\Psi + \frac{12\Psi}{N}$
 - **通信量**：与 DDP 相同（$2\Psi$）+ 额外 AllGather 参数
-- **适用场景**：优化器状态是显存大头时（Adam 占 75%），少量通信增加换大幅显存节省
+- **适用场景**：优化器状态是显存大头时（Adam 占 75%），少量通信换显存降低 3.5×（7B模型 112GB→32GB@N=4，BF16计）
+- 💡 Roofline一瞥：N=8时每卡Adam状态从84GB→10.5GB，HBM 3TB/s读1次仅3.5ms，AllGather补齐14GB经NVLink 900GB/s需~15.5ms→通信显性（Byte=BF16×2）
 
 ### 3. ZeRO-2：进一步切分梯度
 
@@ -46,6 +47,18 @@ ZeRO（Zero Redundancy Optimizer）是 DeepSpeed 的核心技术。本章从“�
 - **显存节省**：每卡降至 $\frac{16\Psi}{N}$（理想线性缩放）
 - **通信量**：$3\Psi$（前向 AllGather $\Psi$ + 反向 AllGather $\Psi$ + ReduceScatter $\Psi$），比 DDP 多 50%
 - **适用场景**：模型参数本身单卡装不下，必须分片
+
+> 状态机（ZeRO-3 单层生命周期，图中5步对应正文“前向AllGather→释放→反向AllGather→ReduceScatter”4段通信）：
+> ```mermaid
+> stateDiagram-v2
+>     [*] --> Sharded: 初始仅持分片[Ψ/N]
+>     Sharded --> Gathered: 前向AllGather→[Ψ]
+>     Gathered --> Sharded: 计算完释放
+>     Sharded --> Gathered2: 反向AllGather→[Ψ]
+>     Gathered2 --> Reduced: ReduceScatter梯度→[Ψ/N]
+>     Reduced --> Sharded: 更新后回归分片
+> ```
+> 图中状态转换对应正文第4节“前向AllGather/反向AllGather/ReduceScatter”3步
 
 ### 5. ZeRO-Offload 与 ZeRO-Infinity
 

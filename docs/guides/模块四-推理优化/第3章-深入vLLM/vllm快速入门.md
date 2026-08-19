@@ -61,6 +61,7 @@ graph LR
 ### 2.1 传统 KV Cache 的问题
 
 LLM 推理的 Decode 阶段需要缓存之前所有 token 的 Key 和 Value 向量（即 KV Cache），以避免重复计算。传统做法是为每个请求**预分配一块连续的显存空间**，大小按模型支持的最大序列长度计算。浪费量$=(max\_len-实际len)\times b_{token}$，如 $max\_len=4096$ 而实际 $500$ 时浪费 $3596$ token≈$3596\times b_{token}$（7B FP16 约 $1.7$ GB/请求）。
+> 💡 **账本一瞥**：7B FP16 每 token KV 约 0.5 MB（$2×32×32×128×2$ Byte），4096 长度单请求 2 GB HBM（A100 HBM 2 TB/s 下搬运约 1 ms），Paged 后 500 token 仅 0.25 GB。
 
 这就带来了三个问题：
 
@@ -84,9 +85,10 @@ PagedAttention 的核心思想非常直观——把操作系统管理内存的�
 具体工作方式：
 
 1. **分块存储**：KV Cache 不再要求连续内存，而是被切分成固定大小的 Block（如 16 个 token 为一个 Block）
+   > Shape：`[B,S,d] → [B,⌈S/16⌉,16,d]`，逻辑块表 `[B,⌈S/16⌉]→物理块 ID`；图文互证：上表‘页表→Block Table’即此映射。
 2. **按需分配**：每生成一个 token，只在当前 Block 未满时追加，填满后才分配新的 Block
 3. **映射表管理**：每个请求维护一个 Block Table，记录自己的逻辑 Block 到物理 Block 的映射关系
-4. **内存共享**：多个请求如果有相同的前缀（如 System Prompt），可以共享同一组物理 Block，大幅节省显存
+4. **内存共享**：多个请求如果有相同的前缀（如 System Prompt），可以共享同一组物理 Block，**节省显存 2–3×（800 token 共享前缀 2 请求共省约 4 GB，HBM 2 TB/s 下省约 2 ms）**
 
 ⚠️ **注意**：PagedAttention 的分块存储意味着 KV Cache 在物理上是不连续的，vLLM 需要专门的 CUDA Kernel 来高效地从分散的 Block 中读取数据进行 Attention 计算。
 
