@@ -53,20 +53,21 @@ guides: 5.7 DFlash 补 DFlash 2（Inco AI 博客 2026-08）——新增第7节�
 git push origin main
 ```
 
-### 4. 触发部署
+### 4. 触发部署（手动触发是默认路径）
 
-`.git/hooks/post-push` 正常情况下会自动触发。**必须验证它真的触发了**——看最新 run 的 headSha 是不是刚推的 commit：
+实证（2026-08-19）：本环境的 `git push` **不会调用 post-push hook**（沙箱限制，空提交+marker hook 验证过），所以不要依赖 hook，直接手动触发：
+
+```bash
+gh workflow run deploy.yml -R XiaYiHann/AIInfraGuide
+```
+
+触发后确认 run 起来了（headSha = 刚推的 commit）：
 
 ```bash
 gh run list -R XiaYiHann/AIInfraGuide --limit 1 --json headSha,event,createdAt,status
 ```
 
-- 有新的 `workflow_dispatch` 且 SHA 匹配 → 跳到第 5 步；
-- 没有（hook 没跑/gh 失败）→ 手动触发：
-
-```bash
-gh workflow run deploy.yml -R XiaYiHann/AIInfraGuide
-```
+注：`.git/hooks/post-push` 仍然保留——在能跑 hook 的机器/环境下它会自动触发，那时第 4 步变成"看 run list 确认，没有再手动补"。
 
 ### 5. 等待并验证（跳过这步 = 没上线）
 
@@ -93,6 +94,6 @@ bash scripts/check_live.sh "/AIInfraGuide/inference/模块四-推理优化/第5�
 
 ## 排障
 
-- **hook 没触发**：手动跑 `gh workflow run deploy.yml -R XiaYiHann/AIInfraGuide` 兜底；查 hook 是否存在/可执行（`ls -la .git/hooks/post-push`）。hook 只在它所在的那个 clone 生效，换机器 push 必须手动触发。
+- **hook 没触发**：默认情况（本环境实证：`git push` 不执行 post-push hook），用 `gh workflow run deploy.yml -R XiaYiHann/AIInfraGuide` 手动触发；hook 日志在 `.git/post-push.log`（有的话看它）。hook 只在它所在的那个 clone 生效，换机器 push 同样手动触发。
 - **线上还是旧内容但 run 成功了**：等 1~2 分钟 CDN 刷新再验；确认验证的 URL 编码正确（用 check_live.sh，别手拼）。
 - **run 一直 in_progress 超过 10 分钟**：`gh run view <id> -R XiaYiHann/AIInfraGuide --log-failed` 看日志，常见是 npm ci 拉包慢，再等即可。
