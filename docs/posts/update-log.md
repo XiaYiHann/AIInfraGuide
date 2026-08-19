@@ -11,6 +11,20 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-20
 
+### 九篇存文质量修复轮（公式走查补齐 + 数字核验 + 术语首现清零）
+
+对前几批上线的 9 篇文章做了一轮逐条验收门体检（writer agent，DeepSeek V4 Flash）：对照一手源逐式逐表核验数字、补齐缺失的最小数值/矩阵走查、清理术语裸奔与悬空链接。重点修复：
+
+- **3.10 MLA**（14 处）：压缩率数字对齐论文（93.3%）、RoPE/FP16/MoE 等首现定义补齐、低秩路径推导补全、3.3 四件套回链
+- **12.1 InstructGPT**：修正一处算错的 next-token 损失（0.916→1.022，复算验证）、2 处数字对齐 arXiv 2203.02155、reference 必须冻结的三条理由
+- **12.2 DPO**：chosen/rejected 首现定义、「令 lnZ=ln3」演示值与「Z 未知」的混淆澄清、Tülu 2 偏好数据六维对齐
+- **3.12 MoE**：noisy top-k 采样算例、softmax gating 数值走查、「参数×512 而 FLOPs≈×1.06」双账本复算、99.994% 稀疏度公式
+- **2.6 StreamingLLM**：Table 1/2/6 全数字对照 arXiv v4 核验（含甄别 Figure 10 曲线读数与正文数字的出处）
+- **6.7 DeltaNet**：对照 arXiv 2406.06484 逐项核验 22 项数字（零错误），补术语首现与走查
+- **3.11 DSA**：FLOPs 首现定义、index score 非负条件数学严谨性修正（抽查确认公式义务/数值走查达标）
+- **1.2 测试时计算**：Roofline/Prefill/KV Cache 回顾块、Chinchilla 四件套（补齐与 chinchilla-notes 的对称交叉引用）、FLOPs/SFT 首现
+- **chinchilla-notes**：两处悬空占位链接清理、Kaplan 批判段逻辑断裂修复（公式义务与推导完整度本已达标，未动结构）
+
 ### CS8803 第三批四篇完稿 + 四处存量补充（12.3/12.4/8.6/Precision + 3.9/3.3/3.8）
 
 CS8803 扫描收尾批（新图 10 张入站；模块三第 12 章 12.3/12.4 上线、全章 4 篇齐整；另在 3 篇存量文章补了 4 处缺失块）：
@@ -21,8 +35,6 @@ CS8803 扫描收尾批（新图 10 张入站；模块三第 12 章 12.3/12.4 上
 - **文章：** [precision-notes：训练该用几位精度？精度 × 参数 × 数据三方权衡](https://xiayihann.github.io/AIInfraGuide/papers/scaling-laws-for-precision-notes) | Precision Scaling Laws 精读（源核验：真源 arXiv 2411.04330+课程幻灯片）：b 位宽作为第三分配变量的 scaling 理论、最优精度解推导+175B@FP16 vs FP8 最小算例、与 Chinchilla 的正交性、训练/推理精度分工
 - **补充：** [3.9 Tokenization 与词嵌入](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/39-tokenization与词嵌入) 新增 2.4「BPE 学习流程」（超小语料 4 轮 pair 计数→合并手算走查）+ 2.5「Byte-level BPE 与 UTF-8 字节 fallback」（无 UNK、多语种 token 数差异算例）+ 第 7 节「从词嵌入到文本嵌入：语义检索入门」（余弦算例、InfoNCE 三要素、E5 精简案例）
 - **补充：** [3.3 Self-Attention §9.5](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/33-self-attention机制深入理解#951-absorb吸收把固定上投影折叠到-query-侧) 新增 Absorb 推理机制（2×2 折叠走查、行为≈MQA、K 侧 RoPE-free 前提）+ RoPE/NoPE 拆分 + TransMLA 一句话延伸；[3.8 §1.3](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/38-从transformer到llm自回归生成深入理解) 更新过时的 NAR 结论为 masked diffusion（前向掩码/反向并行预测+remask 小例、AR vs LLaDA 成本对比表）
-
-## 2026-08-20
 
 ### CS8803 第二批四篇完稿：DSA / RLHF / DPO / Chinchilla（模块三第12章后训练开章）
 
