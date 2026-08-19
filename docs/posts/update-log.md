@@ -11,6 +11,16 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-19
 
+### CS8803 首批五篇完稿：MLA / MoE / Attention Sink / 测试时计算 / DeltaNet
+
+从 CS8803-LLM 课程扫描中挑出的 5 篇高优先新文章（论文精读+知识点精讲，数字全部对照 arXiv 一手源核验，新图 21 张入站；同批在 7 篇存量文章里加了交叉引用）：
+
+- **文章：** [3.10 KV Cache 为什么能省 93%？MLA 低秩压缩与解耦 RoPE](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/310-mla与decoupled-rope精读) | DeepSeek-V2 §2.1 精读：低秩联合压缩 + 吸收 trick 把 KV 压到单一 latent 的逐步推导、解耦 RoPE（旋转只作用于 c_t 不破坏压缩）、93.4% KV 节省的最小数值走查与和 GQA 的路线对比
+- **文章：** [3.12 参数扩 1000 倍但计算不变：MoE 的诞生（Shazeer 2017 精读）](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/312-moe-sparsely-gated-moe论文精读) | Sparsely-Gated MoE 精读：noisy top-k 门控（采样噪声的负载均衡作用）、router loss 与 aux-loss 系数、capacity factor=2 的溢出机制、为什么参数×1000 而 FLOPs 不变的账本
+- **文章：** [2.6 滑动窗口把 KV 一驱逐模型就崩？Attention Sink 与 StreamingLLM](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第2章-推理引擎核心技术/26-streamingllm与attention-sink) | StreamingLLM 精读：为什么驱逐初始 token 后 PPL 从 2.15 爆到 677（softmax 需要一个"落脚点"）、attention sink 四窗口 vs 全量 KV 的流式对账、固定显存下的无限长上下文工程化
+- **文章：** [1.2 同样的 FLOPs 给预训练还是给推理？测试时计算与最优分配](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第1章-llm推理基础/12-测试时计算与推理算力分配) | Snell 2024 精读：compute-optimal 分配定律（α≈1 幂律）、"10× 搜索"为什么通常不是最优（训练/推理算力重新分配的边际收益）、最优推理算力随能力增长而缩小的反直觉结论
+- **文章：** [6.7 不构造 L×L 矩阵：线性注意力、Delta Rule 与分块并行（DeltaNet 精读）](https://xiayihann.github.io/AIInfraGuide/cuda/模块二-cuda编程与算子优化/67-线性注意力与deltanet精读) | DeltaNet 精读：delta rule 为什么能当"线性注意力+梯度下降"、从 O(L²) 到 O(L) 的状态递推推导、WY 表示与分块并行（chunk 内并行 + chunk 间串行）的 GPU 实现路径与 SSM 的边界
+
 ### 3.4–3.7 四篇完稿：第3章 7 篇全部齐整
 
 第3章补齐剩余四篇（3.1 的 frontmatter 顺序/标题编号同步修正），至此本章 7 篇全部上线：
