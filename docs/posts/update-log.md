@@ -11,6 +11,15 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-19
 
+### 3.4–3.7 四篇完稿：第3章 7 篇全部齐整
+
+第3章补齐剩余四篇（3.1 的 frontmatter 顺序/标题编号同步修正），至此本章 7 篇全部上线：
+
+- **文章：** [3.4 vLLM V1 引擎深度解析](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm/34-v1引擎深度解析) | 冷启动五步序列（加载权重 → profile 测峰值 → 定 KV 池 → 分配 KV → 抓 CUDA Graph，实测 init 24.78 s 里大头是 102 张图）、KV 池定容公式与实测对账、CUDA Graph 的 FULL/PIECEWISE 分工、async scheduling（0.26.0 默认开）与零开销 Prefix Cache 的三机制
+- **文章：** [3.5 vLLM 调度器源码导读](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm/35-调度器源码导读) | schedule() 五块结构逐段导读、抢占（recompute）只由 running 循环触发、严格全序列准入（`scheduler_reserve_full_isl`）让抢占默认几乎不触发；附强制触发抢占的最小复现（Prometheus `vllm:num_preemptions_total` 实测 0 vs 2，prefix cache 对照实验 0.5 s）
+- **文章：** [3.6 vLLM 关键配置调优](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm/36-关键配置调优) | 内存/调度/执行三组旋钮逐项拆解（默认值源码出处 + 生效机制 + 副作用）、本机解析默认值 dump（batch 默认随入口×显存档位分叉）、"症状→旋钮"决策表
+- **文章：** [3.7 推理框架横向对比](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm/37-框架横向对比) | vLLM/SGLang/TensorRT-LLM 的三种架构赌注（宽兼容 vs RadixAttention 前缀复用+MoE vs 编译引擎）、prefix cache 与调度器两种实现路线深挖、2026 第三方基准数据（带硬件/版本/负载口径）与选型决策表
+
 ### 3.3 vLLM 整体架构（新增）
 
 - **文章：** [3.3 vLLM 整体架构：一次请求如何穿过 LLMEngine、EngineCore 和 Worker](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm/33-vllm-整体架构) | 以 vLLM 0.26.0 真实源码为对象拆解 V1 引擎三层进程架构：LLM/AsyncLLM 前端与 EngineCore 进程之间的 ZMQ 边界、`run_busy_loop` 主循环与 `step()` 心脏五步、调度器"无 prefill/decode 阶段"的统一分配与抢占=重算、KV 池启动时预分配与 prefix cache 零开销命中（实测 68-token prompt 第二轮命中 64 token）、Model Runner V1/V2 版本差异；附 2×RTX 6000D 最小复现（进程树 `VLLM::EngineCore`、GPU KV cache 1,012,240 tokens、默认参数 16,384/1,024/16）

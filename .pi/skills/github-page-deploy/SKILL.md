@@ -1,5 +1,5 @@
 ---
-name: aiinfraguide-deploy
+name: github-page-deploy
 description: "把 AIInfraGuide 仓库的内容发布到用户的 GitHub Pages 站点（xiayihann.github.io/AIInfraGuide）。当用户说 push、推送、发布、上线、部署、推到 github.io、更新站点、网站没更新、看不到新文章 时使用，也适用于在 docs/ 下写完文章或修复后需要用户在线上看到的任何场景。覆盖完整流程：本地 build 检查 → 提交 → 推送到 XiaYiHann fork → 手动触发 Pages 部署（fork 不会自动触发 workflow）→ 验证线上页面。即使用户只说了'push'，也必须走完验证一步——只 push 不部署等于没上线。"
 ---
 

@@ -1,9 +1,9 @@
 ---
-title: "vLLM 快速入门：从安装到部署你的第一个 LLM 推理服务"
+title: "3.1 vLLM 快速入门：从安装到部署你的第一个 LLM 推理服务"
 description: "零基础上手 vLLM，掌握离线批量推理与在线 OpenAI 兼容服务部署，理解 PagedAttention 核心原理"
 pubDate: 2026-04-15
 category: "inference-optimization"
-order: 1
+order: 301
 chapter: 3
 tags: ["vLLM", "LLM推理", "PagedAttention", "模型部署", "推理优化"]
 ---
