@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">PPO 与 DPO 工程回路对比</title>
+  <desc id="desc">PPO 使用四个模型角色和在线采样闭环，DPO 使用 policy、冻结 reference 和离线偏好对。</desc>
+  <defs>
+    <style>text { font-family: 'Noto Sans CJK SC', 'Noto Sans', sans-serif !important; }</style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#34495e"/>
+    </marker>
+    <marker id="orangeArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#b65b26"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" rx="28" fill="#f8fafc"/>
+  <text x="55" y="66" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#18324f">PPO vs DPO：训练成本账本</text>
+  <text x="55" y="103" font-family="Arial, sans-serif" font-size="19" fill="#5f7184">DPO 不是删掉偏好数据，而是把在线闭环改成训练前完成的离线数据管线</text>
+
+  <rect x="45" y="140" width="530" height="445" rx="24" fill="#fff7f1" stroke="#e2a06d" stroke-width="3"/>
+  <text x="75" y="185" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#9c4d20">PPO / RLHF：在线闭环</text>
+  <text x="75" y="220" font-family="Arial, sans-serif" font-size="17" fill="#765b49">四个典型角色：policy、reference、RM、critic</text>
+
+  <rect x="75" y="270" width="185" height="68" rx="14" fill="#ffe0c7" stroke="#c8773c" stroke-width="2"/>
+  <text x="167" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#743b19">当前 policy</text>
+  <text x="167" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#743b19">生成回答 y</text>
+  <line x1="260" y1="304" x2="312" y2="304" stroke="#34495e" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="315" y="270" width="185" height="68" rx="14" fill="#ffe0c7" stroke="#c8773c" stroke-width="2"/>
+  <text x="407" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#743b19">RM</text>
+  <text x="407" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#743b19">给回答打分</text>
+  <line x1="407" y1="338" x2="407" y2="385" stroke="#34495e" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="315" y="390" width="185" height="68" rx="14" fill="#ffe0c7" stroke="#c8773c" stroke-width="2"/>
+  <text x="407" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#743b19">PPO + critic</text>
+  <text x="407" y="443" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#743b19">更新 policy</text>
+  <path d="M315 424 C230 535, 105 510, 105 340" fill="none" stroke="#b65b26" stroke-width="3" marker-end="url(#orangeArrow)"/>
+  <text x="92" y="525" font-family="Arial, sans-serif" font-size="17" fill="#9c4d20">on-policy rollout：再生成一轮</text>
+  <rect x="75" y="485" width="185" height="58" rx="14" fill="#fff" stroke="#d7aa85" stroke-width="2"/>
+  <text x="167" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#743b19">reference 提供 KL 锚点</text>
+
+  <rect x="625" y="140" width="530" height="445" rx="24" fill="#f1f8f4" stroke="#83b99a" stroke-width="3"/>
+  <text x="655" y="185" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#216642">DPO：离线直训</text>
+  <text x="655" y="220" font-family="Arial, sans-serif" font-size="17" fill="#4b6b59">两个模型角色：policy + 冻结 reference</text>
+
+  <rect x="655" y="270" width="185" height="68" rx="14" fill="#d7f0df" stroke="#4c9a68" stroke-width="2"/>
+  <text x="747" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#245b39">离线数据集</text>
+  <text x="747" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#245b39">(x, y_w, y_l)</text>
+  <line x1="840" y1="304" x2="892" y2="304" stroke="#34495e" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="895" y="270" width="185" height="68" rx="14" fill="#d7f0df" stroke="#4c9a68" stroke-width="2"/>
+  <text x="987" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#245b39">policy / reference</text>
+  <text x="987" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#245b39">算 sequence logprob</text>
+  <line x1="987" y1="338" x2="987" y2="385" stroke="#34495e" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="895" y="390" width="185" height="68" rx="14" fill="#d7f0df" stroke="#4c9a68" stroke-width="2"/>
+  <text x="987" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#245b39">DPO loss</text>
+  <text x="987" y="443" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#245b39">只更新 policy</text>
+  <line x1="987" y1="458" x2="987" y2="505" stroke="#34495e" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="895" y="510" width="185" height="48" rx="14" fill="#fff" stroke="#83b99a" stroke-width="2"/>
+  <text x="987" y="541" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#245b39">训练结束</text>
+  <text x="660" y="505" font-family="Arial, sans-serif" font-size="17" fill="#216642">没有 RM、critic、在线 rollout</text>
+
+  <rect x="45" y="620" width="1110" height="54" rx="14" fill="#18324f"/>
+  <text x="600" y="655" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#ffffff">4 个角色 → 2 个角色；在线探索 → 离线稳定；显存账本不能只看“数量减半”</text>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">RLHF 四模型副本显存账本</title>
+  <desc id="desc">7B 模型使用 FP16 权重时，policy、reference、reward model、critic 四个角色各约 14GB，权重合计约 56GB；若 policy 和 critic 都用 Adam 训练，模型状态估算约 252GB。</desc>
+  <defs>
+    <style>
+      .title{font:700 28px Arial,"Noto Sans CJK SC",sans-serif;fill:#0f172a}.sub{font:16px Arial,"Noto Sans CJK SC",sans-serif;fill:#475569}.h{font:700 20px Arial,"Noto Sans CJK SC",sans-serif;fill:#0f172a}.t{font:16px Arial,"Noto Sans CJK SC",sans-serif;fill:#1e293b}.small{font:14px Arial,"Noto Sans CJK SC",sans-serif;fill:#475569}.box{stroke-width:2}
+    </style>
+  </defs>
+  <rect width="1200" height="560" fill="#f8fafc"/>
+  <text x="50" y="48" class="title">四个模型角色：先算“权重能否放下”，再算训练状态</text>
+  <text x="50" y="78" class="sub">7B 只是统一口径的工程示例；InstructGPT 论文实际使用 6B RM 与 6B value function。</text>
+
+  <rect x="55" y="125" width="250" height="180" rx="18" fill="#dbeafe" stroke="#2563eb" class="box"/>
+  <text x="80" y="165" class="h">Policy</text>
+  <text x="80" y="202" class="t">7B × FP16</text>
+  <text x="80" y="236" class="t">≈ 14 GB 权重</text>
+  <text x="80" y="275" class="small">可训练：PPO 更新</text>
+
+  <rect x="335" y="125" width="250" height="180" rx="18" fill="#e0f2fe" stroke="#0284c7" class="box"/>
+  <text x="360" y="165" class="h">Reference</text>
+  <text x="360" y="202" class="t">7B × FP16</text>
+  <text x="360" y="236" class="t">≈ 14 GB 权重</text>
+  <text x="360" y="275" class="small">冻结：KL 锚点</text>
+
+  <rect x="615" y="125" width="250" height="180" rx="18" fill="#dcfce7" stroke="#16a34a" class="box"/>
+  <text x="640" y="165" class="h">Reward Model</text>
+  <text x="640" y="202" class="t">7B × FP16</text>
+  <text x="640" y="236" class="t">≈ 14 GB 权重</text>
+  <text x="640" y="275" class="small">冻结：输出标量奖励</text>
+
+  <rect x="895" y="125" width="250" height="180" rx="18" fill="#fef3c7" stroke="#d97706" class="box"/>
+  <text x="920" y="165" class="h">Critic</text>
+  <text x="920" y="202" class="t">7B × FP16</text>
+  <text x="920" y="236" class="t">≈ 14 GB 权重</text>
+  <text x="920" y="275" class="small">可训练：估计价值 V</text>
+
+  <line x1="55" y1="350" x2="1145" y2="350" stroke="#94a3b8" stroke-width="2"/>
+  <text x="55" y="390" class="h">权重账本</text>
+  <text x="220" y="390" class="t">4 × (7×10⁹ 参数 × 2 Bytes) ≈ 56 GB</text>
+  <text x="55" y="438" class="h">训练状态</text>
+  <text x="220" y="438" class="t">每个 Adam 训练副本约 16 Bytes/参数</text>
+  <text x="220" y="472" class="t">2 个可训练副本：2×112 GB + 2×14 GB ≈ 252 GB</text>
+  <text x="55" y="520" class="small">不含激活、采样缓存、通信 buffer 与显存碎片；数值口径：本文估算。</text>
+</svg>

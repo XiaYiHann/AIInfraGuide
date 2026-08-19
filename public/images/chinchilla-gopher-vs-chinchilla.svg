@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+  <style>
+    text { font-family: Helvetica, Arial, sans-serif; fill: #111827; }
+    .muted { fill: #6b7280; }
+    .label { font-size: 14px; }
+    .value { font-size: 22px; font-weight: 700; }
+  </style>
+  <rect width="960" height="600" fill="#ffffff"/>
+  <text x="60" y="42" font-size="22" font-weight="700">Same training FLOPs: an unintuitive comparison</text>
+  <text x="60" y="70" font-size="14" class="muted">Chinchilla trades parameters for tokens: smaller to deploy, longer to train.</text>
+
+  <rect x="60" y="95" width="840" height="48" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="480" y="126" font-size="18" font-weight="700" text-anchor="middle" fill="#1d4ed8">Paper setup: approximately equal training FLOPs</text>
+
+  <rect x="70" y="175" width="390" height="335" rx="12" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+  <rect x="500" y="175" width="390" height="335" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+  <text x="265" y="215" font-size="23" font-weight="700" text-anchor="middle">Gopher</text>
+  <text x="695" y="215" font-size="23" font-weight="700" text-anchor="middle">Chinchilla</text>
+  <text x="265" y="240" font-size="13" class="muted" text-anchor="middle">parameter-first baseline</text>
+  <text x="695" y="240" font-size="13" class="muted" text-anchor="middle">compute-optimal test</text>
+
+  <text x="95" y="275" class="label">parameters N</text>
+  <text x="525" y="275" class="label">parameters N</text>
+  <rect x="95" y="288" width="280" height="28" rx="6" fill="#f97316"/>
+  <text x="390" y="309" class="value" fill="#c2410c">280B</text>
+  <rect x="525" y="288" width="70" height="28" rx="6" fill="#22c55e"/>
+  <text x="610" y="309" class="value" fill="#15803d">70B</text>
+
+  <text x="95" y="352" class="label">training tokens D</text>
+  <text x="525" y="352" class="label">training tokens D</text>
+  <rect x="95" y="365" width="70" height="28" rx="6" fill="#fb923c"/>
+  <text x="180" y="386" class="value" fill="#c2410c">300B</text>
+  <rect x="525" y="365" width="280" height="28" rx="6" fill="#4ade80"/>
+  <text x="820" y="386" class="value" fill="#15803d">1.4T</text>
+
+  <text x="95" y="432" class="label">MMLU 5-shot</text>
+  <text x="265" y="470" class="value" text-anchor="middle" fill="#c2410c">60.0%</text>
+  <text x="525" y="432" class="label">MMLU 5-shot</text>
+  <text x="695" y="470" class="value" text-anchor="middle" fill="#15803d">67.6%</text>
+  <text x="480" y="470" font-size="20" font-weight="700" text-anchor="middle" fill="#2563eb">+7.6pp</text>
+
+  <line x1="265" y1="520" x2="695" y2="520" stroke="#2563eb" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="480" y="548" font-size="14" class="muted" text-anchor="middle">4x fewer parameters means roughly 4x lower per-token inference cost</text>
+</svg>

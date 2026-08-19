@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">DPO 偏好数据工程</title>
+  <desc id="desc">从 prompt、候选回答和合成或人工反馈构造成 chosen rejected pair，再用于 DPO 训练。</desc>
+  <defs>
+    <style>text { font-family: 'Noto Sans CJK SC', 'Noto Sans', sans-serif !important; }</style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#40566d"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/>
+      <stop offset="1" stop-color="#f6f4ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" rx="28" fill="url(#bg)"/>
+  <text x="55" y="66" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#253b5b">DPO 偏好数据：把标注和采样搬到训练前</text>
+  <text x="55" y="104" font-family="Arial, sans-serif" font-size="19" fill="#65748a">训练时读取固定的 (x, y_w, y_l)，质量取决于覆盖、候选多样性和反馈维度</text>
+
+  <rect x="55" y="160" width="245" height="230" rx="20" fill="#ffffff" stroke="#94a9c2" stroke-width="3"/>
+  <text x="177" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#253b5b">1. Prompt 池</text>
+  <text x="82" y="258" font-family="Arial, sans-serif" font-size="19" fill="#40566d">通用指令</text>
+  <text x="82" y="294" font-family="Arial, sans-serif" font-size="19" fill="#40566d">摘要 / 对话</text>
+  <text x="82" y="330" font-family="Arial, sans-serif" font-size="19" fill="#40566d">数学 / 代码</text>
+  <text x="82" y="366" font-family="Arial, sans-serif" font-size="17" fill="#7a8796">目标分布要覆盖真实流量</text>
+
+  <line x1="305" y1="275" x2="355" y2="275" stroke="#40566d" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="365" y="160" width="245" height="230" rx="20" fill="#ffffff" stroke="#94a9c2" stroke-width="3"/>
+  <text x="487" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#253b5b">2. 候选回答</text>
+  <text x="392" y="258" font-family="Arial, sans-serif" font-size="19" fill="#40566d">SFT / reference 生成</text>
+  <text x="392" y="294" font-family="Arial, sans-serif" font-size="19" fill="#40566d">多个模型或多个回答</text>
+  <text x="392" y="330" font-family="Arial, sans-serif" font-size="19" fill="#40566d">保留风格和能力差异</text>
+  <text x="392" y="366" font-family="Arial, sans-serif" font-size="17" fill="#7a8796">候选越单一，偏好越窄</text>
+
+  <line x1="615" y1="275" x2="665" y2="275" stroke="#40566d" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="675" y="160" width="245" height="230" rx="20" fill="#fff7e8" stroke="#d6a862" stroke-width="3"/>
+  <text x="797" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#805525">3. 反馈与配对</text>
+  <text x="702" y="258" font-family="Arial, sans-serif" font-size="19" fill="#805525">人工或 GPT-4 反馈</text>
+  <text x="702" y="294" font-family="Arial, sans-serif" font-size="19" fill="#805525">helpfulness / truthfulness</text>
+  <text x="702" y="330" font-family="Arial, sans-serif" font-size="19" fill="#805525">chosen → y_w</text>
+  <text x="702" y="366" font-family="Arial, sans-serif" font-size="19" fill="#805525">rejected → y_l</text>
+
+  <line x1="925" y1="275" x2="975" y2="275" stroke="#40566d" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="985" y="160" width="160" height="230" rx="20" fill="#edf8f0" stroke="#78ae88" stroke-width="3"/>
+  <text x="1065" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#28603a">4. DPO</text>
+  <text x="1006" y="258" font-family="Arial, sans-serif" font-size="18" fill="#28603a">policy/ref</text>
+  <text x="1006" y="294" font-family="Arial, sans-serif" font-size="18" fill="#28603a">logprob</text>
+  <text x="1006" y="330" font-family="Arial, sans-serif" font-size="18" fill="#28603a">margin</text>
+  <text x="1006" y="366" font-family="Arial, sans-serif" font-size="18" fill="#28603a">loss</text>
+
+  <rect x="55" y="450" width="1090" height="170" rx="22" fill="#253b5b"/>
+  <text x="82" y="495" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#ffffff">工程观察</text>
+  <text x="82" y="538" font-family="Arial, sans-serif" font-size="19" fill="#e7eef7">UltraF：讲师材料 Table 1 口径为 60,908 条 preference samples，Synthetic + per-aspect annotations。</text>
+  <text x="82" y="575" font-family="Arial, sans-serif" font-size="19" fill="#e7eef7">Best-of-N：每个 prompt 采样 N 个回答再由 RM 选一个；N=16 已是 16 份生成成本。</text>
+  <text x="82" y="612" font-family="Arial, sans-serif" font-size="19" fill="#e7eef7">DPO：训练时不在线采样，但不会自动拥有数据集之外的探索能力。</text>
+</svg>

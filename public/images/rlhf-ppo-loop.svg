@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">RLHF PPO 训练回路</title>
+  <desc id="desc">当前 policy 生成回答，reference、reward model 和 critic 计算约束与奖励，PPO 更新后丢弃旧 rollout，重新采样。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/></marker>
+    <style>
+      .title{font:700 28px Arial,"Noto Sans CJK SC",sans-serif;fill:#0f172a}.sub{font:16px Arial,"Noto Sans CJK SC",sans-serif;fill:#475569}.h{font:700 20px Arial,"Noto Sans CJK SC",sans-serif;fill:#0f172a}.t{font:16px Arial,"Noto Sans CJK SC",sans-serif;fill:#1e293b}.small{font:14px Arial,"Noto Sans CJK SC",sans-serif;fill:#475569}.box{stroke-width:2}
+    </style>
+  </defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="50" y="48" class="title">PPO：rollout → 打分 → 更新 → 丢弃旧样本 → 再 rollout</text>
+  <text x="50" y="78" class="sub">policy 用当前参数解码；reference 固定为 SFT 副本，防止奖励模型被钻空子。</text>
+
+  <rect x="55" y="125" width="220" height="125" rx="16" fill="#dbeafe" stroke="#2563eb" class="box"/>
+  <text x="78" y="164" class="h">1. 取 prompt</text>
+  <text x="78" y="198" class="t">从训练分布抽 x</text>
+  <text x="78" y="228" class="small">状态：x，已生成前缀</text>
+
+  <line x1="275" y1="188" x2="330" y2="188" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="330" y="125" width="255" height="125" rx="16" fill="#dbeafe" stroke="#2563eb" class="box"/>
+  <text x="353" y="164" class="h">2. policy rollout</text>
+  <text x="353" y="198" class="t">逐 token 解码得到 y</text>
+  <text x="353" y="228" class="small">保存 logprob 与旧策略概率</text>
+
+  <line x1="585" y1="188" x2="640" y2="188" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="640" y="105" width="500" height="165" rx="16" fill="#ecfeff" stroke="#0891b2" class="box"/>
+  <text x="665" y="144" class="h">3. 并行打分</text>
+  <text x="665" y="177" class="t">reference：log π_SFT(y|x) → KL 漂移</text>
+  <text x="665" y="207" class="t">RM：rθ(x,y) → 人类偏好代理奖励</text>
+  <text x="665" y="237" class="t">critic：Vψ(s) → 估计“这一步值多少”</text>
+
+  <path d="M 890 270 L 890 325" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="640" y="325" width="500" height="135" rx="16" fill="#fef3c7" stroke="#d97706" class="box"/>
+  <text x="665" y="364" class="h">4. 合成训练信号</text>
+  <text x="665" y="398" class="t">R = RM reward − β × token-level KL</text>
+  <text x="665" y="428" class="small">用 R 与 critic 计算 advantage A</text>
+
+  <line x1="640" y1="392" x2="530" y2="392" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="275" y="325" width="255" height="135" rx="16" fill="#fee2e2" stroke="#dc2626" class="box"/>
+  <text x="300" y="364" class="h">5. PPO update</text>
+  <text x="300" y="398" class="t">clip ratio，更新 policy</text>
+  <text x="300" y="428" class="small">同时拟合 critic</text>
+
+  <path d="M 275 460 C 155 520, 155 530, 165 260" fill="none" stroke="#64748b" stroke-width="3" stroke-dasharray="9 7" marker-end="url(#arrow)"/>
+  <text x="70" y="560" class="small">旧 rollout 不反复当新数据使用</text>
+  <text x="70" y="588" class="small">下一迭代从新 policy 重新解码</text>
+  <text x="640" y="525" class="small">论文设置：β=0.02，clip ratio=0.2；每批 512 个 episode，分成 8 个 minibatch。</text>
+</svg>

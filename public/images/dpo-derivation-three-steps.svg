@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">DPO 三步闭式推导</title>
+  <desc id="desc">从 KL 约束下的最优策略，到奖励重参数化，再到二元交叉熵损失。</desc>
+  <defs>
+    <style>text { font-family: 'Noto Sans CJK SC', 'Noto Sans', sans-serif !important; }</style>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#eef4ff"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#315b9b"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="680" rx="28" fill="url(#bg)"/>
+  <text x="60" y="70" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#17345f">DPO：三步把 KL 目标变成分类损失</text>
+  <text x="60" y="108" font-family="Arial, sans-serif" font-size="19" fill="#52657d">固定同一个 prompt x，先解最优策略，再消掉配分函数 Z(x)</text>
+
+  <rect x="55" y="155" width="330" height="380" rx="22" fill="#ffffff" stroke="#8fb2e3" stroke-width="3"/>
+  <rect x="55" y="155" width="330" height="62" rx="22" fill="#315b9b"/>
+  <rect x="55" y="195" width="330" height="22" fill="#315b9b"/>
+  <text x="82" y="195" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#ffffff">Step 1：解 KL 约束</text>
+  <text x="82" y="270" font-family="Arial, sans-serif" font-size="22" fill="#17345f">π*(y|x)</text>
+  <text x="82" y="310" font-family="Arial, sans-serif" font-size="22" fill="#17345f">∝ π_ref(y|x)</text>
+  <text x="82" y="350" font-family="Arial, sans-serif" font-size="22" fill="#17345f">· exp(r(x,y) / β)</text>
+  <line x1="82" y1="385" x2="350" y2="385" stroke="#d7e3f4"/>
+  <text x="82" y="425" font-family="Arial, sans-serif" font-size="18" fill="#52657d">Z(x) 负责归一化</text>
+  <text x="82" y="462" font-family="Arial, sans-serif" font-size="18" fill="#52657d">奖励高 → 权重更大</text>
+  <text x="82" y="499" font-family="Arial, sans-serif" font-size="18" fill="#52657d">β 大 → 更贴近 reference</text>
+
+  <line x1="405" y1="345" x2="450" y2="345" stroke="#315b9b" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="460" y="155" width="330" height="380" rx="22" fill="#ffffff" stroke="#77a98d" stroke-width="3"/>
+  <rect x="460" y="155" width="330" height="62" rx="22" fill="#2d7a58"/>
+  <rect x="460" y="195" width="330" height="22" fill="#2d7a58"/>
+  <text x="487" y="195" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#ffffff">Step 2：改写奖励</text>
+  <text x="487" y="278" font-family="Arial, sans-serif" font-size="22" fill="#17345f">r(x,y)</text>
+  <text x="487" y="318" font-family="Arial, sans-serif" font-size="22" fill="#17345f">= β ln(π* / π_ref)</text>
+  <text x="487" y="358" font-family="Arial, sans-serif" font-size="22" fill="#17345f">+ β ln Z(x)</text>
+  <line x1="487" y1="392" x2="755" y2="392" stroke="#d8ece0"/>
+  <text x="487" y="433" font-family="Arial, sans-serif" font-size="18" fill="#52657d">BT 比较同一个 x 的两条回答</text>
+  <text x="487" y="470" font-family="Arial, sans-serif" font-size="18" fill="#2d7a58">ln Z(x) − ln Z(x) = 0</text>
+  <text x="487" y="507" font-family="Arial, sans-serif" font-size="18" fill="#52657d">配分函数不必枚举</text>
+
+  <line x1="810" y1="345" x2="855" y2="345" stroke="#315b9b" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="865" y="155" width="280" height="380" rx="22" fill="#ffffff" stroke="#c58d56" stroke-width="3"/>
+  <rect x="865" y="155" width="280" height="62" rx="22" fill="#b66a25"/>
+  <rect x="865" y="195" width="280" height="22" fill="#b66a25"/>
+  <text x="892" y="195" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#ffffff">Step 3：训练</text>
+  <text x="892" y="272" font-family="Arial, sans-serif" font-size="21" fill="#17345f">Δ = β[ln ratio_w</text>
+  <text x="892" y="310" font-family="Arial, sans-serif" font-size="21" fill="#17345f">− ln ratio_l]</text>
+  <text x="892" y="365" font-family="Arial, sans-serif" font-size="21" fill="#17345f">L = − ln σ(Δ)</text>
+  <line x1="892" y1="398" x2="1118" y2="398" stroke="#f0dfcf"/>
+  <text x="892" y="440" font-family="Arial, sans-serif" font-size="18" fill="#52657d">winner 相对概率 ↑</text>
+  <text x="892" y="477" font-family="Arial, sans-serif" font-size="18" fill="#52657d">loser 相对概率 ↓</text>
+  <text x="892" y="514" font-family="Arial, sans-serif" font-size="18" fill="#b66a25">二元交叉熵</text>
+
+  <rect x="55" y="580" width="1090" height="52" rx="14" fill="#17345f"/>
+  <text x="600" y="614" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#ffffff">KL 最优解 → 奖励概率比 → Bradley–Terry 偏好概率 → DPO loss</text>
+</svg>

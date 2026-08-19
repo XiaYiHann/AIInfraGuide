@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" role="img" aria-labelledby="title desc">
+  <title id="title">从 MLA 稠密注意力到 DSA 稀疏注意力</title>
+  <desc id="desc">左侧 MLA 仍对全部 L 个 latent KV 条目计算，右侧 DSA 先选 top-k，再只读取 k 个条目。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#222"/></marker>
+    <style>
+      .ink{stroke:#222;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .label{font-family:system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;fill:#222}
+      .small{font-size:18px}.body{font-size:22px}.head{font-size:28px;font-weight:700}
+    </style>
+  </defs>
+  <rect width="900" height="470" rx="22" fill="#fffdf8"/>
+  <text x="450" y="42" text-anchor="middle" class="label head">同一份 latent KV，是否全部参与主注意力？</text>
+  <rect x="28" y="70" width="405" height="365" rx="18" fill="#eaf7ff" class="ink"/>
+  <rect x="467" y="70" width="405" height="365" rx="18" fill="#fff0d9" class="ink"/>
+  <text x="230" y="108" text-anchor="middle" class="label head">MLA：稠密扫描</text>
+  <text x="670" y="108" text-anchor="middle" class="label head">DSA：先选再算</text>
+  <text x="230" y="138" text-anchor="middle" class="label small">每个 query 看完 L 个 latent KV</text>
+  <text x="670" y="138" text-anchor="middle" class="label small">每个 query 只保留 k 个（k ≪ L）</text>
+  <rect x="66" y="166" width="110" height="54" rx="12" fill="#a7eeff" class="ink"/>
+  <text x="121" y="201" text-anchor="middle" class="label body">q<tspan baseline-shift="sub" font-size="15">t</tspan></text>
+  <g class="ink" fill="#d5ecda">
+    <rect x="218" y="160" width="34" height="34" rx="6"/><rect x="258" y="160" width="34" height="34" rx="6"/><rect x="298" y="160" width="34" height="34" rx="6"/><rect x="338" y="160" width="34" height="34" rx="6"/>
+    <rect x="218" y="202" width="34" height="34" rx="6"/><rect x="258" y="202" width="34" height="34" rx="6"/><rect x="298" y="202" width="34" height="34" rx="6"/><rect x="338" y="202" width="34" height="34" rx="6"/>
+    <rect x="218" y="244" width="34" height="34" rx="6"/><rect x="258" y="244" width="34" height="34" rx="6"/><rect x="298" y="244" width="34" height="34" rx="6"/><rect x="338" y="244" width="34" height="34" rx="6"/>
+    <rect x="218" y="286" width="34" height="34" rx="6"/><rect x="258" y="286" width="34" height="34" rx="6"/><rect x="298" y="286" width="34" height="34" rx="6"/><rect x="338" y="286" width="34" height="34" rx="6"/>
+  </g>
+  <path d="M176 193 L214 193 M176 193 L214 218 M176 193 L214 260 M176 193 L214 302" class="ink" fill="none"/>
+  <text x="295" y="350" text-anchor="middle" class="label body">L × L</text>
+  <text x="295" y="380" text-anchor="middle" class="label body">主注意力：O(L²)</text>
+  <text x="295" y="410" text-anchor="middle" class="label small">缓存仍是 O(L d_lat)</text>
+  <rect x="505" y="166" width="92" height="54" rx="12" fill="#a7eeff" class="ink"/>
+  <text x="551" y="201" text-anchor="middle" class="label body">q<tspan baseline-shift="sub" font-size="15">t</tspan></text>
+  <rect x="620" y="166" width="112" height="54" rx="12" fill="#f5f5ce" class="ink"/>
+  <text x="676" y="199" text-anchor="middle" class="label small">Indexer</text>
+  <text x="676" y="216" text-anchor="middle" class="label small">打分</text>
+  <path d="M597 193 L613 193" class="ink" fill="none" marker-end="url(#arrow)"/>
+  <path d="M738 193 L755 193" class="ink" fill="none" marker-end="url(#arrow)"/>
+  <rect x="760" y="166" width="86" height="54" rx="12" fill="#f9c8c8" class="ink"/>
+  <text x="803" y="201" text-anchor="middle" class="label body">top-k</text>
+  <g class="ink" fill="#d5ecda">
+    <rect x="515" y="258" width="52" height="42" rx="8"/><rect x="585" y="258" width="52" height="42" rx="8"/><rect x="655" y="258" width="52" height="42" rx="8"/><rect x="725" y="258" width="52" height="42" rx="8"/>
+  </g>
+  <g class="ink" fill="#b8e6c1"><rect x="585" y="258" width="52" height="42" rx="8"/><rect x="725" y="258" width="52" height="42" rx="8"/></g>
+  <path d="M803 221 L777 258 M803 221 L751 258" class="ink" fill="none" marker-end="url(#arrow)"/>
+  <text x="646" y="335" text-anchor="middle" class="label body">L × k</text>
+  <text x="646" y="365" text-anchor="middle" class="label body">主注意力：O(Lk)</text>
+  <text x="646" y="395" text-anchor="middle" class="label small">缓存仍是 O(L d_lat)</text>
+  <text x="646" y="420" text-anchor="middle" class="label small">缩的是：每次读取与计算的条目数</text>
+</svg>

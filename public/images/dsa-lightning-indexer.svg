@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="title desc">
+  <title id="title">Lightning Indexer 打分与 top-k 选择</title>
+  <desc id="desc">query 产生低秩索引 query，历史 token 产生低秩索引 key，经点积、ReLU、加权求和得到分数，再选 top-k。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#222"/></marker>
+    <style>
+      .ink{stroke:#222;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .label{font-family:system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;fill:#222}
+      .small{font-size:18px}.body{font-size:22px}.head{font-size:28px;font-weight:700}
+    </style>
+  </defs>
+  <rect width="900" height="520" rx="22" fill="#fffdf8"/>
+  <text x="450" y="42" text-anchor="middle" class="label head">Lightning Indexer：先做一张便宜的“相关性草图”</text>
+  <rect x="40" y="88" width="190" height="100" rx="16" fill="#eaf7ff" class="ink"/>
+  <text x="135" y="124" text-anchor="middle" class="label body">当前 token</text>
+  <text x="135" y="158" text-anchor="middle" class="label body">h_t → q^I_tj</text>
+  <rect x="40" y="292" width="190" height="100" rx="16" fill="#eaf7ff" class="ink"/>
+  <text x="135" y="328" text-anchor="middle" class="label body">历史 token</text>
+  <text x="135" y="362" text-anchor="middle" class="label body">h_s → k^I_s</text>
+  <rect x="286" y="170" width="150" height="140" rx="18" fill="#d5ecda" class="ink"/>
+  <text x="361" y="213" text-anchor="middle" class="label body">FP8 点积</text>
+  <text x="361" y="250" text-anchor="middle" class="label body">q · k</text>
+  <text x="361" y="286" text-anchor="middle" class="label small">d<tspan baseline-shift="super" font-size="13">I</tspan> 很小</text>
+  <path d="M230 138 C254 138 260 190 278 210" class="ink" fill="none" marker-end="url(#arrow)"/>
+  <path d="M230 342 C254 342 260 290 278 270" class="ink" fill="none" marker-end="url(#arrow)"/>
+  <rect x="488" y="170" width="140" height="140" rx="18" fill="#f5f5ce" class="ink"/>
+  <text x="558" y="213" text-anchor="middle" class="label body">ReLU</text>
+  <text x="558" y="250" text-anchor="middle" class="label body">max(0, x)</text>
+  <text x="558" y="286" text-anchor="middle" class="label small">负贡献归零</text>
+  <path d="M436 240 L480 240" class="ink" fill="none" marker-end="url(#arrow)"/>
+  <rect x="680" y="170" width="170" height="140" rx="18" fill="#ffe8b8" class="ink"/>
+  <text x="765" y="211" text-anchor="middle" class="label body">加权求和</text>
+  <text x="765" y="238" text-anchor="middle" class="label small">I_t,s = Σ w ·</text>
+  <text x="765" y="264" text-anchor="middle" class="label small">ReLU(q · k)</text>
+  <text x="765" y="292" text-anchor="middle" class="label small">每个 head 相加</text>
+  <path d="M628 240 L672 240" class="ink" fill="none" marker-end="url(#arrow)"/>
+  <rect x="280" y="390" width="220" height="76" rx="16" fill="#f9c8c8" class="ink"/>
+  <text x="390" y="424" text-anchor="middle" class="label body">Top-k</text>
+  <text x="390" y="452" text-anchor="middle" class="label small">保留最高 k 个分数</text>
+  <rect x="590" y="390" width="260" height="76" rx="16" fill="#b8e6c1" class="ink"/>
+  <text x="720" y="424" text-anchor="middle" class="label body">只读取 c_s（latent KV）</text>
+  <text x="720" y="452" text-anchor="middle" class="label small">未入选 token 不读 V</text>
+  <path d="M765 310 C765 350 500 350 430 390" class="ink" fill="none" marker-end="url(#arrow)"/>
+  <path d="M500 428 L582 428" class="ink" fill="none" marker-end="url(#arrow)"/>
+  <text x="450" y="500" text-anchor="middle" class="label small">注意：ReLU 截掉负项；真正跳过 V 读取的是 top-k 的选择掩码。</text>
+</svg>
