@@ -9,6 +9,18 @@ tags: ["公告", "更新日志"]
 
 ---
 
+## 2026-08-20
+
+### CS8803 第二批四篇完稿：DSA / RLHF / DPO / Chinchilla（模块三第12章后训练开章）
+
+CS8803 课程扫描第二批（数字全部对照 arXiv 一手源核验，新图 12 张入站；模块三新建第 12 章「LLM 后训练与 RL 训练」）：
+
+- **文章：** [3.11 从 O(L²) 到 O(Lk)：DeepSeek 稀疏注意力 DSA 详解](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/311-deepseek稀疏注意力dsa详解) | DeepSeek-V3.2 §2 精读：KV 压缩≠计算降低的 MHA/MQA/GQA/MLA/DSA 复杂度总表、Lightning Indexer FP8 低秩打分公式与 top-k 最小走查、为什么必须建在 MLA 之上、Dense Warm-up → top-k 稀疏两阶段训练配方与 detached indexer vs STE 取舍
+- **文章：** [12.1 RLHF 的四模型成本：InstructGPT 三阶段流水线与 PPO 训练回路](https://xiayihann.github.io/AIInfraGuide/distributed/模块三-分布式训练/121-rlhf三阶段流水线与instructgpt) | InstructGPT 精读：next-token 与人类意图错位的证据、Bradley-Terry 奖励模型损失逐项推导+最小数值走查、PPO 训练回路（KL 惩罚与 reference 副本）、policy/reference/RM/critic 四份模型副本显存账+在线采样算力账、1.3B 胜 175B 的证据与三种失败模式
+- **文章：** [12.2 去掉奖励模型和 PPO 采样回路：DPO 闭式推导与偏好数据工程](https://xiayihann.github.io/AIInfraGuide/distributed/模块三-分布式训练/122-dpo直接偏好优化) | DPO 闭式推导三步（KL 约束最优策略 π*∝π_ref·exp(r/β) → 奖励重参数化配分函数相消 → 二元交叉熵损失）每步带数值走查、PPO vs DPO 工程对比（四副本→两副本、在线采样→离线偏好）、UltraFeedback 合成数据与 RM 规模/Best-of-N 配方
+- **文章：** [chinchilla-notes：算力预算固定时，模型该多大、训多少 token？](https://xiayihann.github.io/AIInfraGuide/papers/chinchilla-notes) | Chinchilla 精读：FLOPs≈6ND 逐项、三种互补估计（训练曲线包络 a≈b≈0.5 / IsoFLOP U 型谷底 / 参数化拟合）、N_opt∝C^0.5 ≈ 20 tokens/parameter 最小算例、Kaplan 2020 大模型优先路线的方法论批判与 70B/1.4T vs 280B/300B 同 FLOPs 实证
+- **章索引：** [第12章 LLM 后训练与 RL 训练](https://xiayihann.github.io/AIInfraGuide/distributed/模块三-分布式训练/第12章-llm后训练与rl训练) | 模块三新开后训练章（12.1/12.2 已上线；12.3 GRPO/DAPO、12.4 RLVR/Absolute Zero 撰写中）
+
 ## 2026-08-19
 
 ### CS8803 首批五篇完稿：MLA / MoE / Attention Sink / 测试时计算 / DeltaNet
@@ -282,7 +294,7 @@ tags: ["公告", "更新日志"]
 
 ### 新增内容
 
-- **模块三 · 分布式训练** 新增 [第2章：优化器](/AIInfraGuide/distributed/模块三-分布式训练/第2章-优化器) | 理解 SGD → Momentum → Adam → AdamW 的演进逻辑与内部状态组成，手算优化器显存开销（AdamW 占训练总显存 75%），掌握大 Batch 优化器 LAMB/LARS 的适用场景，为后续 ZeRO 显存优化和混合精度训练打下基础。
+- **模块三 · 分布式训练** 新增 [第2章：优化器](/AIInfraGuide/distributed/模块三-分布式训练/第3章-优化器) | 理解 SGD → Momentum → Adam → AdamW 的演进逻辑与内部状态组成，手算优化器显存开销（AdamW 占训练总显存 75%），掌握大 Batch 优化器 LAMB/LARS 的适用场景，为后续 ZeRO 显存优化和混合精度训练打下基础。
 
 ### 结构调整
 
@@ -405,7 +417,7 @@ tags: ["公告", "更新日志"]
 
 ### 新增内容
 
-- **文章：** [3.3 Self-Attention 机制深入理解](/AIInfraGuide/prerequisites/模块一-前置知识/transformer/33-Self-Attention机制深入理解)
+- **文章：** [3.3 Self-Attention 机制深入理解](/AIInfraGuide/prerequisites/模块一-前置知识/transformer/33-self-attention机制深入理解)
 
 ---
 
@@ -415,7 +427,7 @@ tags: ["公告", "更新日志"]
 
 - **面试专区**：共收录 **180+ 场面试真题**，覆盖 **40+ 家公司**，按梯队分类组织。[在线浏览 →](https://caomaolufei.github.io/AIInfraGuide/interview)
 - 涵盖公司包括字节跳动、阿里巴巴、腾讯、百度、快手、美团、蚂蚁、英伟达、MiniMax、蔚来、小鹏、理想等。
-- **社区入口**：新增[wx交流群]((/AIInfraGuide/about/author))，欢迎大家加入讨论
+- **社区入口**：新增[wx交流群]((/AIInfraGuide/about/))，欢迎大家加入讨论
 
 ### 内容优化
 
@@ -428,19 +440,19 @@ tags: ["公告", "更新日志"]
 ### 重大更新
 
 - **知识库框架全面升级**：细化四大学习模块，调整页面布局结构
-  - **[模块一 · 前置知识](/AIInfraGuide/prerequisites)**（6 章）：[编程语言基础](/AIInfraGuide/prerequisites/模块一-前置知识/第1章-编程语言基础)、[数学基础](/AIInfraGuide/prerequisites/模块一-前置知识/第2章-数学基础)、[Transformer 架构详解](/AIInfraGuide/prerequisites/模块一-前置知识/第3章-Transformer架构详解)、[PyTorch 框架](/AIInfraGuide/prerequisites/模块一-前置知识/第4章-PyTorch框架)、[GPU 硬件概论](/AIInfraGuide/prerequisites/模块一-前置知识/第5章-GPU硬件概论)、[集合通信基础](/AIInfraGuide/prerequisites/模块一-前置知识/第6章-集合通信基础)
-  - **[模块二 · CUDA 编程与算子优化](/AIInfraGuide/cuda)**（8 章）：[CUDA 入门](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第1章-CUDA编程入门)、[性能优化基础](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第2章-CUDA性能优化基础)、Reduce 实战、GEMM 实战、Softmax 实战、[Attention 算子](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第6章-Attention算子)、[AI 编译器](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第7章-AI编译器)、[性能分析工具链](/AIInfraGuide/cuda/模块二-CUDA编程与算子优化/第8章-性能分析工具链)
-  - **[模块三 · 分布式训练](/AIInfraGuide/distributed)**（7 章）：[分布式训练总论](/AIInfraGuide/distributed/模块三-分布式训练/第1章-分布式训练总论)、[数据并行](/AIInfraGuide/distributed/模块三-分布式训练/第2章-数据并行)、[ZeRO 系列](/AIInfraGuide/distributed/模块三-分布式训练/第3章-ZeRO系列)、[张量并行与序列并行](/AIInfraGuide/distributed/模块三-分布式训练/第4章-张量并行与序列并行)、[流水线并行](/AIInfraGuide/distributed/模块三-分布式训练/第5章-流水线并行)、[3D 并行与混合训练策略](/AIInfraGuide/distributed/模块三-分布式训练/第6章-其他显存优化技术)、[训练框架实战](/AIInfraGuide/distributed/模块三-分布式训练/第7章-训练框架实战)
-  - **[模块四 · 推理优化](/AIInfraGuide/inference)**（11 章）：[推理基础](/AIInfraGuide/inference/模块四-推理优化/第1章-llm推理基础)、[推理引擎核心技术](/AIInfraGuide/inference/模块四-推理优化/第2章-推理引擎核心技术)、[深入 vLLM](/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm)、[量化](/AIInfraGuide/inference/模块四-推理优化/第4章-量化)、[Speculative Decoding](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding)、[分布式推理](/AIInfraGuide/inference/模块四-推理优化/第6章-分布式推理)、[PD 解耦架构](/AIInfraGuide/inference/模块四-推理优化/第7章-pd解耦架构)、[生产级服务特性](/AIInfraGuide/inference/模块四-推理优化/第8章-生产级服务特性)、[性能分析与 Benchmark](/AIInfraGuide/inference/模块四-推理优化/第9章-性能分析与benchmark)、[生产部署与运维](/AIInfraGuide/inference/模块四-推理优化/第10章-生产部署与运维)、[选型与端到端实战](/AIInfraGuide/inference/模块四-推理优化/第11章-推理优化选型与端到端实战)
+  - **[模块一 · 前置知识](/AIInfraGuide/prerequisites)**（6 章）：[编程语言基础](/AIInfraGuide/prerequisites/模块一-前置知识/第1章-编程语言基础)、[数学基础](/AIInfraGuide/prerequisites/模块一-前置知识/第2章-数学基础)、[Transformer 架构详解](/AIInfraGuide/prerequisites/模块一-前置知识/第3章-transformer架构详解)、[PyTorch 框架](/AIInfraGuide/prerequisites/模块一-前置知识/第4章-pytorch框架)、[GPU 硬件概论](/AIInfraGuide/prerequisites/模块一-前置知识/第5章-gpu硬件概论)、[集合通信基础](/AIInfraGuide/prerequisites/模块一-前置知识/第6章-集合通信基础)
+  - **[模块二 · CUDA 编程与算子优化](/AIInfraGuide/cuda)**（8 章）：[CUDA 入门](/AIInfraGuide/cuda/模块二-cuda编程与算子优化/第1章-cuda编程入门)、[性能优化基础](/AIInfraGuide/cuda/模块二-cuda编程与算子优化/第2章-cuda性能优化基础)、Reduce 实战、GEMM 实战、Softmax 实战、[Attention 算子](/AIInfraGuide/cuda/模块二-cuda编程与算子优化/第6章-attention算子)、[AI 编译器](/AIInfraGuide/cuda/模块二-cuda编程与算子优化/第7章-ai编译器)、[性能分析工具链](/AIInfraGuide/cuda/模块二-cuda编程与算子优化/第8章-性能分析工具链)
+  - **[模块三 · 分布式训练](/AIInfraGuide/distributed)**（7 章）：[分布式训练总论](/AIInfraGuide/distributed/模块三-分布式训练/第1章-分布式训练总论)、[数据并行](/AIInfraGuide/distributed/模块三-分布式训练/第4章-数据并行)、[ZeRO 系列](/AIInfraGuide/distributed/模块三-分布式训练/第5章-zero系列)、[张量并行与序列并行](/AIInfraGuide/distributed/模块三-分布式训练/第6章-张量并行与序列并行)、[流水线并行](/AIInfraGuide/distributed/模块三-分布式训练/第7章-流水线并行)、[3D 并行与混合并行策略](/AIInfraGuide/distributed/模块三-分布式训练/第11章-3d并行与混合并行策略)、[训练框架实战](/AIInfraGuide/distributed/模块三-分布式训练/42-pytorch-数据并行从原理到实战)
+  - **[模块四 · 推理优化](/AIInfraGuide/inference)**（11 章）：[推理基础](/AIInfraGuide/inference/模块四-推理优化/第1章-llm推理基础/第1章-llm推理基础)、[推理引擎核心技术](/AIInfraGuide/inference/模块四-推理优化/第2章-推理引擎核心技术/第2章-推理引擎核心技术)、[深入 vLLM](/AIInfraGuide/inference/模块四-推理优化/第3章-深入vllm/第3章-深入vllm)、[量化](/AIInfraGuide/inference/模块四-推理优化/第4章-量化/第4章-量化)、[Speculative Decoding](/AIInfraGuide/inference/模块四-推理优化/第5章-speculative-decoding/第5章-speculative-decoding)、[分布式推理](/AIInfraGuide/inference/模块四-推理优化/第6章-分布式推理/第6章-分布式推理)、[PD 解耦架构](/AIInfraGuide/inference/模块四-推理优化/第7章-pd解耦架构/第7章-pd解耦架构)、[生产级服务特性](/AIInfraGuide/inference/模块四-推理优化/第8章-生产级服务特性/第8章-生产级服务特性)、[性能分析与 Benchmark](/AIInfraGuide/inference/模块四-推理优化/第9章-性能分析与benchmark/第9章-性能分析与benchmark)、[生产部署与运维](/AIInfraGuide/inference/模块四-推理优化/第10章-生产部署与运维/第10章-生产部署与运维)、[选型与端到端实战](/AIInfraGuide/inference/模块四-推理优化/第11章-推理优化选型与端到端实战/第11章-推理优化选型与端到端实战)
 
 ### 新增内容
 
 - **Transformer 系列文章**：
-  - [Transformer 架构入门](/AIInfraGuide/prerequisites/模块一-前置知识/transformer/Transformer架构快速入门)
+  - [Transformer 架构入门](/AIInfraGuide/prerequisites/模块一-前置知识/transformer/transformer架构快速入门)
   - [3.1 AI Infra 工程师为什么必须懂 Transformer](/AIInfraGuide/prerequisites/模块一-前置知识/transformer/31-ai-infra工程师为什么必须懂transformer)
   - [3.2 Transformer 全貌及代码实现](/AIInfraGuide/prerequisites/模块一-前置知识/transformer/32-transformer全貌及代码实现)
 - **课程资料**：150+ 篇详细子文章上线，覆盖四大模块全部章节
-- **博客文章**：新增[「关于作者」](/AIInfraGuide/about/author)介绍页
+- **博客文章**：新增[「关于作者」](/AIInfraGuide/about/)介绍页
 
 ---
 
@@ -449,8 +461,8 @@ tags: ["公告", "更新日志"]
 ### 项目上线
 
 - AIInfraGuide 知识库正式上线
-- 发布 [AI Infra 学习路线](/AIInfraGuide/guides/AI Infra学习路线)总览
-- 发布[「从零理解 AI Infra」](/AIInfraGuide/blog/ai-infra-introduction)入门指引
+- 发布 [AI Infra 学习路线](/AIInfraGuide/guides/ai-infra学习路线)总览
+- 发布[「从零理解 AI Infra」](/AIInfraGuide/guides/ai-infra学习路线)入门指引
 
 ---
 
