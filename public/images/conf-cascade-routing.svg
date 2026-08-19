@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 650">
+<rect width="1180" height="650" fill="#ffffff"/>
+<defs>
+  <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <path d="M0,0 L10,3.5 L0,7 Z" fill="#2563eb"/>
+  </marker>
+  <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <path d="M0,0 L10,3.5 L0,7 Z" fill="#ea580c"/>
+  </marker>
+  <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <path d="M0,0 L10,3.5 L0,7 Z" fill="#059669"/>
+  </marker>
+  <style>
+    .title{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:24px;font-weight:700;fill:#172033}
+    .subtitle{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:13px;fill:#536174}
+    .label{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:16px;font-weight:700;fill:#172033}
+    .body{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:13px;fill:#536174}
+    .small{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:12px;fill:#536174}
+    .axis{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:13px;fill:#334155}
+  </style>
+</defs>
+<text x="60" y="42" class="title" text-anchor="start">LLM Cascade：小模型先答，低置信度才升级</text>
+<text x="60" y="68" class="subtitle" text-anchor="start">路由发生在请求级；大模型只接收 c &lt; θ 的分支</text>
+<rect x="45" y="220" width="145" height="85" rx="14" fill="#eef6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="117" y="255" class="body" text-anchor="middle">
+  <tspan x="117" dy="0px">用户请求</tspan>
+  <tspan x="117" dy="20px">query</tspan>
+</text>
+<rect x="255" y="185" width="205" height="155" rx="14" fill="#eef6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="357" y="235" class="body" text-anchor="middle">
+  <tspan x="357" dy="0px">小模型</tspan>
+  <tspan x="357" dy="20px">生成答案 + c</tspan>
+  <tspan x="357" dy="20px">便宜、先执行</tspan>
+</text>
+<rect x="520" y="150" width="170" height="85" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+<text x="605" y="185" class="body" text-anchor="middle">
+  <tspan x="605" dy="0px">置信度 c</tspan>
+  <tspan x="605" dy="20px">0 ≤ c ≤ 1</tspan>
+</text>
+<path d="M775 145 L865 195 L775 245 L685 195 Z" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+<text x="775" y="190" class="body" text-anchor="middle">
+  <tspan x="775" dy="0px">比较阈值</tspan>
+  <tspan x="775" dy="20px">c ≥ θ？</tspan>
+</text>
+<rect x="945" y="95" width="185" height="90" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+<text x="1037" y="130" class="body" text-anchor="middle">
+  <tspan x="1037" dy="0px">直接返回</tspan>
+  <tspan x="1037" dy="20px">小模型答案</tspan>
+</text>
+<rect x="945" y="315" width="185" height="90" rx="14" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+<text x="1037" y="350" class="body" text-anchor="middle">
+  <tspan x="1037" dy="0px">升级调用</tspan>
+  <tspan x="1037" dy="20px">大模型处理</tspan>
+</text>
+<rect x="700" y="510" width="205" height="80" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+<text x="802" y="543" class="body" text-anchor="middle">
+  <tspan x="802" dy="0px">响应出站</tspan>
+  <tspan x="802" dy="20px">记录 route 与 latency</tspan>
+</text>
+<path d="M190 262 H255" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-blue)"/>
+<path d="M460 262 H490 V192 H520" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-blue)"/>
+<path d="M690 192 H705" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-orange)"/>
+<path d="M845 195 H900 V140 H945" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-green)"/>
+<path d="M845 195 H885 V360 H945" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-orange)"/>
+<path d="M1130 140 H1150 V550 H905" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-green)"/>
+<path d="M1130 360 H1150 V550 H905" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-green)"/>
+<text x="888" y="130" class="small" text-anchor="start">是：c ≥ θ</text>
+<text x="878" y="340" class="small" text-anchor="start">否：c &lt; θ</text>
+<rect x="45" y="420" width="555" height="150" rx="16" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="70" y="450" class="label" text-anchor="start">成本账本</text>
+<text x="70" y="482" class="body" text-anchor="start">全大模型：N × c_l</text>
+<text x="70" y="510" class="body" text-anchor="start">级联：N × c_s + rN × c_l + C_net</text>
+<text x="70" y="538" class="small" text-anchor="start">r 越小，越少支付大模型调用；但误放行风险会上升</text>
+<line x1="70" y1="620" x2="105" y2="620" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+<text x="115" y="625" class="small" text-anchor="start">请求 / 答案数据流</text>
+<line x1="300" y1="620" x2="335" y2="620" stroke="#ea580c" stroke-width="2.5" marker-end="url(#arrow-orange)"/>
+<text x="345" y="625" class="small" text-anchor="start">路由控制流</text>
+<line x1="510" y1="620" x2="545" y2="620" stroke="#059669" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+<text x="555" y="625" class="small" text-anchor="start">响应流</text>
+</svg>

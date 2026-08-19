@@ -22,8 +22,8 @@ tags: ["LLM 后训练", "RLHF", "PPO", "DPO", "GRPO", "RLVR"]
 
 ### 2. 从通用偏好到可验证奖励
 
-- 12.3 GRPO / DAPO：撰写中
-- 12.4 RLVR / Absolute Zero：撰写中
+- [12.3 从 PPO 到 GRPO 再到 DAPO：LLM 后训练算法链与算力/显存账本](/AIInfraGuide/distributed/模块三-分布式训练/123-grpo与dapo后训练算法链)：GRPO 用组内相对优势消掉 critic（G=4 数值走查）、DAPO 四训练技巧、四算法（PPO/DPO/GRPO/DAPO）模型副本与在线采样账本对比。
+- [12.4 零数据 RLVR：可验证奖励与 Absolute Zero 自博弈](/AIInfraGuide/distributed/模块三-分布式训练/124-rlvr与absolutezero自博弈)：RLVR 谱系、Absolute Zero 自生成任务循环（生成→程序化验证→reward 的算例）、自博弈训练的额外开销与任务塌缩边界。
 
 ## 🎯 本章学习目标
 

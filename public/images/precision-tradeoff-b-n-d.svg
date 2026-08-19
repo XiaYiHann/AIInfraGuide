@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="title desc">
+  <title id="title">位宽、参数量、数据量三方权衡</title>
+  <desc id="desc">固定训练算力下，位宽 b、参数量 N 和数据量 D 共同决定损失、显存和计算成本。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f7f9fc"/>
+      <stop offset="1" stop-color="#eef3f8"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#34495e"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#243447" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <rect width="900" height="520" rx="24" fill="url(#bg)"/>
+  <text x="450" y="48" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="700" fill="#17202a">固定训练算力下的三方预算</text>
+  <text x="450" y="78" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#52616b">不要只问“模型多大”，还要问“数据多少、每个数几 bit”</text>
+
+  <path d="M450 178 L235 360 L665 360 Z" fill="#ffffff" stroke="#b8c6d1" stroke-width="2" filter="url(#shadow)"/>
+  <path d="M450 178 L235 360" stroke="#9aabb8" stroke-width="2" stroke-dasharray="7 7"/>
+  <path d="M235 360 L665 360" stroke="#9aabb8" stroke-width="2" stroke-dasharray="7 7"/>
+  <path d="M665 360 L450 178" stroke="#9aabb8" stroke-width="2" stroke-dasharray="7 7"/>
+
+  <circle cx="450" cy="178" r="58" fill="#f5b041" stroke="#d68910" stroke-width="3" filter="url(#shadow)"/>
+  <text x="450" y="170" text-anchor="middle" font-family="sans-serif" font-size="25" font-weight="700" fill="#3b2405">位宽 b</text>
+  <text x="450" y="196" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#3b2405">精度 / 字节 / Kernel</text>
+
+  <circle cx="235" cy="360" r="58" fill="#5dade2" stroke="#2874a6" stroke-width="3" filter="url(#shadow)"/>
+  <text x="235" y="353" text-anchor="middle" font-family="sans-serif" font-size="25" font-weight="700" fill="#08243b">参数 N</text>
+  <text x="235" y="379" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#08243b">名义容量</text>
+
+  <circle cx="665" cy="360" r="58" fill="#58d68d" stroke="#239b56" stroke-width="3" filter="url(#shadow)"/>
+  <text x="665" y="353" text-anchor="middle" font-family="sans-serif" font-size="25" font-weight="700" fill="#07351d">数据 D</text>
+  <text x="665" y="379" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#07351d">训练 token</text>
+
+  <rect x="352" y="266" width="196" height="68" rx="14" fill="#17202a" filter="url(#shadow)"/>
+  <text x="450" y="293" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="700" fill="#ffffff">固定 C</text>
+  <text x="450" y="318" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#dfe6ec">损失最低的切法</text>
+
+  <path d="M397 208 C348 234 325 257 308 287" fill="none" stroke="#34495e" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="300" y="230" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#34495e">低 b → 容量变小</text>
+  <path d="M503 208 C553 234 575 257 592 287" fill="none" stroke="#34495e" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="602" y="230" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#34495e">低 b → 字节更少</text>
+  <path d="M294 349 C350 330 388 321 405 317" fill="none" stroke="#34495e" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="307" y="320" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#34495e">增大 N → 补容量</text>
+  <path d="M606 349 C550 330 512 321 495 317" fill="none" stroke="#34495e" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="593" y="320" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#34495e">增大 D → 降数据项</text>
+
+  <rect x="165" y="438" width="570" height="48" rx="12" fill="#ffffff" stroke="#c9d4dc"/>
+  <text x="450" y="468" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#17202a">C ≈ (6 / 16) · N · D · b</text>
+</svg>

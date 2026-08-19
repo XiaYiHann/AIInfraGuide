@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 650">
+<rect width="1100" height="650" fill="#ffffff"/>
+<defs>
+  <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <path d="M0,0 L10,3.5 L0,7 Z" fill="#2563eb"/>
+  </marker>
+  <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <path d="M0,0 L10,3.5 L0,7 Z" fill="#ea580c"/>
+  </marker>
+  <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <path d="M0,0 L10,3.5 L0,7 Z" fill="#059669"/>
+  </marker>
+  <style>
+    .title{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:24px;font-weight:700;fill:#172033}
+    .subtitle{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:13px;fill:#536174}
+    .label{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:16px;font-weight:700;fill:#172033}
+    .body{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:13px;fill:#536174}
+    .small{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:12px;fill:#536174}
+    .axis{font-family:"Noto Sans CJK SC","Noto Sans",Arial,sans-serif;font-size:13px;fill:#334155}
+  </style>
+</defs>
+<text x="60" y="42" class="title" text-anchor="start">质量—成本 Trade-off：阈值要选在曲线的弯折处</text>
+<text x="60" y="68" class="subtitle" text-anchor="start">曲线形状是示意；论文用 0%～100% 的分位数 sweep，数字点标出 v1 MMLU 结果</text>
+<rect x="110" y="105" width="850" height="420" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<line x1="110" y1="525" x2="960" y2="525" stroke="#e2e8f0" stroke-width="1"/>
+<text x="98" y="530" class="axis" text-anchor="end">低</text>
+<line x1="110" y1="420" x2="960" y2="420" stroke="#e2e8f0" stroke-width="1"/>
+<text x="98" y="425" class="axis" text-anchor="end">中低</text>
+<line x1="110" y1="315" x2="960" y2="315" stroke="#e2e8f0" stroke-width="1"/>
+<text x="98" y="320" class="axis" text-anchor="end">中</text>
+<line x1="110" y1="210" x2="960" y2="210" stroke="#e2e8f0" stroke-width="1"/>
+<text x="98" y="215" class="axis" text-anchor="end">中高</text>
+<line x1="110" y1="105" x2="960" y2="105" stroke="#e2e8f0" stroke-width="1"/>
+<text x="98" y="110" class="axis" text-anchor="end">高</text>
+<line x1="110" y1="105" x2="110" y2="525" stroke="#e2e8f0" stroke-width="1"/>
+<text x="110" y="548" class="axis" text-anchor="middle">0%</text>
+<line x1="280" y1="105" x2="280" y2="525" stroke="#e2e8f0" stroke-width="1"/>
+<text x="280" y="548" class="axis" text-anchor="middle">20%</text>
+<line x1="450" y1="105" x2="450" y2="525" stroke="#e2e8f0" stroke-width="1"/>
+<text x="450" y="548" class="axis" text-anchor="middle">40%</text>
+<line x1="620" y1="105" x2="620" y2="525" stroke="#e2e8f0" stroke-width="1"/>
+<text x="620" y="548" class="axis" text-anchor="middle">60%</text>
+<line x1="790" y1="105" x2="790" y2="525" stroke="#e2e8f0" stroke-width="1"/>
+<text x="790" y="548" class="axis" text-anchor="middle">80%</text>
+<line x1="960" y1="105" x2="960" y2="525" stroke="#e2e8f0" stroke-width="1"/>
+<text x="960" y="548" class="axis" text-anchor="middle">100%</text>
+<text x="535" y="600" class="axis" text-anchor="middle">升级到大模型的比例 r（成本随右移上升）</text>
+<text x="40" y="330" class="axis" text-anchor="middle">整体质量</text>
+<path d="M110 525 H960" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<path d="M110 525 V105" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<path d="M110 475 C235 450 300 385 385 295 C430 248 470 215 540 190 C650 150 790 125 960 112" fill="none" stroke="#2563eb" stroke-width="4"/>
+<path d="M110 475 C250 468 350 440 460 400 C600 350 750 300 960 250" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8 6"/>
+<text x="775" y="130" class="label" text-anchor="start">Confidence Tokens（示意）</text>
+<text x="700" y="285" class="body" text-anchor="start">logprob / logits（示意）</text>
+<line x1="442" y1="105" x2="442" y2="525" stroke="#ea580c" stroke-width="2" stroke-dasharray="6 5"/>
+<circle cx="442" cy="235" r="7" fill="#ea580c" stroke="#ffffff" stroke-width="3"/>
+<text x="455" y="160" class="label" text-anchor="start">39%：Llama3-8B → 70B</text>
+<text x="455" y="183" class="small" text-anchor="start">MMLU，准确率 0.739（论文 v1）</text>
+<text x="390" y="95" class="small" text-anchor="middle">knee</text>
+<circle cx="960" cy="112" r="7" fill="#059669" stroke="#ffffff" stroke-width="3"/>
+<text x="950" y="88" class="label" text-anchor="end">全量大模型</text>
+<rect x="110" y="575" width="850" height="40" rx="10" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+<text x="535" y="601" class="body" text-anchor="middle">左移：少付大模型调用费；右移：质量更稳，但每个请求更贵</text>
+</svg>

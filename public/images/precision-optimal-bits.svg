@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="title desc">
+  <title id="title">最优训练位宽的两种约束</title>
+  <desc id="desc">联合优化模型、数据和位宽时，最优位宽约为 7 到 8 bit；固定模型大小时，最优位宽随数据与参数比例对数上升。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fbfcfe"/>
+      <stop offset="1" stop-color="#edf3f7"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#34495e"/>
+    </marker>
+  </defs>
+  <rect width="900" height="520" rx="24" fill="url(#bg)"/>
+  <text x="450" y="45" text-anchor="middle" font-family="sans-serif" font-size="25" font-weight="700" fill="#17202a">最优训练位宽 b* 取决于约束</text>
+  <text x="450" y="74" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#52616b">同一个“低精度”结论，不能脱离 N 是否固定来读</text>
+
+  <line x1="118" y1="404" x2="790" y2="404" stroke="#34495e" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="118" y1="404" x2="118" y2="112" stroke="#34495e" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="790" y="438" text-anchor="end" font-family="sans-serif" font-size="16" fill="#34495e">训练预算 / D ÷ N 增大</text>
+  <text x="42" y="130" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#34495e" transform="rotate(-90 42 130)">最优位宽 b*</text>
+
+  <line x1="118" y1="338" x2="790" y2="338" stroke="#d9e1e7" stroke-width="1"/>
+  <line x1="118" y1="272" x2="790" y2="272" stroke="#d9e1e7" stroke-width="1"/>
+  <line x1="118" y1="206" x2="790" y2="206" stroke="#d9e1e7" stroke-width="1"/>
+  <text x="100" y="410" text-anchor="end" font-family="sans-serif" font-size="14" fill="#52616b">4</text>
+  <text x="100" y="344" text-anchor="end" font-family="sans-serif" font-size="14" fill="#52616b">8</text>
+  <text x="100" y="278" text-anchor="end" font-family="sans-serif" font-size="14" fill="#52616b">12</text>
+  <text x="100" y="212" text-anchor="end" font-family="sans-serif" font-size="14" fill="#52616b">16</text>
+
+  <path d="M150 346 C300 344 500 343 760 343" fill="none" stroke="#e67e22" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="470" cy="343" r="8" fill="#e67e22"/>
+  <rect x="350" y="294" width="250" height="39" rx="10" fill="#fff4e6" stroke="#e67e22"/>
+  <text x="475" y="319" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="700" fill="#9a5310">N、D、b 一起优化：约 7–8 bit</text>
+
+  <path d="M150 385 C270 375 390 338 500 290 C600 247 680 211 760 180" fill="none" stroke="#2874a6" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="645" cy="228" r="8" fill="#2874a6"/>
+  <rect x="514" y="128" width="278" height="43" rx="10" fill="#eaf4fb" stroke="#2874a6"/>
+  <text x="653" y="156" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="700" fill="#1d557d">N 固定：b* ∝ log(D / N)</text>
+
+  <text x="165" y="472" font-family="sans-serif" font-size="14" fill="#52616b">左：数据/参数比例小，低位宽可能有效</text>
+  <text x="535" y="472" font-family="sans-serif" font-size="14" fill="#52616b">右：固定小模型过度训练，高精度更有吸引力</text>
+  <line x1="150" y1="494" x2="180" y2="494" stroke="#e67e22" stroke-width="6"/>
+  <text x="188" y="499" font-family="sans-serif" font-size="13" fill="#52616b">联合优化</text>
+  <line x1="300" y1="494" x2="330" y2="494" stroke="#2874a6" stroke-width="6"/>
+  <text x="338" y="499" font-family="sans-serif" font-size="13" fill="#52616b">固定 N</text>
+</svg>

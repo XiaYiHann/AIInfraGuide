@@ -11,6 +11,19 @@ tags: ["公告", "更新日志"]
 
 ## 2026-08-20
 
+### CS8803 第三批四篇完稿 + 四处存量补充（12.3/12.4/8.6/Precision + 3.9/3.3/3.8）
+
+CS8803 扫描收尾批（新图 10 张入站；模块三第 12 章 12.3/12.4 上线、全章 4 篇齐整；另在 3 篇存量文章补了 4 处缺失块）：
+
+- **文章：** [12.3 从 PPO 到 GRPO 再到 DAPO：LLM 后训练算法链与算力/显存账本](https://xiayihann.github.io/AIInfraGuide/distributed/模块三-分布式训练/123-grpo与dapo后训练算法链) | PPO→DPO→GRPO→DAPO 算法链：GRPO 组内相对优势消掉 critic（G=4 数值走查+无偏 baseline 论证）、DAPO 四技巧（Clip-Higher/动态采样/token 级 loss/长度塑形）、四算法模型副本与在线采样账本对比表
+- **文章：** [12.4 零数据 RLVR：可验证奖励与 Absolute Zero 自博弈](https://xiayihann.github.io/AIInfraGuide/distributed/模块三-分布式训练/124-rlvr与absolutezero自博弈) | Absolute Zero 精读：自生成任务循环（模型出题→程序化 checker 验证→reward，配具体算例）、RLVR 谱系、自博弈训练额外开销与任务塌缩边界、Qwen2.5-7B-Coder 基准数字（按 arXiv 2505.03335 核验）
+- **文章：** [8.6 小模型先答，答不了再升级：模型置信度与 LLM Cascade 路由](https://xiayihann.github.io/AIInfraGuide/inference/模块四-推理优化/第8章-生产级服务特性/86-模型置信度与llm-cascade路由) | Confidence Tokens 精读（源核验：真源为 arXiv 2410.13284 Self-REF，初标 2412.10148 实为凝聚态物理论文，文中已透明记录）：[confidence] 词表扩展与自报置信度训练配方、cascade 路由成本公式+数值走查、与 logprob 路线对比表、质量-成本 knee point
+- **文章：** [precision-notes：训练该用几位精度？精度 × 参数 × 数据三方权衡](https://xiayihann.github.io/AIInfraGuide/papers/scaling-laws-for-precision-notes) | Precision Scaling Laws 精读（源核验：真源 arXiv 2411.04330+课程幻灯片）：b 位宽作为第三分配变量的 scaling 理论、最优精度解推导+175B@FP16 vs FP8 最小算例、与 Chinchilla 的正交性、训练/推理精度分工
+- **补充：** [3.9 Tokenization 与词嵌入](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/39-tokenization与词嵌入) 新增 2.4「BPE 学习流程」（超小语料 4 轮 pair 计数→合并手算走查）+ 2.5「Byte-level BPE 与 UTF-8 字节 fallback」（无 UNK、多语种 token 数差异算例）+ 第 7 节「从词嵌入到文本嵌入：语义检索入门」（余弦算例、InfoNCE 三要素、E5 精简案例）
+- **补充：** [3.3 Self-Attention §9.5](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/33-self-attention机制深入理解#951-absorb吸收把固定上投影折叠到-query-侧) 新增 Absorb 推理机制（2×2 折叠走查、行为≈MQA、K 侧 RoPE-free 前提）+ RoPE/NoPE 拆分 + TransMLA 一句话延伸；[3.8 §1.3](https://xiayihann.github.io/AIInfraGuide/prerequisites/模块一-前置知识/transformer/38-从transformer到llm自回归生成深入理解) 更新过时的 NAR 结论为 masked diffusion（前向掩码/反向并行预测+remask 小例、AR vs LLaDA 成本对比表）
+
+## 2026-08-20
+
 ### CS8803 第二批四篇完稿：DSA / RLHF / DPO / Chinchilla（模块三第12章后训练开章）
 
 CS8803 课程扫描第二批（数字全部对照 arXiv 一手源核验，新图 12 张入站；模块三新建第 12 章「LLM 后训练与 RL 训练」）：

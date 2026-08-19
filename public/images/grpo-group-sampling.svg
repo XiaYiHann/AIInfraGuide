@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">GRPO 组内采样与相对优势</title>
+  <desc id="desc">同一个 prompt 由旧策略生成四条回答，得到奖励后计算组均值、标准差和优势，再更新策略。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569"/>
+    </marker>
+    <style>
+      .label { font-family: "Noto Sans CJK SC", "Source Han Sans SC", sans-serif; fill: #0f172a; }
+      .small { font-size: 22px; }
+      .mid { font-size: 28px; font-weight: 600; }
+      .big { font-size: 34px; font-weight: 700; }
+      .box { stroke: #334155; stroke-width: 2; rx: 18; }
+      .arrow { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1200" height="700" fill="#f8fafc"/>
+  <text x="60" y="70" class="label big">GRPO：同题多答，组内相对优势</text>
+  <text x="60" y="108" class="label small">组均值替代 critic 的预测 baseline，代价是每个 prompt 生成 G 条回答</text>
+
+  <rect x="55" y="180" width="220" height="110" class="box" fill="#dbeafe"/>
+  <text x="165" y="225" text-anchor="middle" class="label mid">Prompt q</text>
+  <text x="165" y="262" text-anchor="middle" class="label small">同一道题</text>
+
+  <rect x="350" y="145" width="260" height="180" class="box" fill="#ede9fe"/>
+  <text x="480" y="190" text-anchor="middle" class="label mid">旧策略 πold</text>
+  <text x="480" y="232" text-anchor="middle" class="label small">在线 rollout</text>
+  <text x="480" y="270" text-anchor="middle" class="label small">{o₁, o₂, o₃, o₄}</text>
+
+  <path d="M275 235 L350 235" class="arrow"/>
+
+  <rect x="700" y="140" width="430" height="205" class="box" fill="#ecfdf5"/>
+  <text x="915" y="182" text-anchor="middle" class="label mid">奖励检查器 / RM</text>
+  <text x="915" y="222" text-anchor="middle" class="label small">r = {1, 0, 1, −1}</text>
+  <text x="915" y="260" text-anchor="middle" class="label small">μ = 0.25，σ ≈ 0.829</text>
+  <text x="915" y="302" text-anchor="middle" class="label small">Â = (r − μ) / σ</text>
+  <path d="M610 235 L700 235" class="arrow"/>
+
+  <rect x="350" y="430" width="260" height="150" class="box" fill="#fff7ed"/>
+  <text x="480" y="475" text-anchor="middle" class="label mid">组内比较</text>
+  <text x="480" y="518" text-anchor="middle" class="label small">高于均值：正优势</text>
+  <text x="480" y="552" text-anchor="middle" class="label small">低于均值：负优势</text>
+
+  <rect x="700" y="430" width="430" height="150" class="box" fill="#fee2e2"/>
+  <text x="915" y="475" text-anchor="middle" class="label mid">更新 policy πθ</text>
+  <text x="915" y="518" text-anchor="middle" class="label small">提高正优势回答的 token 概率</text>
+  <text x="915" y="552" text-anchor="middle" class="label small">降低负优势回答的 token 概率</text>
+
+  <path d="M915 345 L915 430" class="arrow"/>
+  <path d="M700 505 L610 505" class="arrow"/>
+  <path d="M350 505 L275 505 L275 290" class="arrow"/>
+  <text x="75" y="635" class="label small">反馈回路：新 policy 再生成下一组回答；没有 critic，但没有去掉在线 RL</text>
+</svg>

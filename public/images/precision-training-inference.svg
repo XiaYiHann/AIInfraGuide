@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" role="img" aria-labelledby="title desc">
+  <title id="title">训练精度与推理精度的状态对照</title>
+  <desc id="desc">训练可以使用 FP8 前向，但仍保留 BF16 梯度和 FP32 master weights；推理可以使用纯 FP8 或 INT4 执行。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#eef4f4"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#34495e"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#243447" flood-opacity="0.13"/>
+    </filter>
+  </defs>
+  <rect width="900" height="540" rx="24" fill="url(#bg)"/>
+  <text x="450" y="44" text-anchor="middle" font-family="sans-serif" font-size="25" font-weight="700" fill="#17202a">FP8 训练 ≠ FP8 推理</text>
+  <text x="450" y="73" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#52616b">训练要保存“怎么更新”，推理只需保存“怎么计算”</text>
+
+  <rect x="42" y="105" width="816" height="178" rx="18" fill="#eaf4fb" stroke="#8bb8d9" stroke-width="2"/>
+  <text x="72" y="138" font-family="sans-serif" font-size="20" font-weight="700" fill="#1d557d">训练阶段</text>
+  <text x="72" y="162" font-family="sans-serif" font-size="13" fill="#52616b">低精度计算只是其中一层</text>
+
+  <rect x="72" y="190" width="150" height="62" rx="12" fill="#5dade2" filter="url(#shadow)"/>
+  <text x="147" y="216" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#08243b">FP8 前向</text>
+  <text x="147" y="238" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#08243b">权重 / 激活值</text>
+  <path d="M222 221 L275 221" stroke="#34495e" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <rect x="280" y="190" width="150" height="62" rx="12" fill="#58d68d" filter="url(#shadow)"/>
+  <text x="355" y="216" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#07351d">BF16 反向</text>
+  <text x="355" y="238" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#07351d">梯度信号</text>
+  <path d="M430 221 L483 221" stroke="#34495e" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <rect x="488" y="190" width="170" height="62" rx="12" fill="#f5b041" filter="url(#shadow)"/>
+  <text x="573" y="216" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#3b2405">FP32 更新</text>
+  <text x="573" y="238" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#3b2405">master weights + Adam</text>
+  <path d="M658 221 L710 221" stroke="#34495e" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="715" y="190" width="110" height="62" rx="12" fill="#17202a" filter="url(#shadow)"/>
+  <text x="770" y="216" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#ffffff">checkpoint</text>
+  <text x="770" y="238" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#dfe6ec">可再量化</text>
+
+  <rect x="42" y="320" width="816" height="153" rx="18" fill="#fff4e6" stroke="#e8b36d" stroke-width="2"/>
+  <text x="72" y="353" font-family="sans-serif" font-size="20" font-weight="700" fill="#9a5310">推理阶段</text>
+  <text x="72" y="377" font-family="sans-serif" font-size="13" fill="#52616b">不做反向传播，不需要优化器更新状态</text>
+
+  <rect x="72" y="405" width="190" height="45" rx="11" fill="#f5b041" filter="url(#shadow)"/>
+  <text x="167" y="433" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#3b2405">FP8 / INT4 权重</text>
+  <path d="M263 428 L323 428" stroke="#34495e" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="330" y="405" width="190" height="45" rx="11" fill="#5dade2" filter="url(#shadow)"/>
+  <text x="425" y="433" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#08243b">低精度 Kernel</text>
+  <path d="M521 428 L581 428" stroke="#34495e" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="588" y="405" width="235" height="45" rx="11" fill="#58d68d" filter="url(#shadow)"/>
+  <text x="705" y="433" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="700" fill="#07351d">输出 token / 延迟 / 吞吐</text>
+
+  <text x="450" y="510" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="700" fill="#17202a">训练的高精度更新状态不能从推理图里倒推删除</text>
+</svg>
