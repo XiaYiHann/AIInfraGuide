@@ -75,7 +75,7 @@ b = x.reshape(3, 4)              # 得到目标形状；必要时会复制底层
 c = x.view(-1, 4)                # -1 自动推断为 3
 
 # permute：交换维度，Transformer 中常用
-t = torch.randn(2, 8, 12, 64)              # (batch, seq_len, heads, dim)
+t = torch.randn(2, 8, 12, 64)              # (batch=样本条数 2, seq_len=序列长 8, heads=注意力头数 12, dim=每头维 64)
 t_permuted = t.permute(0, 2, 1, 3)         # (batch, heads, seq_len, dim)
 
 # squeeze/unsqueeze：去掉或插入大小为 1 的维度

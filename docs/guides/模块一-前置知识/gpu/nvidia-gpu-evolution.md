@@ -48,7 +48,7 @@ graph LR
 | Volta | 2017 | V100 | 首次引入 Tensor Core |
 | Turing | 2018 | T4 | INT8/INT4 推理加速、RT Core |
 | Ampere | 2020 | A100 | 第三代 Tensor Core、MIG、TF32、BF16 |
-| Hopper | 2022 | H100 | FP8、Transformer Engine、NVLink 4.0 |
+| Hopper | 2022 | H100 | FP8、Transformer Engine、NVLink 4.0（机内 GPU 间 900 GB/s 直连，见 [5.7 多卡互联拓扑](/AIInfraGuide/prerequisites/模块一-前置知识/gpu/57-多卡互联拓扑)） |
 | Blackwell | 2024 | B200 / GB200 | 第五代 Tensor Core、NVLink 5.0、双芯封装 |
 
 下面逐代展开，重点关注每一代**解决了什么问题**和**引入了什么关键技术**。

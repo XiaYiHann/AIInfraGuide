@@ -60,7 +60,7 @@ graph LR
 
 ### 2.1 传统 KV Cache 的问题
 
-LLM 推理的 Decode 阶段需要缓存之前所有 token 的 Key 和 Value 向量（即 KV Cache），以避免重复计算。传统做法是为每个请求**预分配一块连续的显存空间**，大小按模型支持的最大序列长度计算。
+LLM 推理的 Decode 阶段需要缓存之前所有 token 的 Key 和 Value 向量（即 KV Cache），以避免重复计算。传统做法是为每个请求**预分配一块连续的显存空间**，大小按模型支持的最大序列长度计算。浪费量$=(max\_len-实际len)\times b_{token}$，如 $max\_len=4096$ 而实际 $500$ 时浪费 $3596$ token≈$3596\times b_{token}$（7B FP16 约 $1.7$ GB/请求）。
 
 这就带来了三个问题：
 

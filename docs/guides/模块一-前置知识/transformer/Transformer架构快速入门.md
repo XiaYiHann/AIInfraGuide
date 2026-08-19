@@ -278,6 +278,8 @@ $$
 > AI Infra 关联：多头结构天然适合**张量并行（Tensor Parallelism）**。32 个头可以均匀分配到多张 GPU 上——比如 4 张卡各处理 8 个头，每张卡只需要 1/4 的 QKV 权重和计算量。这就是 Megatron-LM 张量并行的核心思想：沿着“头”的维度切分 Attention 模块。切分之后只需要一次 AllReduce 通信就能将各卡的部分结果汇总。
 >
 > 此外，Attention 头数的变种——**MQA（Multi-Query Attention）** 让所有头共享一组 KV、**GQA（Grouped-Query Attention）** 让若干头共享一组 KV——直接影响 KV Cache 的大小和张量并行的切分方式，是推理优化中的核心概念。
+>
+> > 💡 **KV 显存走查：** $M=2\cdot L\cdot H_{kv}\cdot d_h\cdot S\cdot B\cdot b_e$，以 $L=32,d_h=128,S=4096,B=16,FP16$ 为例，MHA（$H_{kv}=32$）≈$2$ GB vs GQA（$H_{kv}=8$）≈$0.5$ GB（÷4）。
 
 ---
 

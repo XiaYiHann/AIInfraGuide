@@ -36,6 +36,9 @@ AI Infra 的本质是 **“用系统工程释放硬件算力”**。本站把学
 | 模块三 | 分布式训练 | collective、DDP/FSDP、ZeRO、TP/PP/EP/CP | 可解释通信与显存代价的训练方案 |
 | 模块四 | 推理优化 | KV Cache、PagedAttention、量化、调度、部署 | 带 SLO 与 benchmark 口径的服务系统 |
 
+> 💡 **回顾：并行与缓存一句话**
+> **TP**（Tensor Parallel，张量并行，把单层权重矩阵按列/行切到多卡，每卡算部分结果后 AllReduce 拼成完整结果）· **PP**（Pipeline Parallel，流水线并行，把模型按层切到多卡流水传递）· **EP**（Expert Parallel，专家并行，把 MoE 的多个专家分到多卡）· **CP**（Context Parallel，上下文并行，把序列维度切到多卡）。**KV Cache**（自回归推理时缓存历史 Token 的 K/V 向量，大小 $M=2\cdot L\cdot H_{kv}\cdot d_h\cdot S\cdot B\cdot b_e$，随序列长度线性增长，见 [2.1 PagedAttention](/AIInfraGuide/inference/模块四-推理优化/第2章-推理引擎核心技术/21-pagedattention)）。详见 [第6章 集合通信基础](/AIInfraGuide/prerequisites/模块一-前置知识/第6章-集合通信基础) 与 [模块三 第11章 3D 并行](/AIInfraGuide/distributed/模块三-分布式训练/第11章-3d并行与混合并行策略)。
+
 学习者不必机械按文件顺序通读；应从目标能力反向选择章节，并满足章首页列出的最小前置。所有优化都在 **“计算、通信、显存”** 之间取舍：ZeRO 用通信换显存，Activation Checkpointing 用计算换显存，量化用精度换显存和带宽。学习时始终追问：**牺牲了什么、换来了什么、证据在哪里？**
 
 课程的栏目/章节/子文章/综合项目判定标准、依赖图与迁移顺序记录在仓库维护文档 `docs/CURRICULUM_DESIGN.md`；该文件不是站点公开课程页面。
@@ -100,7 +103,7 @@ AI Infra 不是从零开始学的领域——它建立在编程能力、数学�
 
 - **单机内部通信**：NVLink / NVSwitch 的带宽与拓扑。NVLink 是同一机箱内 GPU 之间的专用高速通道，可以把它想象成工厂园区内的专用传送带
 - **多机间通信**：InfiniBand（IB）网络、RoCE 协议。IB 则是跨城市的高速铁路，带宽比 NVLink 低但能连接远距离节点
-- **集合通信原语**：AllReduce、AllGather、ReduceScatter 的含义与开销——这是分布式训练中最频繁的操作，理解它们的通信量公式是分析并行策略开销的基础
+- **集合通信原语**：AllReduce（全归约，所有 rank 各持一片求和后人人拿完整结果，通信量≈$2M$，`ReduceScatter+AllGather` 二步实现）、AllGather（全收集，每人交一片、人人收齐 $N$ 片）、ReduceScatter（归约-分发，每人交一片、人人只拿归约后的一片）的含义与开销——这是分布式训练中最频繁的操作，理解它们的通信量公式是分析并行策略开销的基础。详见 [6.1 集合通信原语 §3](/AIInfraGuide/prerequisites/模块一-前置知识/communication/61-集合通信原语#3-三原语对比)。
 - **NCCL**：NVIDIA 集合通信库的基本用法与调优
 
 ### 0.2 推荐资料

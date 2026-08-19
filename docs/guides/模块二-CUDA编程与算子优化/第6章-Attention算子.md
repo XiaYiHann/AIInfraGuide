@@ -23,4 +23,6 @@ Attention 是 Transformer 的核心计算，也是 AI Infra 优化的重中之�
 
 **PagedAttention CUDA 实现**解读 vLLM 中虚拟页到物理页映射在 GPU 上的实现。
 
+**线性注意力与 DeltaNet**不构造 L×L 矩阵的第二条路线：用 $O(d^2)$ 固定状态替代 $O(L)$ KV cache，delta rule 修正写操作，chunk-wise 算法把逐 token 递归训练改成块级并行。
+
 **动手实验**：白板推导 FlashAttention Tiling 过程，用 Triton 实现简化版 FlashAttention。

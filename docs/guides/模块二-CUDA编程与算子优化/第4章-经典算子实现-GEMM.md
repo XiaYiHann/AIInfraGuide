@@ -9,7 +9,7 @@ tags: ["CUDA", "GEMM", "矩阵乘法", "Tiling", "Tensor Core", "cuBLAS"]
 
 ## 本章简介
 
-GEMM（通用矩阵乘法）是深度学习中最核心的算子——线性层、Attention 的 QKV 投影、FFN 的计算本质上都是 GEMM。本章从零实现高性能 GEMM，理解连接硬件和上层框架的桥梁。
+GEMM（General Matrix Multiply，通用矩阵乘法，$C(M\times N)=A(M\times K)\times B(K\times N)$，如 hidden=4096 时 QKV 为 $4096\times12288$）是深度学习中最核心的算子——线性层、Attention 的 QKV（Query/Key/Value，三投影矩阵合并）投影、FFN（Feed-Forward Network，前馈网络，两层 MLP+SwiGLU）的计算本质上都是 GEMM。本章从零实现高性能 GEMM，理解连接硬件和上层框架的桥梁。
 
 **1. 背景与问题定义** 介绍 GEMM 在深度学习中的地位、问题规模与计算/访存特征，明确优化目标。
 
